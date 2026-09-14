@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Redirect, useRouter } from 'expo-router';
-import { Platform, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Redirect, useFocusEffect, useRouter } from 'expo-router';
+import { BackHandler, Keyboard, Platform, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Screen } from '@/components/primitives';
 import { entryMode } from '@/config/demoEntry';
@@ -53,6 +53,22 @@ function StudyWorkspace({ role }: { role: 'parent' | 'child' }) {
   const [form, setForm] = useState<{ kind: 'plan' | 'goal'; goal?: AcademicGoal } | null>(null);
   const [error, setError] = useState<StudyErrorCode | null>(null);
   const [saved, setSaved] = useState(false);
+  const back = useCallback(() => {
+    if (Keyboard.isVisible()) {
+      Keyboard.dismiss();
+      return;
+    }
+    router.replace(role === 'parent' ? '/parent' : '/child');
+  }, [role, router]);
+  useFocusEffect(
+    useCallback(() => {
+      const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+        back();
+        return true;
+      });
+      return () => subscription.remove();
+    }, [back]),
+  );
   useEffect(() => {
     initializeStudy();
   }, [initializeStudy, refresh]);
@@ -93,10 +109,7 @@ function StudyWorkspace({ role }: { role: 'parent' | 'child' }) {
       contentStyle={[s.stack, Platform.OS === 'web' ? null : { direction: 'ltr' }]}
       testID={`study-${role}-screen`}
     >
-      <StudyButton
-        variant="quiet"
-        onPress={() => router.replace(role === 'parent' ? '/parent' : '/child')}
-      >
+      <StudyButton variant="quiet" onPress={back}>
         {t('study.back')}
       </StudyButton>
       <View style={s.hero}>
