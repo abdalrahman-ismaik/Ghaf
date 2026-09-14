@@ -1,5 +1,35 @@
 # AI assistance record — competition readiness inspection
 
+## September14–15 — evidence-gated release engineering
+
+The owner requested autonomous real-product implementation, Android/Supabase
+verification, release preparation and publication only after explicit gates.
+Codex used one bounded helper at a time for release tooling, security/claims,
+45-requirement and24-task evidence, safety presentation and asset provenance.
+Other Feature020 and navigation sessions retained their independent file ownership;
+their reported checks are attributed separately in the release evidence.
+
+This lane implemented source-check/Android provenance guards, unused overlay
+permission removal, fail-closed missing AI replay storage, a compatible YAML parser
+patch, complete bilingual task safety display and authorized Help before task
+acceptance. Root reproduced the Help failure locally, passed24new plus73core SQL
+checks, deployed only migration015 after exact dryrun/corrective-schema preparation,
+then passed five ordinary hosted restricted-session checks. No real-data deletion,
+provider activation, new signing key or paid service was performed.
+
+Root booted and repaired emulator DNS, verified baseline real login, force-stop
+restoration and local sign-out in isolated Android user11, and collected three
+activity-display timing samples. Baseline, rebundled, fresh Gradle, physical and
+store evidence remain distinct. Fresh CI candidates and subsequent native outcomes
+belong in the [release ledger](release-readiness.md) and [QA record](release-qa-results.md).
+No private household content or credential-bearing fixture is tracked.
+
+The [Feature021 contract](../../specs/021-release-readiness/spec.md), catalog,
+security, performance, deployment and unpublished listing records retain missing
+functionality and owner/tooling gates. These are AI-assisted implementation and
+documentation, not student authorship, named human cultural review, legal approval,
+production acceptance or store publication.
+
 ## 2026-09-14 Requirement audit and Feature019 implementation
 
 The owner requested an evidence-based audit of R01–R38 and A01–A07, implementation
