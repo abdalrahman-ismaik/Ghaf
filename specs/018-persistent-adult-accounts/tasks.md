@@ -1,0 +1,22 @@
+# Tasks
+
+- [x] Recover real provider/session and local-only data boundaries.
+- [x] Record adult profile plus family/task/study planning scope and no automatic guest migration.
+- [x] Add typed owned workspace, atomic validated commands and RLS isolation tests.
+- [x] Add real workspace UI/controller with failed-write, conflict and account-switch handling.
+- [x] Add profile schema, RLS/RPCs and database isolation/conflict tests.
+- [x] Extend existing account service with guarded profile reads/writes.
+- [x] Add account panel/controller editing, refresh, failure and conflict behavior.
+- [x] Isolate private messaging state on account logout/switch.
+- [x] Run local real-provider tests and independent-client round trips.
+- [x] Build/run the bounded native test artifact and test restart, account switch, keyboard/Back and logout.
+- [x] Retest native-found logout error and cleanup retry on the rebuilt artifact.
+- [x] Record exact passes/blockers, setup instructions and untouched local data.
+- [x] Verify two independently signed-in native installations on one emulator: separate UIDs/storage, two-way saved data, restart and logout/account isolation.
+- [x] Enforce banned/deleted/anonymous provider status with reproduced regression and 203 passing local database assertions.
+- [x] Reconcile the hosted adult baseline, deploy the additive profile/workspace/status migrations and verify schema/history parity.
+- [x] Verify hosted independent provider sign-ins, two-way owned data, ownership denial, local logout and retained-JWT ban denial using disposable synthetic accounts.
+- [x] Add safe repeatable local backend verification and separate account/messaging CI jobs; CI execution remains separately evidenced.
+- [ ] BLOCKED: repeat with two separate Android devices/AVDs; second native environment cannot boot reliably on this host.
+- [ ] BLOCKED: fresh Gradle build with required NDK/CMake; current functional artifact uses the verified native container.
+- [ ] NOT RUN: hosted activation/email delivery, native recovery/expiry/revocation, account TalkBack/large text and physical-device performance acceptance.

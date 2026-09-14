@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -11,21 +11,23 @@ import {
 } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button, Text } from '@/components/primitives';
-import { colors, layout, spacing } from '@/design/tokens';
+import { colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import type { PilotController, PilotState } from '@/features/pilot/controller';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 export interface PilotAccountViewProps {
   readonly controller: PilotController;
   readonly state: PilotState;
+  readonly children?: ReactNode;
 }
 
-export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
+export function PilotAccountView({ controller, state, children }: PilotAccountViewProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((current) => current.locale);
   const direction = usePrototypeStore((current) => current.direction);
   const [email, setEmail] = useState(state.email);
   const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [code, setCode] = useState('');
   const phase = state.phase;
   const accountPanel = state.accountPanel && state.sampleOpen;
@@ -42,13 +44,21 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
     'suspended',
     'ready',
     'error',
+    'logout-error',
   ].includes(phase);
-  const canRefresh = ['pending', 'suspended', 'error'].includes(phase);
+  const canRefresh = ['pending', 'suspended', 'error', 'logout-error'].includes(phase);
+  const draft = state.profileDraft;
+  const profileAvailable =
+    phase === 'ready' &&
+    state.profile?.userId === state.account?.userId &&
+    draft?.userId === state.account?.userId;
+  const profileNameLength = Array.from(draft?.displayName.trim() ?? '').length;
   const submit = () => {
     if (state.busy || (hasCode && !codeIsComplete)) return;
     const submittedPassword = password;
     const submittedCode = code;
     setPassword('');
+    setPasswordVisible(false);
     setCode('');
     if (phase === 'signin') void controller.signIn(email, submittedPassword);
     else if (phase === 'register') void controller.register(email, submittedPassword);
@@ -75,6 +85,7 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
     (!hasCode || codeIsComplete);
   const goBack = () => {
     setPassword('');
+    setPasswordVisible(false);
     setCode('');
     if (accountPanel) controller.continueSample();
     else controller.showForm('signin');
@@ -119,6 +130,18 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
           </Text>
         ) : null}
       </View>
+
+      {phase === 'ready' ? (
+        <Button
+          brand
+          onPress={() => void controller.signOut()}
+          variant="quiet"
+          testID="pilot-signout"
+        >
+          {t('pilot.signOut')}
+        </Button>
+      ) : null}
+      {phase === 'ready' ? children : null}
 
       {state.error ? (
         <StatusBanner
@@ -182,11 +205,22 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
               onChangeText={setPassword}
               onSubmitEditing={submit}
               returnKeyType="go"
-              secureTextEntry
+              secureTextEntry={!passwordVisible}
               testID="pilot-password-input"
               textContentType={phase === 'signin' ? 'password' : 'newPassword'}
               value={password}
             />
+          ) : null}
+          {hasPassword ? (
+            <Button
+              brand
+              disabled={state.busy}
+              onPress={() => setPasswordVisible((visible) => !visible)}
+              testID="pilot-toggle-password"
+              variant="quiet"
+            >
+              {t(passwordVisible ? 'pilot.hidePassword' : 'pilot.showPassword')}
+            </Button>
           ) : null}
           {hasCode ? (
             <AccessTextField
@@ -252,6 +286,116 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
               {t('pilot.resend')}
             </Button>
           ) : null}
+        </View>
+      ) : null}
+
+      {phase === 'ready' ? (
+        <View style={styles.form} testID="pilot-cloud-profile">
+          <Text brand color="deepForest" variant="label">
+            {t('pilot.profile.title')}
+          </Text>
+          <Text brand color="onSurfaceVariant" variant="caption">
+            {t('pilot.profile.body')}
+          </Text>
+          {state.profileError ? (
+            <StatusBanner
+              direction={direction}
+              language={locale}
+              tone="error"
+              message={t(`pilot.errors.${state.profileError}`)}
+            />
+          ) : null}
+          {state.profileNotice === 'saved' ? (
+            <StatusBanner
+              direction={direction}
+              language={locale}
+              tone="success"
+              message={t('pilot.profile.saved')}
+            />
+          ) : null}
+          {state.profileBusy && !state.profile ? (
+            <ActivityIndicator
+              accessibilityLabel={t('pilot.profile.loading')}
+              color={colors.ghafEmerald}
+              testID="pilot-profile-loading"
+            />
+          ) : null}
+          {profileAvailable && draft ? (
+            <>
+              <AccessTextField
+                autoCapitalize="words"
+                autoComplete="name"
+                direction={direction}
+                editable={!state.busy}
+                helperText={t('pilot.profile.nameHint')}
+                label={t('pilot.profile.displayName')}
+                language={locale}
+                maxLength={160}
+                onChangeText={(displayName) => controller.editProfile({ displayName })}
+                onSubmitEditing={() => void controller.saveProfile()}
+                returnKeyType="done"
+                testID="pilot-profile-name"
+                textContentType="name"
+                value={draft.displayName}
+              />
+              <Text brand color="onSurfaceVariant" variant="caption">
+                {t('pilot.profile.language')}
+              </Text>
+              <View style={[styles.languages, { flexDirection: logicalRowDirection(direction) }]}>
+                {(['ar', 'en'] as const).map((preferredLocale) => (
+                  <Button
+                    key={preferredLocale}
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: draft.preferredLocale === preferredLocale }}
+                    brand
+                    disabled={state.busy}
+                    fullWidth={false}
+                    onPress={() => controller.editProfile({ preferredLocale })}
+                    style={styles.language}
+                    testID={`pilot-profile-language-${preferredLocale}`}
+                    variant={draft.preferredLocale === preferredLocale ? 'primary' : 'secondary'}
+                  >
+                    {t(`pilot.profile.${preferredLocale}`)}
+                  </Button>
+                ))}
+              </View>
+              {state.profileDirty ? (
+                <Text
+                  brand
+                  color="onSurfaceVariant"
+                  testID="pilot-profile-unsaved"
+                  variant="caption"
+                >
+                  {t('pilot.profile.unsaved')}
+                </Text>
+              ) : null}
+              <Button
+                brand
+                busy={state.profileBusy}
+                busyLabel={t('pilot.working')}
+                disabled={
+                  state.busy ||
+                  !state.profileDirty ||
+                  profileNameLength < 1 ||
+                  profileNameLength > 80 ||
+                  state.profileError === 'profile_conflict'
+                }
+                onPress={() => void controller.saveProfile()}
+                testID="pilot-profile-save"
+              >
+                {t('pilot.profile.save')}
+              </Button>
+            </>
+          ) : null}
+          <Button
+            brand
+            disabled={state.busy}
+            onPress={() => void controller.reloadProfile()}
+            testID="pilot-profile-reload"
+            variant="secondary"
+          >
+            {t(state.profileDirty ? 'pilot.profile.discardReload' : 'pilot.profile.reload')}
+          </Button>
         </View>
       ) : null}
 
@@ -337,7 +481,7 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
             size="regular"
             testID="pilot-refresh"
           >
-            {t(phase === 'error' ? 'pilot.retry' : 'pilot.refresh')}
+            {t(phase === 'error' || phase === 'logout-error' ? 'pilot.retry' : 'pilot.refresh')}
           </Button>
         ) : null}
         {canReturn ? (
@@ -351,11 +495,12 @@ export function PilotAccountView({ controller, state }: PilotAccountViewProps) {
             {t('pilot.returnToSignIn')}
           </Button>
         ) : null}
-        {canSignOut ? (
+        {canSignOut && phase !== 'ready' ? (
           <Button
             brand
             onPress={() => {
               setPassword('');
+              setPasswordVisible(false);
               setCode('');
               void controller.signOut();
             }}
@@ -375,6 +520,8 @@ const styles = StyleSheet.create({
   intro: { gap: spacing.sm, width: '100%' },
   form: { gap: spacing.md, width: '100%' },
   latinInput: { textAlign: 'left', writingDirection: 'ltr' },
+  languages: { gap: spacing.sm, flexWrap: 'wrap' },
+  language: { flexGrow: 1, flexBasis: 120 },
   actions: { gap: spacing.sm, width: '100%' },
   disclosure: { gap: spacing.xs, paddingBottom: spacing.sm },
 });

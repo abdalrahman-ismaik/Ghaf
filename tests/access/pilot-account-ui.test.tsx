@@ -116,7 +116,20 @@ vi.mock('@/components/access', () => ({
 vi.mock('@/components/primitives', () => ({ Button: 'Button', Text: 'Text' }));
 vi.mock('@/components/LanguageSwitcher', () => ({ LanguageSwitcher: 'LanguageSwitcher' }));
 vi.mock('@/features/pilot/config', () => ({ getPilotConfig: () => mock.config }));
-vi.mock('@/services', () => ({ getParentAccountService: () => mock.getService() }));
+vi.mock('@/services', () => ({
+  getParentAccountService: () => mock.getService(),
+  serviceRegistry: {
+    familyMessaging: {
+      controller: {
+        clearAccountSession: async () => {},
+        getSnapshot: () => ({ error: null }),
+      },
+    },
+  },
+}));
+vi.mock('../../src/components/pilot/AccountWorkspaceBoundary', () => ({
+  AccountWorkspaceBoundary: 'AccountWorkspaceBoundary',
+}));
 vi.mock('@/features/pilot/controller', () => ({
   createPilotController: (...args: unknown[]) => mock.createController(...args),
 }));
@@ -149,7 +162,7 @@ let tree: ReactNode;
 function find(match: (node: Node) => boolean, value: ReactNode = tree): Node | undefined {
   if (Array.isArray(value)) {
     for (const child of value) {
-      const found = find(match, child);
+      const found = find(match, child ?? null);
       if (found) return found;
     }
   }
@@ -206,12 +219,21 @@ beforeEach(() => {
     sampleOpen: false,
     accountPanel: false,
     sampleGeneration: 0,
+    profile: null,
+    profileDraft: null,
+    profileDirty: false,
+    profileBusy: false,
+    profileError: null,
+    profileNotice: null,
   };
   mock.controller = {
     getSnapshot: () => mock.pilot,
     subscribe: vi.fn(() => () => undefined),
     initialize: vi.fn(async () => undefined),
     refresh: vi.fn(async () => undefined),
+    reloadProfile: vi.fn(async () => undefined),
+    editProfile: vi.fn(),
+    saveProfile: vi.fn(async () => undefined),
     setActive: vi.fn(),
     showForm: vi.fn(),
     signIn: vi.fn(async () => undefined),
@@ -278,6 +300,26 @@ describe('Pilot account forms', () => {
     );
     renderView();
     expect(byId('pilot-password-input')?.props.value).toBe('');
+  });
+
+  it('lets users reveal a password without changing it and hides it again on submission', () => {
+    renderView();
+    (byId('pilot-email-input')!.props.onChangeText as (value: string) => void)(
+      'adult@example.test',
+    );
+    (byId('pilot-password-input')!.props.onChangeText as (value: string) => void)(
+      '  prepared value  ',
+    );
+    press('pilot-toggle-password');
+    renderView();
+    expect(byId('pilot-password-input')?.props).toMatchObject({
+      secureTextEntry: false,
+      value: '  prepared value  ',
+    });
+    press('pilot-submit');
+    renderView();
+    expect(byId('pilot-password-input')?.props).toMatchObject({ secureTextEntry: true, value: '' });
+    expect(mock.controller.signIn).toHaveBeenCalledWith('adult@example.test', '  prepared value  ');
   });
 
   it.each(['verify', 'recovery-code'] as const)(
@@ -356,6 +398,34 @@ describe('Pilot account forms', () => {
     expect(mock.controller.signOut).toHaveBeenCalledOnce();
   });
 
+  it.each(['ar', 'en'] as const)(
+    'describes incomplete logout in %s and offers cleanup retry without private forms',
+    (locale) => {
+      mock.state.locale = locale;
+      mock.state.direction = locale === 'ar' ? 'rtl' : 'ltr';
+      mock.pilot = { ...mock.pilot, phase: 'logout-error', error: 'network_unavailable' };
+      renderView();
+      expect(byId('pilot-logout-error-screen')).toBeDefined();
+      expect(
+        find((node) => node.props.children === pilotResources[locale].status['logout-error'].title),
+      ).toBeDefined();
+      expect(
+        find((node) => node.props.children === pilotResources[locale].status['logout-error'].body),
+      ).toBeDefined();
+      expect(
+        find((node) => node.props.message === pilotResources[locale].errors.network_unavailable),
+      ).toBeDefined();
+      expect(byId('pilot-refresh')?.props.children).toBe(pilotResources[locale].retry);
+      expect(byId('pilot-submit')).toBeUndefined();
+      expect(byId('pilot-password-input')).toBeUndefined();
+      expect(byId('pilot-cloud-profile')).toBeUndefined();
+      press('pilot-refresh');
+      expect(mock.controller.refresh).toHaveBeenCalledOnce();
+      press('pilot-signout');
+      expect(mock.controller.signOut).toHaveBeenCalledOnce();
+    },
+  );
+
   it('provides the launcher and separate account controls with explicit simulation copy', () => {
     mock.pilot = {
       ...mock.pilot,
@@ -384,6 +454,132 @@ describe('Pilot account forms', () => {
     expect(keys(pilotResources.ar)).toEqual(keys(pilotResources.en));
     expect(resources.ar.translation.pilot).toBe(pilotResources.ar);
     expect(resources.en.translation.pilot).toBe(pilotResources.en);
+  });
+});
+
+describe('cloud profile account panel', () => {
+  beforeEach(() => {
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-id', email: 'adult@example.test' },
+      profile: {
+        userId: 'adult-id',
+        displayName: 'Prepared adult',
+        preferredLocale: 'ar',
+        revision: 1,
+        updatedAt: '2026-09-14T00:00:00.000Z',
+      },
+      profileDraft: {
+        userId: 'adult-id',
+        displayName: 'Prepared adult',
+        preferredLocale: 'ar',
+        expectedRevision: 1,
+      },
+    };
+  });
+
+  it.each(['ar', 'en'] as const)('uses existing bilingual native form controls in %s', (locale) => {
+    mock.state.locale = locale;
+    mock.state.direction = locale === 'ar' ? 'rtl' : 'ltr';
+    renderView();
+    expect(byId('pilot-profile-name')?.props).toMatchObject({
+      label: pilotResources[locale].profile.displayName,
+      value: 'Prepared adult',
+      direction: locale === 'ar' ? 'rtl' : 'ltr',
+      autoComplete: 'name',
+      textContentType: 'name',
+    });
+    expect(byId('pilot-profile-language-ar')?.props).toMatchObject({
+      accessibilityRole: 'radio',
+      accessibilityState: { checked: true },
+    });
+    expect(byId('pilot-profile-language-en')?.props.accessibilityState).toEqual({ checked: false });
+    expect(byId('pilot-profile-save')?.props.disabled).toBe(true);
+    expect(
+      find((node) => node.props.children === pilotResources[locale].profile.body),
+    ).toBeDefined();
+    expect(
+      find((node) => node.props.children === pilotResources[locale].samplePrivacy),
+    ).toBeDefined();
+  });
+
+  it('edits a controller-owned draft and keeps save and explicit discard/reload separate', () => {
+    renderView();
+    (byId('pilot-profile-name')!.props.onChangeText as (value: string) => void)('Unsaved name');
+    press('pilot-profile-language-en');
+    expect(mock.controller.editProfile).toHaveBeenCalledWith({ displayName: 'Unsaved name' });
+    expect(mock.controller.editProfile).toHaveBeenCalledWith({ preferredLocale: 'en' });
+    mock.pilot = { ...mock.pilot, profileDirty: true };
+    renderView();
+    expect(byId('pilot-profile-unsaved')).toBeDefined();
+    expect(byId('pilot-profile-reload')?.props.children).toBe(
+      pilotResources.ar.profile.discardReload,
+    );
+    press('pilot-profile-save');
+    expect(mock.controller.saveProfile).toHaveBeenCalledOnce();
+    press('pilot-profile-reload');
+    expect(mock.controller.reloadProfile).toHaveBeenCalledOnce();
+  });
+
+  it('shows a conflict and requires reload before saving again', () => {
+    mock.pilot = { ...mock.pilot, profileDirty: true, profileError: 'profile_conflict' };
+    renderView();
+    expect(byId('pilot-profile-save')?.props.disabled).toBe(true);
+    expect(
+      find((node) => node.props.message === pilotResources.ar.errors.profile_conflict),
+    ).toBeDefined();
+    expect(byId('pilot-profile-reload')?.props.disabled).toBe(false);
+    expect(find((node) => node.props.message === pilotResources.ar.profile.saved)).toBeUndefined();
+  });
+
+  it('disables edits during a pending write while signout stays available', () => {
+    mock.pilot = { ...mock.pilot, busy: true, profileBusy: true, profileDirty: true };
+    renderView();
+    expect(byId('pilot-profile-name')?.props.editable).toBe(false);
+    expect(byId('pilot-profile-language-en')?.props.disabled).toBe(true);
+    expect(byId('pilot-profile-save')?.props.busy).toBe(true);
+    expect(byId('pilot-profile-reload')?.props.disabled).toBe(true);
+    expect(byId('pilot-signout')?.props.disabled).toBeUndefined();
+    expect(find((node) => node.props.message === pilotResources.ar.profile.saved)).toBeUndefined();
+  });
+
+  it('shows loading then a truthful retry state without fake profile fields', () => {
+    mock.pilot = {
+      ...mock.pilot,
+      profile: null,
+      profileDraft: null,
+      busy: true,
+      profileBusy: true,
+    };
+    renderView();
+    expect(byId('pilot-profile-loading')).toBeDefined();
+    expect(byId('pilot-profile-name')).toBeUndefined();
+    mock.pilot = {
+      ...mock.pilot,
+      busy: false,
+      profileBusy: false,
+      profileError: 'profile_unavailable',
+    };
+    renderView();
+    expect(byId('pilot-profile-loading')).toBeUndefined();
+    expect(byId('pilot-profile-name')).toBeUndefined();
+    expect(byId('pilot-profile-reload')?.props.disabled).toBe(false);
+    expect(
+      find((node) => node.props.message === pilotResources.ar.errors.profile_unavailable),
+    ).toBeDefined();
+  });
+
+  it('withholds a stale profile for another identity and every signed-out view', () => {
+    mock.pilot = {
+      ...mock.pilot,
+      account: { userId: 'different-adult', email: 'other@example.test' },
+    };
+    renderView();
+    expect(byId('pilot-profile-name')).toBeUndefined();
+    mock.pilot = { ...mock.pilot, phase: 'signin' };
+    renderView();
+    expect(byId('pilot-cloud-profile')).toBeUndefined();
   });
 });
 
@@ -416,6 +612,7 @@ describe('Pilot navigator boundary', () => {
     'pending',
     'suspended',
     'error',
+    'logout-error',
   ] as const)(
     'does not mount sample content in phase %s, including stale sample state',
     (phase) => {

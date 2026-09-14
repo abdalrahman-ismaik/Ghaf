@@ -1,5 +1,19 @@
 # Prototype Limitations
 
+## Persistent account continuation — 2026-09-14
+
+Feature 018 now stores a bounded adult profile and private family/task/study
+planning workspace through real Supabase ownership/RPCs. Two independent native
+installations on one API 35 emulator have retrieved shared account data, written
+changes both ways, restored their own sessions and maintained logout/account
+isolation. This is one emulator, not two devices; it uses a verified native
+container with the current Hermes bundle, not a fresh full Gradle build.
+The backend-maintenance pass and hosted readback are recorded separately in
+[Feature 018 validation](../../specs/018-persistent-adult-accounts/validation.md).
+No local sample migration, restored Seed/academic-goal authority, real Child media,
+production readiness or physical-performance claim follows. Feature 014 remains
+deferred by the owner's renewed decision. Older evidence below stays historical.
+
 ## Dedicated hosted messaging test — 2026-09-14
 
 An explicitly configured synthetic test backend now passes real Auth/HTTP messaging

@@ -1,8 +1,24 @@
+import type { AccountWorkspace, AccountWorkspaceUpdate } from './accountWorkspace';
+
 export type PilotAccessStatus = 'pending' | 'approved' | 'suspended';
 
 export interface RealAccountSession {
   readonly userId: string;
   readonly email: string;
+}
+
+export interface AccountProfile {
+  readonly userId: string;
+  readonly displayName: string;
+  readonly preferredLocale: 'ar' | 'en';
+  readonly revision: number;
+  readonly updatedAt: string;
+}
+
+export interface AccountProfileUpdate {
+  readonly displayName: string;
+  readonly preferredLocale: 'ar' | 'en';
+  readonly expectedRevision: number;
 }
 
 export type ParentAccountErrorCode =
@@ -16,6 +32,9 @@ export type ParentAccountErrorCode =
   | 'rate_limited'
   | 'account_unavailable'
   | 'access_unavailable'
+  | 'invalid_profile'
+  | 'profile_conflict'
+  | 'profile_unavailable'
   | 'recovery_required'
   | 'session_expired'
   | 'operation_cancelled'
@@ -28,7 +47,7 @@ export class ParentAccountError extends Error {
   }
 }
 
-export type ParentAccountEvent = 'signed-out' | 'changed' | 'recovery' | 'error';
+export type ParentAccountEvent = 'signed-out' | 'changed' | 'refreshed' | 'recovery' | 'error';
 
 export interface ParentAccountService {
   signUp(email: string, password: string): Promise<void>;
@@ -36,6 +55,10 @@ export interface ParentAccountService {
   signIn(email: string, password: string): Promise<RealAccountSession>;
   restoreSession(): Promise<RealAccountSession | null>;
   getAccess(userId: string): Promise<PilotAccessStatus>;
+  loadProfile(): Promise<AccountProfile>;
+  saveProfile(update: AccountProfileUpdate): Promise<AccountProfile>;
+  loadWorkspace(): Promise<AccountWorkspace>;
+  updateWorkspace(update: AccountWorkspaceUpdate): Promise<AccountWorkspace>;
   resendVerification(email: string): Promise<void>;
   requestPasswordReset(email: string): Promise<void>;
   verifyRecovery(email: string, code: string): Promise<void>;

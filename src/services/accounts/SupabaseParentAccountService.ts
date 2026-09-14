@@ -1,5 +1,7 @@
 import {
   ParentAccountError,
+  type AccountProfile,
+  type AccountProfileUpdate,
   type ParentAccountErrorCode,
   type ParentAccountEvent,
   type ParentAccountService,
@@ -7,6 +9,11 @@ import {
   type RealAccountSession,
 } from '../../models/parentAccount';
 import { GuardedAccountStorage, RECOVERY_STORAGE_KEY } from './storage';
+import type {
+  AccountWorkspace,
+  AccountWorkspaceUpdate,
+  WorkspaceCommand,
+} from '../../models/accountWorkspace';
 
 interface ProviderUser {
   id: string;
@@ -17,6 +24,7 @@ interface ProviderUser {
 interface ProviderResult<T> {
   data: T;
   error: unknown;
+  status?: number;
 }
 
 interface RecoveryReceipt {
@@ -82,6 +90,20 @@ export interface AccountClientPort {
       };
     };
   };
+  rpc(
+    name:
+      | 'get_or_create_account_profile'
+      | 'save_account_profile'
+      | 'get_or_create_account_workspace'
+      | 'update_account_workspace',
+    parameters?:
+      | {
+          p_display_name: string;
+          p_preferred_locale: 'ar' | 'en';
+          p_expected_revision: number;
+        }
+      | { p_expected_revision: number; p_command: WorkspaceCommand },
+  ): PromiseLike<ProviderResult<unknown>>;
 }
 
 export interface AccountRuntime {
@@ -110,6 +132,11 @@ function sanitize(
     session_not_found: 'session_expired',
     refresh_token_not_found: 'session_expired',
     refresh_token_already_used: 'session_expired',
+    PGRST301: 'session_expired',
+    PGRST303: 'session_expired',
+    PT400: 'invalid_profile',
+    PT409: 'profile_conflict',
+    '42501': 'access_unavailable',
   };
   if (typeof candidate.code === 'string' && codes[candidate.code]) {
     return new ParentAccountError(codes[candidate.code]!);
@@ -150,8 +177,295 @@ function emailCode(value: string) {
 }
 
 function checked<T>(result: ProviderResult<T>, fallback?: ParentAccountErrorCode): T {
+  if (result.error && result.status === 0) throw new ParentAccountError('network_unavailable');
   if (result.error) throw sanitize(result.error, fallback);
   return result.data;
+}
+
+function profileFromRow(data: unknown, userId: string): AccountProfile {
+  if (!Array.isArray(data) || data.length !== 1) {
+    throw new ParentAccountError('profile_unavailable');
+  }
+  const row: unknown = data[0];
+  if (typeof row !== 'object' || row === null) {
+    throw new ParentAccountError('profile_unavailable');
+  }
+  const profile = row as Record<string, unknown>;
+  if (
+    !/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(userId) ||
+    profile.user_id !== userId ||
+    typeof profile.display_name !== 'string' ||
+    Array.from(profile.display_name).length > 80 ||
+    profile.display_name !== profile.display_name.trim() ||
+    (profile.preferred_locale !== 'ar' && profile.preferred_locale !== 'en') ||
+    typeof profile.revision !== 'number' ||
+    !Number.isSafeInteger(profile.revision) ||
+    profile.revision < 0 ||
+    (profile.revision > 0 && profile.display_name.length === 0) ||
+    typeof profile.updated_at !== 'string' ||
+    !/^\d{4}-\d{2}-\d{2}T.+(?:Z|[+-]\d{2}:\d{2})$/.test(profile.updated_at) ||
+    !Number.isFinite(Date.parse(profile.updated_at))
+  ) {
+    throw new ParentAccountError('profile_unavailable');
+  }
+  return {
+    userId,
+    displayName: profile.display_name,
+    preferredLocale: profile.preferred_locale,
+    revision: profile.revision,
+    updatedAt: profile.updated_at,
+  };
+}
+
+function profileUpdate(value: AccountProfileUpdate): AccountProfileUpdate {
+  if (
+    typeof value?.displayName !== 'string' ||
+    Array.from(value.displayName.trim()).length < 1 ||
+    Array.from(value.displayName.trim()).length > 80 ||
+    (value.preferredLocale !== 'ar' && value.preferredLocale !== 'en') ||
+    !Number.isSafeInteger(value.expectedRevision) ||
+    value.expectedRevision < 0 ||
+    value.expectedRevision >= Number.MAX_SAFE_INTEGER
+  ) {
+    throw new ParentAccountError('invalid_profile');
+  }
+  return { ...value, displayName: value.displayName.trim() };
+}
+
+function isUuid(value: unknown): value is string {
+  return typeof value === 'string' && /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(value);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function hasExactKeys(value: Record<string, unknown>, keys: string[]) {
+  return (
+    Object.keys(value).length === keys.length && keys.every((key) => Object.hasOwn(value, key))
+  );
+}
+
+function boundedText(value: unknown, max: number, allowEmpty = false): value is string {
+  return (
+    typeof value === 'string' &&
+    value === value.trim() &&
+    (allowEmpty || value.length > 0) &&
+    Array.from(value).length <= max
+  );
+}
+
+function workspaceFromRow(data: unknown, userId: string): AccountWorkspace {
+  const invalid = () => new ParentAccountError('profile_unavailable');
+  if (!Array.isArray(data) || data.length !== 1 || !isRecord(data[0])) throw invalid();
+  const row = data[0];
+  if (
+    !hasExactKeys(row, [
+      'user_id',
+      'workspace_id',
+      'family_name',
+      'members',
+      'tasks',
+      'study_plans',
+      'revision',
+      'updated_at',
+    ]) ||
+    !isUuid(userId) ||
+    row.user_id !== userId ||
+    !isUuid(row.workspace_id) ||
+    !boundedText(row.family_name, 80, true) ||
+    typeof row.revision !== 'number' ||
+    !Number.isSafeInteger(row.revision) ||
+    row.revision < 0 ||
+    typeof row.updated_at !== 'string' ||
+    !/^\d{4}-\d{2}-\d{2}T.+(?:Z|[+-]\d{2}:\d{2})$/.test(row.updated_at) ||
+    !Number.isFinite(Date.parse(row.updated_at)) ||
+    !Array.isArray(row.members) ||
+    row.members.length > 20 ||
+    !Array.isArray(row.tasks) ||
+    row.tasks.length > 200 ||
+    !Array.isArray(row.study_plans) ||
+    row.study_plans.length > 200
+  )
+    throw invalid();
+  const allIds = new Set<string>([row.workspace_id.toLowerCase()]);
+  const uniqueId = (value: unknown): value is string => {
+    if (!isUuid(value) || allIds.has(value.toLowerCase())) return false;
+    allIds.add(value.toLowerCase());
+    return true;
+  };
+  const members = row.members.map((member: unknown) => {
+    if (
+      !isRecord(member) ||
+      !hasExactKeys(member, ['id', 'nickname']) ||
+      !uniqueId(member.id) ||
+      !boundedText(member.nickname, 80)
+    )
+      throw invalid();
+    return { id: member.id, nickname: member.nickname };
+  });
+  const memberIds = new Set(members.map((member) => member.id));
+  const tasks = row.tasks.map((task: unknown) => {
+    if (
+      !isRecord(task) ||
+      !hasExactKeys(task, ['id', 'childId', 'title', 'completed']) ||
+      !uniqueId(task.id) ||
+      !isUuid(task.childId) ||
+      !memberIds.has(task.childId) ||
+      !boundedText(task.title, 160) ||
+      typeof task.completed !== 'boolean'
+    )
+      throw invalid();
+    return { id: task.id, childId: task.childId, title: task.title, completed: task.completed };
+  });
+  const studyPlans = row.study_plans.map((plan: unknown) => {
+    if (
+      !isRecord(plan) ||
+      !hasExactKeys(plan, ['id', 'childId', 'subject', 'nextStep', 'completed']) ||
+      !uniqueId(plan.id) ||
+      !isUuid(plan.childId) ||
+      !memberIds.has(plan.childId) ||
+      !boundedText(plan.subject, 160) ||
+      !boundedText(plan.nextStep, 300) ||
+      typeof plan.completed !== 'boolean'
+    )
+      throw invalid();
+    return {
+      id: plan.id,
+      childId: plan.childId,
+      subject: plan.subject,
+      nextStep: plan.nextStep,
+      completed: plan.completed,
+    };
+  });
+  return {
+    userId,
+    workspaceId: row.workspace_id,
+    familyName: row.family_name,
+    revision: row.revision,
+    updatedAt: row.updated_at,
+    members,
+    tasks,
+    studyPlans,
+  };
+}
+
+function workspaceUpdate(value: AccountWorkspaceUpdate): AccountWorkspaceUpdate {
+  const invalid = () => new ParentAccountError('invalid_profile');
+  if (
+    !isRecord(value) ||
+    !hasExactKeys(value, ['expectedRevision', 'command']) ||
+    typeof value.expectedRevision !== 'number' ||
+    !Number.isSafeInteger(value.expectedRevision) ||
+    value.expectedRevision < 0 ||
+    value.expectedRevision >= Number.MAX_SAFE_INTEGER ||
+    !isRecord(value.command)
+  )
+    throw invalid();
+  const command: Record<string, unknown> = value.command;
+  const text = (field: string, max: number) => {
+    if (typeof command[field] !== 'string') throw invalid();
+    const result = command[field].trim();
+    if (!boundedText(result, max)) throw invalid();
+    return result;
+  };
+  const id = (field: string) => {
+    if (!isUuid(command[field])) throw invalid();
+    return command[field].toLowerCase();
+  };
+  const keys = (...fields: string[]) => {
+    if (!hasExactKeys(command, ['type', ...fields])) throw invalid();
+  };
+  let valid: WorkspaceCommand;
+  switch (command.type) {
+    case 'rename_family':
+      keys('name');
+      valid = { type: command.type, name: text('name', 80) };
+      break;
+    case 'add_member':
+      keys('nickname');
+      valid = { type: command.type, nickname: text('nickname', 80) };
+      break;
+    case 'rename_member':
+      keys('id', 'nickname');
+      valid = { type: command.type, id: id('id'), nickname: text('nickname', 80) };
+      break;
+    case 'add_task':
+      keys('childId', 'title');
+      valid = { type: command.type, childId: id('childId'), title: text('title', 160) };
+      break;
+    case 'edit_task':
+      keys('id', 'title');
+      valid = { type: command.type, id: id('id'), title: text('title', 160) };
+      break;
+    case 'complete_task':
+    case 'complete_study_plan':
+      keys('id', 'completed');
+      if (typeof command.completed !== 'boolean') throw invalid();
+      valid = { type: command.type, id: id('id'), completed: command.completed };
+      break;
+    case 'add_study_plan':
+      keys('childId', 'subject', 'nextStep');
+      valid = {
+        type: command.type,
+        childId: id('childId'),
+        subject: text('subject', 160),
+        nextStep: text('nextStep', 300),
+      };
+      break;
+    case 'edit_study_plan':
+      keys('id', 'subject', 'nextStep');
+      valid = {
+        type: command.type,
+        id: id('id'),
+        subject: text('subject', 160),
+        nextStep: text('nextStep', 300),
+      };
+      break;
+    default:
+      throw invalid();
+  }
+  return { expectedRevision: value.expectedRevision, command: valid };
+}
+
+function workspaceReflectsCommand(workspace: AccountWorkspace, command: WorkspaceCommand) {
+  switch (command.type) {
+    case 'rename_family':
+      return workspace.familyName === command.name;
+    case 'add_member':
+      return workspace.members.at(-1)?.nickname === command.nickname;
+    case 'rename_member':
+      return (
+        workspace.members.find((member) => member.id === command.id)?.nickname === command.nickname
+      );
+    case 'add_task': {
+      const task = workspace.tasks.at(-1);
+      return task?.childId === command.childId && task.title === command.title && !task.completed;
+    }
+    case 'edit_task':
+      return workspace.tasks.find((task) => task.id === command.id)?.title === command.title;
+    case 'complete_task':
+      return (
+        workspace.tasks.find((task) => task.id === command.id)?.completed === command.completed
+      );
+    case 'add_study_plan': {
+      const plan = workspace.studyPlans.at(-1);
+      return (
+        plan?.childId === command.childId &&
+        plan.subject === command.subject &&
+        plan.nextStep === command.nextStep &&
+        !plan.completed
+      );
+    }
+    case 'edit_study_plan': {
+      const plan = workspace.studyPlans.find((candidate) => candidate.id === command.id);
+      return plan?.subject === command.subject && plan.nextStep === command.nextStep;
+    }
+    case 'complete_study_plan':
+      return (
+        workspace.studyPlans.find((plan) => plan.id === command.id)?.completed === command.completed
+      );
+  }
 }
 
 export class SupabaseParentAccountService implements ParentAccountService {
@@ -197,6 +511,11 @@ export class SupabaseParentAccountService implements ParentAccountService {
               event === 'SIGNED_IN' ||
               event === 'USER_UPDATED'
             ) {
+              const sameIdentity =
+                !this.ownAuthMutation &&
+                this.knownUserId !== null &&
+                session?.user?.id === this.knownUserId &&
+                (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN');
               if (event === 'SIGNED_IN' && session?.user?.id) {
                 const changedDuringRead =
                   !this.ownAuthMutation && this.knownUserId && session.user.id !== this.knownUserId;
@@ -210,7 +529,13 @@ export class SupabaseParentAccountService implements ParentAccountService {
                 }
               }
               this.emit(
-                runtime.storage.hasFailed ? 'error' : this.recovering ? 'recovery' : 'changed',
+                runtime.storage.hasFailed
+                  ? 'error'
+                  : this.recovering
+                    ? 'recovery'
+                    : sameIdentity
+                      ? 'refreshed'
+                      : 'changed',
               );
             }
           });
@@ -376,6 +701,87 @@ export class SupabaseParentAccountService implements ParentAccountService {
         throw new ParentAccountError('access_unavailable');
       }
       return row.status as PilotAccessStatus;
+    });
+  }
+
+  loadProfile(): Promise<AccountProfile> {
+    return this.run(async (runtime, generation) => {
+      const session = await this.profileIdentity(runtime, generation);
+      const data = checked(
+        await runtime.client.rpc('get_or_create_account_profile'),
+        'profile_unavailable',
+      );
+      this.assertCurrent(generation);
+      return profileFromRow(data, session.userId);
+    });
+  }
+
+  saveProfile(update: AccountProfileUpdate): Promise<AccountProfile> {
+    return this.run(async (runtime, generation) => {
+      const valid = profileUpdate(update);
+      const session = await this.profileIdentity(runtime, generation);
+      const data = checked(
+        await runtime.client.rpc('save_account_profile', {
+          p_display_name: valid.displayName,
+          p_preferred_locale: valid.preferredLocale,
+          p_expected_revision: valid.expectedRevision,
+        }),
+        'profile_unavailable',
+      );
+      this.assertCurrent(generation);
+      const profile = profileFromRow(data, session.userId);
+      if (
+        profile.revision !== valid.expectedRevision + 1 ||
+        profile.displayName !== valid.displayName ||
+        profile.preferredLocale !== valid.preferredLocale
+      ) {
+        throw new ParentAccountError('profile_unavailable');
+      }
+      return profile;
+    });
+  }
+
+  private async profileIdentity(runtime: AccountRuntime, generation: number) {
+    const recovery = this.recovering || (await runtime.storage.getItem(RECOVERY_STORAGE_KEY));
+    this.assertCurrent(generation);
+    if (recovery) throw new ParentAccountError('recovery_required');
+    const session = await this.identity(runtime);
+    this.assertCurrent(generation);
+    return session;
+  }
+
+  loadWorkspace(): Promise<AccountWorkspace> {
+    return this.run(async (runtime, generation) => {
+      const session = await this.profileIdentity(runtime, generation);
+      const data = checked(
+        await runtime.client.rpc('get_or_create_account_workspace'),
+        'profile_unavailable',
+      );
+      this.assertCurrent(generation);
+      return workspaceFromRow(data, session.userId);
+    });
+  }
+
+  updateWorkspace(update: AccountWorkspaceUpdate): Promise<AccountWorkspace> {
+    return this.run(async (runtime, generation) => {
+      const valid = workspaceUpdate(update);
+      const session = await this.profileIdentity(runtime, generation);
+      const data = checked(
+        await runtime.client.rpc('update_account_workspace', {
+          p_expected_revision: valid.expectedRevision,
+          p_command: valid.command,
+        }),
+        'profile_unavailable',
+      );
+      this.assertCurrent(generation);
+      const workspace = workspaceFromRow(data, session.userId);
+      if (
+        workspace.revision !== valid.expectedRevision + 1 ||
+        !workspaceReflectsCommand(workspace, valid.command)
+      ) {
+        throw new ParentAccountError('profile_unavailable');
+      }
+      return workspace;
     });
   }
 

@@ -20,6 +20,15 @@ authorship evidence remain tracked; private local notes are not a substitute for
 
 ## Current Feature
 
+Feature 018 (`specs/018-persistent-adult-accounts/`) extends the adult pilot with
+owner-approved persistent adult profiles and account-owned family, task and study
+records. The default competition build stays synthetic; existing local demo data
+is never imported automatically. Constitution 2.3.0 documents this narrow exception.
+The owner authorized additive hosted backend maintenance, verified commits/pushes,
+and an internal Android APK on 2026-09-14. Feature 014 remains deferred. Read the
+Feature 018 validation record for actual hosted, native and independent-client evidence;
+this does not establish production or physical-device acceptance.
+
 Feature 017 (`specs/017-study-family-support/`) implements the user's selected
 proposals 8–12. Study/goals use synthetic family-scoped local data. Joint academic
 goals may have private nonessential mark/achievement prizes under its explicit

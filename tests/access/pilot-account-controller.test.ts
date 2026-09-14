@@ -8,7 +8,7 @@ import {
 } from '../../src/models/parentAccount';
 
 const account = { userId: 'adult-a', email: 'adult-a@example.test' };
-function harness() {
+function harness(privateCleanup?: () => Promise<void>) {
   let notify: (event: ParentAccountEvent) => void = () => undefined;
   const service: ParentAccountService = {
     signUp: vi.fn(async () => undefined),
@@ -16,6 +16,25 @@ function harness() {
     verifyEmail: vi.fn(async () => account),
     restoreSession: vi.fn(async () => account),
     getAccess: vi.fn(async () => 'approved' as const),
+    loadWorkspace: vi.fn(async () => {
+      throw new ParentAccountError('profile_unavailable');
+    }),
+    updateWorkspace: vi.fn(async () => {
+      throw new ParentAccountError('profile_unavailable');
+    }),
+    loadProfile: vi.fn(async () => ({
+      userId: account.userId,
+      displayName: '',
+      preferredLocale: 'ar' as const,
+      revision: 0,
+      updatedAt: '2026-09-14T00:00:00.000Z',
+    })),
+    saveProfile: vi.fn(async (update) => ({
+      ...update,
+      userId: account.userId,
+      revision: update.expectedRevision + 1,
+      updatedAt: '2026-09-14T00:00:00.000Z',
+    })),
     resendVerification: vi.fn(async () => undefined),
     requestPasswordReset: vi.fn(async () => undefined),
     verifyRecovery: vi.fn(async () => undefined),
@@ -28,7 +47,11 @@ function harness() {
     setAppActive: vi.fn(),
     dispose: vi.fn(),
   };
-  const sample = { start: vi.fn(async () => undefined), clear: vi.fn() };
+  const sample = {
+    start: vi.fn(async () => undefined),
+    clear: vi.fn(),
+    ...(privateCleanup ? { clearPrivate: privateCleanup } : {}),
+  };
   const controller = createPilotController(service, sample);
   return { controller, service, sample, notify: (event: ParentAccountEvent) => notify(event) };
 }
@@ -300,12 +323,91 @@ describe('adult pilot controller', () => {
     vi.mocked(h.service.signOut).mockRejectedValue(new ParentAccountError('storage_unavailable'));
     await h.controller.signOut();
     expect(h.controller.getSnapshot()).toMatchObject({
-      phase: 'error',
+      phase: 'logout-error',
       account: null,
       sampleOpen: false,
     });
     h.controller.dispose();
     h.notify('changed');
     expect(h.service.dispose).toHaveBeenCalledOnce();
+  });
+
+  it.each(['network_unavailable', 'storage_unavailable'] as const)(
+    'retries failed logout cleanup after %s without restoring credentials',
+    async (code) => {
+      const h = harness();
+      await h.controller.initialize();
+      await h.controller.explore();
+      vi.mocked(h.service.restoreSession).mockClear();
+      vi.mocked(h.service.signOut).mockRejectedValueOnce(new ParentAccountError(code));
+      await h.controller.signOut();
+      expect(h.controller.getSnapshot()).toMatchObject({
+        phase: 'logout-error',
+        account: null,
+        profile: null,
+        profileDraft: null,
+        sampleOpen: false,
+        error: code,
+        busy: false,
+      });
+      for (const event of ['changed', 'refreshed', 'error'] as const) h.notify(event);
+      await h.controller.signIn(account.email, 'prepared-stale-submit');
+      expect(h.service.signIn).not.toHaveBeenCalled();
+      expect(h.controller.getSnapshot().phase).toBe('logout-error');
+      expect(h.service.restoreSession).not.toHaveBeenCalled();
+      await h.controller.refresh();
+      expect(h.service.signOut).toHaveBeenCalledTimes(2);
+      expect(h.service.restoreSession).not.toHaveBeenCalled();
+      expect(h.controller.getSnapshot()).toMatchObject({
+        phase: 'signin',
+        account: null,
+        profile: null,
+        sampleOpen: false,
+        error: null,
+        busy: false,
+      });
+    },
+  );
+
+  it('retries independent private cleanup without reviving the parent session', async () => {
+    const cleanup = vi.fn(async (): Promise<void> => {});
+    const h = harness(cleanup);
+    await h.controller.initialize();
+    vi.mocked(h.service.restoreSession).mockClear();
+    cleanup.mockClear().mockRejectedValueOnce(new ParentAccountError('storage_unavailable'));
+    await h.controller.signOut();
+    expect(h.controller.getSnapshot()).toMatchObject({ phase: 'logout-error', account: null });
+    await h.controller.refresh();
+    expect(cleanup).toHaveBeenCalledTimes(2);
+    expect(h.service.signOut).toHaveBeenCalledTimes(2);
+    expect(h.service.restoreSession).not.toHaveBeenCalled();
+    expect(h.controller.getSnapshot()).toMatchObject({ phase: 'signin', error: null });
+  });
+
+  it('keeps cleanup authoritative during rapid retry taps and late provider events', async () => {
+    const h = harness();
+    await h.controller.initialize();
+    vi.mocked(h.service.restoreSession).mockClear();
+    vi.mocked(h.service.signOut).mockRejectedValueOnce(
+      new ParentAccountError('network_unavailable'),
+    );
+    await h.controller.signOut();
+    const waiting = deferred<void>();
+    vi.mocked(h.service.signOut).mockReturnValueOnce(waiting.promise);
+    const retry = h.controller.refresh();
+    await h.controller.signOut();
+    await h.controller.refresh();
+    h.notify('changed');
+    h.notify('error');
+    expect(h.controller.getSnapshot()).toMatchObject({
+      phase: 'signin',
+      busy: true,
+      account: null,
+    });
+    waiting.resolve();
+    await retry;
+    expect(h.service.signOut).toHaveBeenCalledTimes(2);
+    expect(h.service.restoreSession).not.toHaveBeenCalled();
+    expect(h.controller.getSnapshot()).toMatchObject({ phase: 'signin', busy: false, error: null });
   });
 });

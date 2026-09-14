@@ -316,12 +316,17 @@ export function Button({
       : 'forest';
   const isDisabled = disabled === true || busy;
   const renderedLabel = busy && busyLabel ? busyLabel : children;
+  const accessibilityLabel =
+    props['aria-label'] ??
+    props.accessibilityLabel ??
+    (typeof renderedLabel === 'string' ? renderedLabel : undefined);
 
   return (
     <BotanicalPressable
       {...props}
       aria-busy={busy}
-      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole={props.accessibilityRole ?? 'button'}
       accessibilityState={{ ...accessibilityState, busy, disabled: isDisabled }}
       disabled={isDisabled}
       onBlur={(event) => {

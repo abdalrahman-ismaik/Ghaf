@@ -37,6 +37,13 @@ function sdkHarness() {
     JSON.stringify({ sub: user.id, exp: Math.floor(Date.now() / 1000) + 3600 }),
   ).toString('base64url');
   const accessToken = `eyJhbGciOiJIUzI1NiJ9.${payload}.c3ludGhldGljLW9ubHk`;
+  let profile = {
+    user_id: user.id,
+    display_name: '',
+    preferred_locale: 'ar',
+    revision: 0,
+    updated_at: '2026-09-14T00:00:00Z',
+  };
   const client = createClient('https://synthetic.invalid', 'sb_publishable_synthetic-test', {
     auth: {
       storage,
@@ -71,6 +78,22 @@ function sdkHarness() {
         } else if (url.pathname === '/rest/v1/pilot_access') {
           expect(url.searchParams.get('user_id')).toBe(`eq.${user.id}`);
           data = [{ user_id: user.id, status: 'approved' }];
+        } else if (url.pathname === '/rest/v1/rpc/get_or_create_account_profile') {
+          data = [profile];
+        } else if (url.pathname === '/rest/v1/rpc/save_account_profile') {
+          if (body.p_expected_revision !== profile.revision) {
+            return new Response(JSON.stringify({ code: 'PT409', message: 'profile_conflict' }), {
+              status: 409,
+              headers: { 'content-type': 'application/json' },
+            });
+          }
+          profile = {
+            ...profile,
+            display_name: body.p_display_name,
+            preferred_locale: body.p_preferred_locale,
+            revision: profile.revision + 1,
+          };
+          data = [profile];
         } else if (url.pathname === '/auth/v1/logout') {
           return new Response(null, { status: 204 });
         } else {
@@ -92,6 +115,54 @@ function sdkHarness() {
 }
 
 describe('account adapter with the installed Supabase SDK and a synthetic transport', () => {
+  it('uses the same authenticated SDK client for profile RPCs and surfaces server conflicts', async () => {
+    const h = sdkHarness();
+    try {
+      await h.service.signIn(h.user.email, 'synthetic-long-password');
+      expect(await h.service.loadProfile()).toMatchObject({
+        userId: h.user.id,
+        displayName: '',
+        preferredLocale: 'ar',
+        revision: 0,
+      });
+      expect(
+        await h.service.saveProfile({
+          displayName: 'Synthetic saved adult',
+          preferredLocale: 'en',
+          expectedRevision: 0,
+        }),
+      ).toMatchObject({ userId: h.user.id, displayName: 'Synthetic saved adult', revision: 1 });
+      await expect(
+        h.service.saveProfile({
+          displayName: 'Stale local value',
+          preferredLocale: 'ar',
+          expectedRevision: 0,
+        }),
+      ).rejects.toMatchObject({ code: 'profile_conflict' });
+      expect(await h.service.loadProfile()).toMatchObject({
+        displayName: 'Synthetic saved adult',
+        revision: 1,
+      });
+      const rpcRequests = h.requests.filter((request) => request.path.startsWith('/rest/v1/rpc/'));
+      expect(rpcRequests).toHaveLength(4);
+      expect(
+        rpcRequests.every(
+          (request) =>
+            request.method === 'POST' && request.authorization === `Bearer ${h.accessToken}`,
+        ),
+      ).toBe(true);
+      expect(rpcRequests[1]?.body).toEqual({
+        p_display_name: 'Synthetic saved adult',
+        p_preferred_locale: 'en',
+        p_expected_revision: 0,
+      });
+      expect([...h.records.keys()]).toEqual([ACCOUNT_STORAGE_KEY]);
+      expect([...h.records.values()].join('')).not.toContain('Synthetic saved adult');
+    } finally {
+      h.service.dispose();
+    }
+  });
+
   it('validates identity, selects the own approval row and revokes the persisted session on logout', async () => {
     const h = sdkHarness();
     try {

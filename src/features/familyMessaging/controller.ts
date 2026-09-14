@@ -703,7 +703,7 @@ export class FamilyMessagingController {
   dismissInvitation() {
     this.publish({ invitation: null });
   }
-  async signOut() {
+  async clearAccountSession(): Promise<void> {
     this.cancel();
     const epoch = this.epoch;
     const expectedRole = this.state.expectedRole;
@@ -716,6 +716,14 @@ export class FamilyMessagingController {
       this.publish({ busy: false, remoteSignoutUnconfirmed: !result.remoteConfirmed });
     } catch (error) {
       if (epoch === this.epoch) this.publish({ busy: false, error: asMessagingError(error).code });
+      throw error;
+    }
+  }
+  async signOut() {
+    try {
+      await this.clearAccountSession();
+    } catch {
+      // Screen callers use the published error; account boundaries await the rejection directly.
     }
   }
 }

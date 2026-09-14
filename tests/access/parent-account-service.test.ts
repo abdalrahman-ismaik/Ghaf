@@ -85,6 +85,7 @@ function harness() {
       stopAutoRefresh: vi.fn(async () => undefined),
     },
     from: vi.fn(() => ({ select })),
+    rpc: vi.fn(async () => ({ data: null, error: null })),
   } satisfies AccountClientPort;
   const initialize = vi.fn(async () => ({ client, storage }));
   const service = new SupabaseParentAccountService(initialize);
@@ -511,6 +512,12 @@ describe('real Parent account adapter', () => {
     expect(h.client.auth.startAutoRefresh).toHaveBeenCalled();
     h.emit('TOKEN_REFRESHED');
     expect(events).toContain('changed');
+    h.emit('TOKEN_REFRESHED', { user: h.user });
+    expect(events.at(-1)).toBe('refreshed');
+    h.emit('SIGNED_IN', { user: h.user });
+    expect(events.at(-1)).toBe('refreshed');
+    h.emit('SIGNED_IN', { user: { ...h.user, id: 'adult-b' } });
+    expect(events.at(-1)).toBe('changed');
     h.emit('SIGNED_OUT');
     expect(events).toContain('signed-out');
     expect(await h.service.restoreSession()).toBeNull();

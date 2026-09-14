@@ -7,30 +7,39 @@ import { useTranslation } from 'react-i18next';
 import { Button, Text } from '@/components/primitives';
 import { colors, logicalRowDirection, spacing } from '@/design/tokens';
 import { getPilotConfig } from '@/features/pilot/config';
-import { createPilotController, type PilotController } from '@/features/pilot/controller';
+import { createPilotController } from '@/features/pilot/controller';
+import { createPilotPrivateBoundary } from '@/features/pilot/privateBoundary';
 import { ParentAccountError } from '@/models/parentAccount';
-import { getParentAccountService } from '@/services';
+import { getParentAccountService, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 import { PilotAccountView } from './PilotAccountView';
+import { AccountWorkspaceBoundary } from './AccountWorkspaceBoundary';
 
-function createAccountController(): PilotController {
+function createAccountRuntime() {
   let service = null;
   try {
     if (getPilotConfig().valid) service = getParentAccountService();
   } catch {
     // An unavailable provider keeps the entire sample navigator closed.
   }
-  return createPilotController(service, {
-    async start() {
-      const result = await usePrototypeStore.getState().startPilotSample();
-      if (!result.ok) throw new ParentAccountError('provider_unavailable');
+  const boundary = createPilotPrivateBoundary(
+    {
+      async start() {
+        const result = await usePrototypeStore.getState().startPilotSample();
+        if (!result.ok) throw new ParentAccountError('provider_unavailable');
+      },
+      clear() {
+        const previous = usePrototypeStore.getState();
+        const result = previous.clearPilotSample();
+        if (!result.ok) throw new ParentAccountError('provider_unavailable');
+        if (usePrototypeStore.getState().locale !== previous.locale)
+          usePrototypeStore.getState().setLocale(previous.locale);
+      },
     },
-    clear() {
-      const result = usePrototypeStore.getState().clearPilotSample();
-      if (!result.ok) throw new ParentAccountError('provider_unavailable');
-    },
-  });
+    serviceRegistry.familyMessaging.controller,
+  );
+  return { controller: createPilotController(service, boundary), service };
 }
 
 export function PilotGate({ children }: PropsWithChildren) {
@@ -39,7 +48,7 @@ export function PilotGate({ children }: PropsWithChildren) {
 }
 
 export function EnabledPilotGate({ children }: PropsWithChildren) {
-  const [controller] = useState(createAccountController);
+  const [{ controller, service }] = useState(createAccountRuntime);
   const state = useSyncExternalStore(
     controller.subscribe,
     controller.getSnapshot,
@@ -53,8 +62,20 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
   const navigation = useRootNavigationState();
   const navigatedGeneration = useRef<number | null>(null);
   const lifetime = useRef(0);
+  const appliedPreference = useRef<string | null>(null);
   const demoMounted =
     state.phase === 'ready' && state.sampleOpen && sampleActive && !state.accountPanel;
+
+  useEffect(() => {
+    const profile = state.profile;
+    if (profile && profile.userId === state.account?.userId) {
+      const preferenceKey = `${profile.userId}:${profile.revision}`;
+      if (appliedPreference.current === preferenceKey) return;
+      appliedPreference.current = preferenceKey;
+      const store = usePrototypeStore.getState();
+      if (store.locale !== profile.preferredLocale) store.setLocale(profile.preferredLocale);
+    }
+  }, [state.profile, state.account?.userId]);
 
   useEffect(() => {
     lifetime.current += 1;
@@ -119,7 +140,17 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
   }, [demoMounted, navigation?.key, router, state.sampleGeneration]);
 
   if (!demoMounted)
-    return <PilotAccountView key={state.phase} controller={controller} state={state} />;
+    return (
+      <PilotAccountView key={state.phase} controller={controller} state={state}>
+        {state.phase === 'ready' && state.account && service ? (
+          <AccountWorkspaceBoundary
+            key={state.account.userId}
+            service={service}
+            userId={state.account.userId}
+          />
+        ) : null}
+      </PilotAccountView>
+    );
 
   return (
     <View style={styles.root} testID="pilot-sample-boundary">

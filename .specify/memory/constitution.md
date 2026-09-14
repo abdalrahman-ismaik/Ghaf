@@ -1,6 +1,8 @@
 <!--
 Sync Impact Report
-- Version change: 2.1.0 -> 2.2.0
+- Version change: 2.2.0 -> 2.3.0
+- Approved Feature018 exception: real adult-owned profile/family/task/study planning,
+  scoped backend maintenance and internal APK delivery; synthetic progression remains separate.
 - Approved Feature017 exception: selected study, jointly agreed academic prizes and family peer text.
 - Approved exception: Feature 006 real adult pilot authentication, separate from the synthetic demo.
 
@@ -83,6 +85,23 @@ documented demonstration target even when network services are unavailable. The 
 recorded as an internal rehearsal goal rather than represented as an external competition rule
 unless an authoritative source establishes it.
 
+## Feature018 persistent adult account amendment — 2026-09-14
+
+The user's direct instruction authorizes real persistent adult accounts and
+account-owned backend data. The user explicitly selected adult profile plus family,
+tasks and study data. The bounded increment stores adult profile/language, a family
+name and member nicknames, Parent-managed task plans and study plans under the
+existing Supabase UUID, independently of synthetic reward/progression evidence.
+It reuses secure sessions and requires backend
+ownership, safe local logout/account switching, and direct cross-client evidence.
+This extends Feature006's login-only exception for the scope in
+`specs/018-persistent-adult-accounts/`; it authorizes no silent guest upload,
+production/compliance claim, paid resource, Child credentials, media, diagnosis or
+sensitive wellbeing records. The owner's later 2026-09-14 maintenance request
+authorizes reviewed additive updates to the existing backend, commit/push and an
+internal APK. Public rollout and production signing remain separate. Runtime tests
+use synthetic people. Feature014 remains deferred by the owner's renewed decision.
+
 ## Feature016 bounded communication amendment — 2026-09-13
 
 The direct user instruction authorizes genuine Parent authentication, explicit Child enrollment,
@@ -162,4 +181,4 @@ an updated Sync Impact Report, semantic versioning, and review by the current in
 Feature artifacts MUST be rechecked after any material amendment. Reviewers MUST reject scope or
 architecture that contradicts MVP Prototype First unless the constitution is explicitly amended.
 
-**Version**: 2.2.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-13
+**Version**: 2.3.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-14

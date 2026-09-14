@@ -146,6 +146,7 @@ it.runIf(enabled)(
     };
     const first = account();
     const second = account();
+    const anotherDevice = account();
     try {
       const firstEmail = emails[0]!;
       const secondEmail = emails[1]!;
@@ -170,6 +171,12 @@ it.runIf(enabled)(
         code: 'invalid_code',
       });
       expect(await first.service.getAccess(firstId)).toBe('pending');
+      await expect(first.service.loadProfile()).rejects.toMatchObject({
+        code: 'access_unavailable',
+      });
+      await expect(first.service.loadWorkspace()).rejects.toMatchObject({
+        code: 'access_unavailable',
+      });
       sql(`update public.pilot_access set status = 'approved' where user_id = '${firstId}';`);
       expect(await first.service.getAccess(firstId)).toBe('approved');
 
@@ -189,6 +196,346 @@ it.runIf(enabled)(
         .eq('user_id', secondId);
       expect(forbiddenApproval.error).not.toBeNull();
       expect(await second.service.getAccess(secondId)).toBe('pending');
+
+      const initialProfile = await first.service.loadProfile();
+      expect(initialProfile).toMatchObject({
+        userId: firstId,
+        displayName: '',
+        preferredLocale: 'ar',
+        revision: 0,
+      });
+      expect(await first.service.loadProfile()).toEqual(initialProfile);
+      expect(
+        sql(`select count(*) from public.account_profiles where user_id = '${firstId}';`),
+      ).toBe('1');
+
+      const firstSavedProfile = await first.service.saveProfile({
+        displayName: 'Synthetic Parent A',
+        preferredLocale: 'en',
+        expectedRevision: initialProfile.revision,
+      });
+      expect(firstSavedProfile).toMatchObject({
+        userId: firstId,
+        displayName: 'Synthetic Parent A',
+        preferredLocale: 'en',
+        revision: initialProfile.revision + 1,
+      });
+
+      const emptyWorkspace = await first.service.loadWorkspace();
+      expect(emptyWorkspace).toMatchObject({
+        userId: firstId,
+        familyName: '',
+        members: [],
+        tasks: [],
+        studyPlans: [],
+        revision: 0,
+      });
+      checkedId(emptyWorkspace.workspaceId);
+      expect(await first.service.loadWorkspace()).toEqual(emptyWorkspace);
+      let firstWorkspace = await first.service.updateWorkspace({
+        expectedRevision: emptyWorkspace.revision,
+        command: { type: 'rename_family', name: 'Synthetic Family A' },
+      });
+      firstWorkspace = await first.service.updateWorkspace({
+        expectedRevision: firstWorkspace.revision,
+        command: { type: 'add_member', nickname: 'Synthetic Learner A' },
+      });
+      expect(firstWorkspace.members).toHaveLength(1);
+      const memberId = checkedId(firstWorkspace.members[0]!.id);
+      firstWorkspace = await first.service.updateWorkspace({
+        expectedRevision: firstWorkspace.revision,
+        command: { type: 'add_task', childId: memberId, title: 'Read chapter one' },
+      });
+      firstWorkspace = await first.service.updateWorkspace({
+        expectedRevision: firstWorkspace.revision,
+        command: {
+          type: 'add_study_plan',
+          childId: memberId,
+          subject: 'Mathematics',
+          nextStep: 'Complete page two',
+        },
+      });
+      expect(firstWorkspace).toMatchObject({
+        userId: firstId,
+        workspaceId: emptyWorkspace.workspaceId,
+        familyName: 'Synthetic Family A',
+        members: [{ id: memberId, nickname: 'Synthetic Learner A' }],
+        tasks: [{ childId: memberId, title: 'Read chapter one', completed: false }],
+        studyPlans: [
+          {
+            childId: memberId,
+            subject: 'Mathematics',
+            nextStep: 'Complete page two',
+            completed: false,
+          },
+        ],
+        revision: emptyWorkspace.revision + 4,
+      });
+      const taskId = checkedId(firstWorkspace.tasks[0]!.id);
+      const studyPlanId = checkedId(firstWorkspace.studyPlans[0]!.id);
+
+      // This client signs in independently with separate storage; no session is copied.
+      expect(anotherDevice.records.size).toBe(0);
+      expect(await anotherDevice.service.signIn(firstEmail, password)).toEqual({
+        userId: firstId,
+        email: firstEmail,
+      });
+      const firstSession = (await first.client.auth.getSession()).data.session;
+      const anotherSession = (await anotherDevice.client.auth.getSession()).data.session;
+      expect(
+        Boolean(
+          firstSession &&
+          anotherSession &&
+          firstSession.access_token !== anotherSession.access_token &&
+          firstSession.refresh_token !== anotherSession.refresh_token,
+        ),
+      ).toBe(true);
+      expect(await anotherDevice.service.loadProfile()).toEqual(firstSavedProfile);
+      expect(await anotherDevice.service.loadWorkspace()).toEqual(firstWorkspace);
+      expect(
+        sql(`select count(*) from public.account_profiles where user_id = '${firstId}';`),
+      ).toBe('1');
+      expect(
+        sql(`select count(*) from public.account_workspaces where user_id = '${firstId}';`),
+      ).toBe('1');
+
+      let secondWorkspace = await anotherDevice.service.updateWorkspace({
+        expectedRevision: firstWorkspace.revision,
+        command: { type: 'rename_family', name: 'Synthetic Family A Updated' },
+      });
+      secondWorkspace = await anotherDevice.service.updateWorkspace({
+        expectedRevision: secondWorkspace.revision,
+        command: { type: 'rename_member', id: memberId, nickname: 'Synthetic Learner Updated' },
+      });
+      secondWorkspace = await anotherDevice.service.updateWorkspace({
+        expectedRevision: secondWorkspace.revision,
+        command: { type: 'edit_task', id: taskId, title: 'Read chapter two' },
+      });
+      secondWorkspace = await anotherDevice.service.updateWorkspace({
+        expectedRevision: secondWorkspace.revision,
+        command: { type: 'complete_task', id: taskId, completed: true },
+      });
+      secondWorkspace = await anotherDevice.service.updateWorkspace({
+        expectedRevision: secondWorkspace.revision,
+        command: {
+          type: 'edit_study_plan',
+          id: studyPlanId,
+          subject: 'Science',
+          nextStep: 'Review the diagram',
+        },
+      });
+      secondWorkspace = await anotherDevice.service.updateWorkspace({
+        expectedRevision: secondWorkspace.revision,
+        command: { type: 'complete_study_plan', id: studyPlanId, completed: true },
+      });
+      expect(secondWorkspace).toMatchObject({
+        userId: firstId,
+        workspaceId: emptyWorkspace.workspaceId,
+        familyName: 'Synthetic Family A Updated',
+        members: [{ id: memberId, nickname: 'Synthetic Learner Updated' }],
+        tasks: [{ id: taskId, childId: memberId, title: 'Read chapter two', completed: true }],
+        studyPlans: [
+          {
+            id: studyPlanId,
+            childId: memberId,
+            subject: 'Science',
+            nextStep: 'Review the diagram',
+            completed: true,
+          },
+        ],
+        revision: firstWorkspace.revision + 6,
+      });
+      await expect(
+        first.service.updateWorkspace({
+          expectedRevision: firstWorkspace.revision,
+          command: { type: 'rename_family', name: 'Stale family draft' },
+        }),
+      ).rejects.toMatchObject({ code: 'profile_conflict' });
+      expect(await first.service.loadWorkspace()).toEqual(secondWorkspace);
+
+      const secondSavedProfile = await anotherDevice.service.saveProfile({
+        displayName: 'ولي الأمر التجريبي',
+        preferredLocale: 'ar',
+        expectedRevision: firstSavedProfile.revision,
+      });
+      expect(secondSavedProfile).toMatchObject({
+        userId: firstId,
+        displayName: 'ولي الأمر التجريبي',
+        preferredLocale: 'ar',
+        revision: firstSavedProfile.revision + 1,
+      });
+      await expect(
+        first.service.saveProfile({
+          displayName: 'Stale device draft',
+          preferredLocale: 'en',
+          expectedRevision: firstSavedProfile.revision,
+        }),
+      ).rejects.toMatchObject({ code: 'profile_conflict' });
+      expect(await first.service.loadProfile()).toEqual(secondSavedProfile);
+
+      await first.service.signOut();
+      expect(first.records.size).toBe(0);
+      expect(await first.service.restoreSession()).toBeNull();
+      await expect(first.service.loadProfile()).rejects.toMatchObject({
+        code: 'session_expired',
+      });
+      await expect(first.service.loadWorkspace()).rejects.toMatchObject({
+        code: 'session_expired',
+      });
+      const anonymousProfileRead = await first.client.from('account_profiles').select('*');
+      expect(anonymousProfileRead.error).not.toBeNull();
+      const anonymousProfileLoad = await first.client.rpc('get_or_create_account_profile');
+      expect(anonymousProfileLoad.error).not.toBeNull();
+      const anonymousWorkspaceRead = await first.client.from('account_workspaces').select('*');
+      expect(anonymousWorkspaceRead.error).not.toBeNull();
+      const anonymousWorkspaceLoad = await first.client.rpc('get_or_create_account_workspace');
+      expect(anonymousWorkspaceLoad.error).not.toBeNull();
+      // Refresh exercises the second session's revocation state, beyond its current access JWT.
+      const secondSessionRefresh = await anotherDevice.client.auth.refreshSession();
+      expect(secondSessionRefresh.error).toBeNull();
+      expect(Boolean(secondSessionRefresh.data.session)).toBe(true);
+      expect(await anotherDevice.service.restoreSession()).toEqual({
+        userId: firstId,
+        email: firstEmail,
+      });
+      expect(await anotherDevice.service.loadProfile()).toEqual(secondSavedProfile);
+      expect(await anotherDevice.service.loadWorkspace()).toEqual(secondWorkspace);
+      expect(await first.service.signIn(firstEmail, password)).toEqual({
+        userId: firstId,
+        email: firstEmail,
+      });
+      expect(await first.service.loadProfile()).toEqual(secondSavedProfile);
+      expect(await first.service.loadWorkspace()).toEqual(secondWorkspace);
+
+      sql(`update public.pilot_access set status = 'approved' where user_id = '${secondId}';`);
+      const otherInitialProfile = await second.service.loadProfile();
+      expect(otherInitialProfile).toMatchObject({
+        userId: secondId,
+        displayName: '',
+        preferredLocale: 'ar',
+        revision: 0,
+      });
+      const otherProfile = await second.service.saveProfile({
+        displayName: 'Synthetic Parent B',
+        preferredLocale: 'en',
+        expectedRevision: otherInitialProfile.revision,
+      });
+      const crossProfileRead = await second.client
+        .from('account_profiles')
+        .select('*')
+        .eq('user_id', firstId);
+      expect(crossProfileRead.error).toBeNull();
+      expect(crossProfileRead.data).toEqual([]);
+      const forgedProfileLoad = await second.client.rpc('get_or_create_account_profile', {
+        p_user_id: firstId,
+      });
+      expect(forgedProfileLoad.error).not.toBeNull();
+      const forgedProfileSave = await second.client.rpc('save_account_profile', {
+        p_user_id: firstId,
+        p_display_name: 'Forged owner',
+        p_preferred_locale: 'en',
+        p_expected_revision: secondSavedProfile.revision,
+      });
+      expect(forgedProfileSave.error).not.toBeNull();
+      const forbiddenProfileUpdate = await second.client
+        .from('account_profiles')
+        .update({ display_name: 'Unauthorized change' })
+        .eq('user_id', firstId);
+      expect(forbiddenProfileUpdate.error).not.toBeNull();
+      const forbiddenProfileDelete = await second.client
+        .from('account_profiles')
+        .delete()
+        .eq('user_id', firstId);
+      expect(forbiddenProfileDelete.error).not.toBeNull();
+      expect(await second.service.loadProfile()).toEqual(otherProfile);
+      expect(await anotherDevice.service.loadProfile()).toEqual(secondSavedProfile);
+
+      const otherEmptyWorkspace = await second.service.loadWorkspace();
+      expect(otherEmptyWorkspace).toMatchObject({
+        userId: secondId,
+        familyName: '',
+        members: [],
+        tasks: [],
+        studyPlans: [],
+        revision: 0,
+      });
+      expect(otherEmptyWorkspace.workspaceId).not.toBe(secondWorkspace.workspaceId);
+      const otherWorkspace = await second.service.updateWorkspace({
+        expectedRevision: otherEmptyWorkspace.revision,
+        command: { type: 'rename_family', name: 'Synthetic Family B' },
+      });
+      const crossWorkspaceRead = await second.client
+        .from('account_workspaces')
+        .select('*')
+        .eq('workspace_id', secondWorkspace.workspaceId);
+      expect(crossWorkspaceRead.error).toBeNull();
+      expect(crossWorkspaceRead.data).toEqual([]);
+      const forgedWorkspaceLoad = await second.client.rpc('get_or_create_account_workspace', {
+        p_user_id: firstId,
+      });
+      expect(forgedWorkspaceLoad.error).not.toBeNull();
+      const forgedWorkspaceUpdate = await second.client.rpc('update_account_workspace', {
+        p_workspace_id: secondWorkspace.workspaceId,
+        p_expected_revision: secondWorkspace.revision,
+        p_command: { type: 'rename_family', name: 'Forged workspace' },
+      });
+      expect(forgedWorkspaceUpdate.error).not.toBeNull();
+      for (const command of [
+        { type: 'rename_member', id: memberId, nickname: 'Forged member' },
+        { type: 'add_task', childId: memberId, title: 'Foreign member task' },
+        { type: 'edit_task', id: taskId, title: 'Forged task' },
+        { type: 'complete_task', id: taskId, completed: false },
+        {
+          type: 'add_study_plan',
+          childId: memberId,
+          subject: 'Foreign subject',
+          nextStep: 'Foreign step',
+        },
+        {
+          type: 'edit_study_plan',
+          id: studyPlanId,
+          subject: 'Forged subject',
+          nextStep: 'Forged step',
+        },
+        { type: 'complete_study_plan', id: studyPlanId, completed: false },
+      ]) {
+        const foreignReference = await second.client.rpc('update_account_workspace', {
+          p_expected_revision: otherWorkspace.revision,
+          p_command: command,
+        });
+        expect(foreignReference.error?.code).toBe('PT400');
+        expect(await second.service.loadWorkspace()).toEqual(otherWorkspace);
+      }
+      const forbiddenWorkspaceUpdate = await second.client
+        .from('account_workspaces')
+        .update({ family_name: 'Unauthorized family change' })
+        .eq('user_id', firstId);
+      expect(forbiddenWorkspaceUpdate.error).not.toBeNull();
+      const forbiddenWorkspaceDelete = await second.client
+        .from('account_workspaces')
+        .delete()
+        .eq('user_id', firstId);
+      expect(forbiddenWorkspaceDelete.error).not.toBeNull();
+      expect(await anotherDevice.service.loadWorkspace()).toEqual(secondWorkspace);
+
+      await first.service.signOut();
+      expect(await first.service.signIn(secondEmail, password)).toEqual({
+        userId: secondId,
+        email: secondEmail,
+      });
+      expect(await first.service.loadProfile()).toEqual(otherProfile);
+      expect(await first.service.loadWorkspace()).toEqual(otherWorkspace);
+      expect(await first.service.restoreSession()).toEqual({
+        userId: secondId,
+        email: secondEmail,
+      });
+      await first.service.signOut();
+      expect(await first.service.signIn(firstEmail, password)).toEqual({
+        userId: firstId,
+        email: firstEmail,
+      });
+      expect(await first.service.loadProfile()).toEqual(secondSavedProfile);
+      expect(await first.service.loadWorkspace()).toEqual(secondWorkspace);
 
       await first.service.signOut();
       expect(first.records.size).toBe(0);
@@ -212,16 +559,29 @@ it.runIf(enabled)(
         email: firstEmail,
       });
       expect(await first.service.restoreSession()).toEqual({ userId: firstId, email: firstEmail });
+      expect(await first.service.loadProfile()).toEqual(secondSavedProfile);
+      expect(await first.service.loadWorkspace()).toEqual(secondWorkspace);
       sql(`update public.pilot_access set status = 'suspended' where user_id = '${firstId}';`);
       expect(await first.service.getAccess(firstId)).toBe('suspended');
+      await expect(first.service.loadProfile()).rejects.toMatchObject({
+        code: 'access_unavailable',
+      });
+      await expect(first.service.loadWorkspace()).rejects.toMatchObject({
+        code: 'access_unavailable',
+      });
       sql(`delete from public.pilot_access where user_id = '${firstId}';`);
       await expect(first.service.getAccess(firstId)).rejects.toMatchObject({
         code: 'access_unavailable',
       });
     } finally {
-      await Promise.allSettled([first.service.signOut(), second.service.signOut()]);
+      await Promise.allSettled([
+        first.service.signOut(),
+        second.service.signOut(),
+        anotherDevice.service.signOut(),
+      ]);
       first.service.dispose();
       second.service.dispose();
+      anotherDevice.service.dispose();
       for (const id of createdIds) {
         sql(
           `delete from auth.users where id = '${checkedId(id)}' and email like 'ghaf-pilot-it-%@example.test';`,

@@ -1,5 +1,16 @@
 # Product
 
+## Feature 018 persistent adult planning data — 2026-09-14
+
+The owner extended the real adult account pilot with a private cloud profile,
+family name/member nicknames, Parent-managed task titles/completion and study
+subjects/next steps/completion. Records belong to the stable Supabase user UUID;
+independent sign-ins retrieve the same account-owned data. This is a separate
+planning workspace, with no automatic upload of local sample data or restoration
+of Seeds, rewards, academic goals or Child access. Default demo remains synthetic.
+Feature 018 owns the current account scope and exact local/hosted/native evidence.
+The owner reconfirmed that Feature 014 local progress recovery stays deferred.
+
 ## Feature 017 study and family support — 2026-09-13
 
 The owner selected saved proposals 8–12: private Study Mode, jointly agreed academic
