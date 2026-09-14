@@ -181,6 +181,14 @@ would reclaim only 1,855 logical bytes and was preserved. The new independent
 motion pass is outside this APK and final evidence commit; its in-progress files
 remain uncommitted and untouched by this delivery.
 
+The last local Auth health and REST probes both returned HTTP 200 at 14:37 UTC
+(`final-local-http-status.json`). Fresh Windows Docker container listings timed
+out for both local contexts, and a bounded Ubuntu listing also timed out; those
+failed management checks are preserved in `final-docker-*-status.json`. No Docker
+service, database volume or installed client was stopped or removed. The earlier
+full local verifier pass remains historical to its exact run; the last HTTP
+checks establish endpoint responsiveness, not a new container-health audit.
+
 ### Final documentation publication checks
 
 `npm run repo:check` passed its five tests plus navigation/artifact policy.
