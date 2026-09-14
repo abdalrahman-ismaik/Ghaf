@@ -14,14 +14,16 @@ import {
   createPreparedParentTaskDraftSuggestion,
 } from '../../../src/services/mock/boundedAiFixtures';
 import { childCoachRequestIsSafe } from './child';
+import { runGeminiText, type GeminiTextConfig } from './gemini';
 import { BOUNDED_AI_OPERATION_POLICIES, type GatewayErrorCode } from './security';
 
 export interface WorkersAiBinding {
   run(model: string, input: Record<string, unknown>): Promise<unknown>;
 }
 
-export interface BoundedAiOperationEnv {
+export interface BoundedAiOperationEnv extends GeminiTextConfig {
   readonly AI: WorkersAiBinding;
+  readonly TEXT_AI_PROVIDER?: string;
   readonly PARENT_DRAFT_MODEL?: string;
   readonly CHILD_COACH_MODEL?: string;
 }
@@ -148,6 +150,9 @@ async function runJsonModel(input: {
   readonly schema: Record<string, unknown>;
   readonly maxTokens: number;
 }) {
+  if (input.env.TEXT_AI_PROVIDER === 'gemini') return runGeminiText(input.env, input);
+  if (input.env.TEXT_AI_PROVIDER !== undefined && input.env.TEXT_AI_PROVIDER !== 'workers_ai')
+    return { status: 'error' as const };
   let timeout: ReturnType<typeof setTimeout> | undefined;
   try {
     return await Promise.race([
@@ -211,6 +216,8 @@ export async function executeParentTaskDraft(
   if (modelResult.status === 'error') {
     return { ok: false, code: 'REMOTE_UNAVAILABLE', status: 503 };
   }
+  if (modelResult.status === 'blocked') return { ok: false, code: 'SAFETY_REJECTED', status: 422 };
+  if (modelResult.status !== 'ok') return { ok: false, code: 'INVALID_RESPONSE', status: 502 };
   const suggestion = validateParentTaskDraftSuggestion(
     request,
     unwrapModelResponse(modelResult.value),
@@ -284,6 +291,8 @@ export async function executeChildCoach(
   if (modelResult.status === 'error') {
     return { ok: false, code: 'REMOTE_UNAVAILABLE', status: 503 };
   }
+  if (modelResult.status === 'blocked') return { ok: false, code: 'SAFETY_REJECTED', status: 422 };
+  if (modelResult.status !== 'ok') return { ok: false, code: 'INVALID_RESPONSE', status: 502 };
   const response = validateChildCoachOutput(request, unwrapModelResponse(modelResult.value));
   if (!response.ok) {
     return {

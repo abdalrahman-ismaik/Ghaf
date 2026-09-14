@@ -45,3 +45,49 @@ npx vitest run tests/bounded-ai-mcp.test.ts tests/gateway-parent-task-drafting.t
 
 Passing this suite proves only local transport and parity behavior with synthetic fixtures. It is
 not provider, public-hosting, OAuth, real Child data, production security, or release evidence.
+
+## Optional Gemini text adapter — Feature 019
+
+The Worker has a server-only `generateContent` adapter for the existing Parent draft and
+Child text operations. The server variable `TEXT_AI_PROVIDER=gemini` selects it explicitly.
+Omitting that variable, or setting `workers_ai`, keeps the existing Workers AI implementation;
+unknown values fail closed. Voice transcription is unchanged. This source addition enables no
+mobile live flags, deployment or provider call.
+
+Configuration for a later authorized synthetic integration:
+
+- Store `GEMINI_API_KEY` as a Worker secret, never an Expo public variable, URL parameter or file
+  committed to Git. Supply it only to the trusted server deployment through its secret manager.
+- Set server `GEMINI_MODEL` to the exact provider model ID selected and verified by the operator.
+  There is no default model and no discovery request. Supply the bare ID, without `models/`,
+  slashes, a URL or query parameters. Model/API availability is an outstanding service check.
+- Set server `TEXT_AI_PROVIDER=gemini`. Keep the existing trusted capability issuer, audience,
+  HMAC secret, shared replay/budget stores and operation rate limits; model selection is not
+  authentication. The missing trusted broker and activation evidence remain blockers.
+- Keep `EXPO_PUBLIC_GHAF_AI_PARENT_TASK_DRAFTING_LIVE`,
+  `EXPO_PUBLIC_GHAF_AI_CHILD_COACH_TEXT_LIVE` and
+  `EXPO_PUBLIC_GHAF_AI_CHILD_COACH_VOICE_LIVE` false until their separate release gates pass.
+
+Requests use the fixed `https://generativelanguage.googleapis.com/v1beta/models/` origin,
+`x-goog-api-key` header and `generationConfig.responseMimeType`/`responseJsonSchema` documented
+by the [generateContent API reference](https://ai.google.dev/api/generate-content).
+The [structured-output guide](https://ai.google.dev/gemini-api/docs/generate-content/structured-output?hl=en)
+also shows the newer `responseFormat.text` syntax; this adapter deliberately uses the still
+documented reference fields. Google currently labels this API family legacy. Verify the chosen
+model with this exact request shape before claiming provider compatibility.
+
+The existing reviewed prompts and schema are reused. Gemini's provider-schema projection omits
+unsupported string-length hints and boolean enums; the complete Ghaf output validators still
+enforce lengths, terminal output, correlation, age policy and content restrictions. No tools,
+grounding, cached conversations, media or automatic provider fallback are added. Redirects are
+rejected. One STOP candidate containing only text parts is accepted; blocked, truncated,
+multiple-candidate, tool/media/thought, malformed or oversized output is rejected. Response
+consumption is stream-measured up to 64 KiB and shares the existing 2.2-second Parent or
+1.5-second Child deadline. Timeouts abort transport/body reading. Errors contain no provider
+body, key or prompt, and the adapter adds no content logging.
+
+`npx vitest run tests/gateway/gemini-provider.test.ts` exercises synthetic fetch responses,
+timeouts, response limits, real operation validation and missing-authorization denial. It
+does not establish a live Gemini response, provider retention, selected-model compatibility,
+deployment, native behavior or permission to submit Child content. Existing gateway/MCP
+security tests remain required alongside it. Live verification is **NOT RUN**.
