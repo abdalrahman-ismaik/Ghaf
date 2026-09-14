@@ -225,6 +225,38 @@ class MessagingSQL(unittest.TestCase):
         self.assertEqual(child["senderId"],ident(3,1))
         self.assertNotEqual(child["id"],message["id"])
 
+    def test_accepted_retry_preserves_receipt_and_budget_after_send_limit(self):
+        key = str(uuid.uuid4())
+        accepted = self.send(key=key)
+        attempts = f"select count from fm_private.attempts where actor_id={quote(ident(0,1))} and action='send';"
+        self.denied("fm_send", ident(4,1), key, "Changed", code="idempotency_conflict")
+        self.denied("fm_send", ident(4,2), key, "Synthetic test message", code="idempotency_conflict")
+        self.denied("fm_send", ident(4,1), key, " ", code="invalid_message")
+        self.denied("fm_send", ident(4,1), key, None, code="invalid_message")
+        self.assertEqual(sql(attempts), "5")
+        for _ in range(25):
+            latest = self.send()
+            self.assertIn("id", latest)
+        self.assertEqual(sql(attempts), "30")
+        self.assertEqual(self.send(key=key), accepted)
+        self.assertEqual(sql(attempts), "30")
+        self.denied("fm_send", ident(4,1), str(uuid.uuid4()), "Fresh send", code="rate_limited")
+        self.assertEqual(sql(attempts), "31")
+        self.assertEqual(self.send(key=key), accepted)
+        self.denied("fm_send", ident(4,1), key, "Changed", code="rate_limited")
+        self.denied("fm_send", ident(4,2), key, "Synthetic test message", code="rate_limited")
+        self.denied("fm_send", ident(4,1), key, " ", code="rate_limited")
+        self.denied("fm_send", ident(4,3), key, "Synthetic test message")
+        self.assertEqual(self.send(key=key), accepted)
+        self.assertEqual(sql(attempts), "31")
+        self.assertEqual(sql("select count(*) from fm_private.messages;"), "26")
+        self.assertEqual(sql(f"select next_sequence from fm_private.threads where id={quote(ident(4,1))};"), "27")
+        sql(f"update fm_private.messages set created_at=clock_timestamp()-interval '31 days' where id={quote(accepted['id'])};")
+        self.denied("fm_send", ident(4,1), key, "Synthetic test message", code="rate_limited")
+        self.assertEqual(sql(f"select count(*) from fm_private.messages where id={quote(accepted['id'])};"), "1")
+        self.assertEqual(rpc("fm_revoke_device", ident(5,1)), {"ok": True})
+        self.denied("fm_send", ident(4,1), latest["clientKey"], latest["body"], code="access_revoked")
+
     def test_unicode_codepoint_bounds_whitespace_and_inert_plain_text(self):
         self.assertEqual(self.send(body="🌳"*500)["body"],"🌳"*500)
         self.assertEqual(self.send(body="a\u0301"*250)["body"],"a\u0301"*250)

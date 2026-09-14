@@ -44,6 +44,10 @@ insert into fm_private.messages(id, thread_id, sender_id, body, sequence, client
 update fm_private.threads set next_sequence = 2 where id = '40000000-0000-4000-8000-000000000001';
 UPGRADE
 "$fm_bin/psql" -X -q -v ON_ERROR_STOP=1 -f "$fm_root/workers/ghaf-family-messaging/migrations/002_peer_threads.sql" >>"$fm_run/schema.log" 2>&1
+# Explicit skip is only for reproducing the pre-fix retry-budget regression.
+if [[ "${FM_TEST_SKIP_RETRY_MIGRATION:-false}" != true ]]; then
+  "$fm_bin/psql" -X -q -v ON_ERROR_STOP=1 -f "$fm_root/workers/ghaf-family-messaging/migrations/003_idempotent_retry_budget.sql" >>"$fm_run/schema.log" 2>&1
+fi
 "$fm_bin/psql" -X -q -v ON_ERROR_STOP=1 -f "$fm_root/workers/ghaf-family-messaging/tests/upgrade-check.sql" >>"$fm_run/schema.log" 2>&1
 python3 "$fm_root/workers/ghaf-family-messaging/tests/test_rpc.py" 2>&1 | tee "$fm_run/tests.log"
 python3 "$fm_root/workers/ghaf-family-messaging/tests/test_peers.py" 2>&1 | tee "$fm_run/peer-tests.log"

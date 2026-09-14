@@ -117,6 +117,30 @@ class PeerMessagingSQL(unittest.TestCase):
         self.denied("fm_send", peer, str(uuid.uuid4()), "x" * 501, None, user=3, code="invalid_message")
         self.assertEqual(self.send(peer, body="🌳" * 500, phrase=None)["body"], "🌳" * 500)
 
+    def test_youngest_peer_retry_at_send_limit_keeps_phrase_and_permission_checks(self):
+        peer = self.enable()
+        key = str(uuid.uuid4())
+        accepted = self.send(peer, user=4, key=key)
+        attempts = f"select count from fm_private.attempts where actor_id={quote(ident(3,2))} and action='send';"
+        self.denied("fm_send", peer, key, "Can you help me?", None, user=4, code="invalid_message")
+        self.denied("fm_send", peer, key, "I am ready.", "ready", user=4, code="idempotency_conflict")
+        self.denied("fm_send", ident(4,2), key, "Can you help me?", "help", user=4, code="idempotency_conflict")
+        self.assertEqual(sql(attempts), "4")
+        for _ in range(26):
+            self.assertIn("id", self.send(peer, user=4))
+        self.assertEqual(self.send(peer, user=4, key=key), accepted)
+        self.assertEqual(sql(attempts), "30")
+        self.denied("fm_send", peer, key, "Can you help me?", None, user=4, code="rate_limited")
+        self.denied("fm_send", peer, key, "I am ready.", "ready", user=4, code="rate_limited")
+        self.denied("fm_send", ident(4,2), key, "Can you help me?", "help", user=4, code="rate_limited")
+        self.denied("fm_send", peer, str(uuid.uuid4()), "Can you help me?", "help", user=4, code="rate_limited")
+        self.assertEqual(self.send(peer, user=4, key=key), accepted)
+        self.assertEqual(sql(attempts), "31")
+        self.denied("fm_send", peer, key, "Can you help me?", "help")
+        self.assertEqual(rpc("fm_set_peer_permission", ident(3,1), ident(3,2), False), {"ok": True})
+        self.denied("fm_send", peer, key, "Can you help me?", "help", user=4)
+        self.assertEqual(sql("select count(*) from fm_private.messages;"), "27")
+
     def test_concurrent_reversed_enables_have_one_pair_and_same_key_one_message(self):
         with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
             results = list(executor.map(lambda pair: rpc("fm_set_peer_permission", ident(3, pair[0]), ident(3, pair[1]), True), [(1, 2), (2, 1)]))

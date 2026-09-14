@@ -16,6 +16,11 @@ the exact candidate instead of inheriting local SQL, browser or bundle passes.
 Use the updated [setup and acceptance guide](../../specs/016-real-family-messaging/quickstart.md)
 for migration order, peer acceptance and the current Auth-client constraint.
 
+The dedicated hosted backend now passes Auth/HTTP acceptance and a scheduled
+retention run. Apply [003_idempotent_retry_budget.sql](migrations/003_idempotent_retry_budget.sql)
+after001/002 for the narrowly scoped accepted-retry correction. Current results
+and remaining native gates are in the [integration record](../../specs/016-real-family-messaging/backend-android-validation.md).
+
 ## Feature017 peer extension
 
 Apply [002_peer_threads.sql](migrations/002_peer_threads.sql) once after migration001.
@@ -44,7 +49,7 @@ household transaction lock serializes permission changes, leave and sends.
 Permissions allow at most 100 attempts per Parent per hour. No new direct table
 grants, AI access, progression authority or real account deployment are introduced.
 
-The isolated SQL runner now applies001, inserts a retained Parent fixture, applies002,
+The isolated SQL runner now applies001, inserts a retained Parent fixture, applies002/003,
 checks upgrade preservation and runs original plus peer authorization tests. Hosted
 messaging was unconfigured at the Feature017 source handoff; the separately
 configured adult pilot is not messaging authority. Local tests cannot pass hosted
@@ -77,7 +82,8 @@ safe unexpected-error handling; never render a raw provider response.
 3. Review and apply [001_family_messaging.sql](migrations/001_family_messaging.sql) once through
    the project's operator SQL editor. It runs transactionally and deliberately fails if the new
    `fm_private` schema already exists. Do not rerun it as an upgrade or drop existing data to retry.
-   Then apply migration002 once to add approved peer conversations. Only `public` needs
+   Then apply migration002 for approved peer conversations and migration003 for exact
+   accepted retries after the send-attempt limit. Only `public` needs
    PostgREST exposure; never expose `fm_private` or grant clients its tables.
 4. Enable provider email/password Auth for the Parent and anonymous sign-in for Child installations.
    Disable unused providers. Create/confirm the team Parent through the provider dashboard. Review
@@ -134,8 +140,11 @@ safe unexpected-error handling; never render a raw provider response.
 - Per-thread row locking allocates a positive JS-safe sequence with the insert in the same
   transaction. A rollback consumes no sequence. Household serialization also orders a Parent's
   sender/key receipt across sibling threads. No timestamp or global sequence serves as a cursor.
-- A sender/key retry checks requested-thread authorization before looking for the receipt. The
-  matching retained body/thread returns the immutable original; either changing yields conflict.
+- A sender/key retry checks requested-thread authorization before looking for the receipt. An
+  exact retained body/thread retry that satisfies the current body and age/phrase rules returns
+  the immutable original without consuming the send budget. Changed or invalid requests still
+  consume an attempt; changing the body/thread yields conflict while budget remains, and an
+  exhausted budget returns `rate_limited` before input/conflict errors.
   This guarantee covers only the 30-day history. Expired matching receipts are removed before
   admitting a new operation, even if the hourly job has not yet run. The client separately limits
   uncertain sends to 24 hours and never automatically retries them.
@@ -149,7 +158,8 @@ safe unexpected-error handling; never render a raw provider response.
 Counters are fixed windows, transactionally serialized per actor/action. Expected rejected inputs
 return safely rather than raising an exception; their increments survive normal PostgREST commit.
 Enrollment: 10 attempts per provider user per 10 minutes. Sending: 30 attempts per actual sender
-per minute, including accepted retries. Invitations: 10 per Parent per hour. Child creation: 10
+per minute, excluding only exact valid retries of accepted retained messages after migration003.
+Rejected inputs and known-key conflicts remain charged. Invitations: 10 per Parent per hour. Child creation: 10
 per Parent per hour. New Parent device registration: 10 per Parent per hour; existing active
 registration retries return the same device. These bounds do not replace provider signup limits.
 

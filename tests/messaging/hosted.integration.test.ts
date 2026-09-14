@@ -70,6 +70,7 @@ function participant(config: MessagingConfig) {
   let saved: string | null = null;
   let authAccepted = false;
   let logoutAccepted = false;
+  const sendStatuses: number[] = [];
   const storage: CredentialStorage = {
     async read() {
       return saved;
@@ -84,6 +85,7 @@ function participant(config: MessagingConfig) {
   const observedFetch: typeof fetch = async (input, init) => {
     const response = await fetch(input, init);
     const endpoint = String(input);
+    if (endpoint === `${config.url}/rest/v1/rpc/fm_send`) sendStatuses.push(response.status);
     if (
       endpoint === `${config.url}/auth/v1/signup` ||
       endpoint === `${config.url}/auth/v1/token?grant_type=password`
@@ -97,6 +99,7 @@ function participant(config: MessagingConfig) {
     storage,
     authAccepted: () => authAccepted,
     logoutAccepted: () => logoutAccepted,
+    sendStatuses: () => [...sendStatuses],
   };
 }
 
@@ -283,6 +286,22 @@ it.runIf(enabled)(
         'device-revocation',
         'separate-parent-thread-preserved',
       );
+      // Rejected attempts must commit their counter through real PostgREST HTTP responses.
+      for (let index = 0; index < 29; index += 1)
+        await expect(
+          adult.service.send({ ...parentInput, clientKey: randomUUID(), body: ' ' }),
+        ).rejects.toMatchObject({ code: 'invalid_message' });
+      await expect(
+        adult.service.send({ ...parentInput, clientKey: randomUUID() }),
+      ).rejects.toMatchObject({ code: 'rate_limited' });
+      expect(await adult.service.send(parentInput)).toEqual(sent);
+      await expect(
+        adult.service.send({ ...parentInput, body: `Changed synthetic text ${runId}` }),
+      ).rejects.toMatchObject({ code: 'rate_limited' });
+      expect(adult.sendStatuses().filter((status) => status === 400)).toHaveLength(29);
+      expect(adult.sendStatuses().slice(-3)).toEqual([429, 200, 429]);
+      expect(await first.service.messages(firstChild.threadId, {})).toEqual([sent, reply]);
+      receipt.checks.push('rejected-http-attempts-commit', 'accepted-retry-after-quota');
       completed = true;
     } finally {
       const cleanup: string[] = [];
