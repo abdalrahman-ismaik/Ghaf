@@ -1,5 +1,18 @@
 # Product
 
+## Feature 020 fresh Supabase family accounts — current implementation
+
+The owner's current request replaces the planning-only real-account boundary with
+fresh, persistent family data. Normal access uses Supabase Auth; explicit demo mode
+keeps synthetic people and history separate. New families contain only their
+founding Parent until actual Children or other Parents are added. Catalog and
+learning references are not personal history. Existing account-owned plans remain
+available without automatic import or retroactive growth. Managed Child devices
+use separate provider identities bound by a Parent-issued invitation and server
+membership. Feature020 and the [migration inventory](competition-readiness/supabase-data-migration.md)
+record implemented domains, exact verification and remaining work; historical
+sections below do not override this latest instruction.
+
 ## Feature 018 persistent adult planning data — 2026-09-14
 
 The owner extended the real adult account pilot with a private cloud profile,

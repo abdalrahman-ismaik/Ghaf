@@ -1,44 +1,56 @@
-# Persistent adult accounts
+# Real accounts and family access
 
-Feature 018 extends the existing Feature 006 adult Supabase account. The owner
-requested profile, family, tasks and study synchronization on 2026-09-14. See
-[the specification](../specs/018-persistent-adult-accounts/spec.md) and
-[validation](../specs/018-persistent-adult-accounts/validation.md).
+Feature 020 extends the existing Supabase adult authentication into real family
+data and backend-enforced managed Child access. It supersedes Feature 018's
+planning-only application boundary. See the [current specification](../specs/020-supabase-family-data/spec.md),
+[family-data setup and evidence](backend/family-data.md), and
+[migration inventory](competition-readiness/supabase-data-migration.md).
 
-The 2026-09-14 backend maintenance applied the profile/workspace/provider-status
-migrations to both the local Docker database and the existing hosted adult project.
-Hosted independent Auth/HTTP data-isolation checks passed with disposable synthetic
-provider accounts. External email delivery, full native acceptance and production
-readiness remain separate gates. See [the hosted operator record](backend/hosted-pilot.md).
+Supabase is now the normal authentication mode. New families start with their actual
+founding Parent and no Children, assignments, earned progress or fabricated history.
+Returning accounts retrieve their saved records; sign-in never resets them. The
+explicit `npm run start:demo` mode remains synthetic and separate from real accounts.
 
-For a standalone hosted build, follow the
+Reviewed additive family migrations have been applied to the existing hosted
+pilot project (labelled main / Production), with restricted-identity SQL and independent HTTP/service
+checks. Those results do not establish a verified Feature 020 Android build,
+physical-device acceptance, email delivery or production readiness. The linked
+inventory records exact migration coverage and remaining work.
+
+For a standalone hosted build procedure, follow the
 [internal Android APK guide](backend/internal-android.md). It includes the build
 inputs, download, checksum and non-destructive installation workflow.
 
 ## Supported saved data
 
-The authenticated account page contains the adult display name/language and a
-private workspace: family name, member nicknames, Parent-managed task plans and
-study plans. Plans support editing and completion. These records are saved by the
-real provider and retrieved on another independently authenticated client.
-Workspace members are nickname records owned by the signed-in adult; adding one
-does not create a Child login or give another adult access to the household.
+The real account flow saves the adult profile/language, families and memberships,
+managed Child profiles, custom templates and assignments, task completion and
+Parent recognition, permanent Seeds/landscapes/canopy, eligible text memories,
+study plans and academic goals/prizes, family connections/preferences, learning
+evidence, private reward promises, League and human messages to Supabase. Shared
+catalog and educational content remain reference material, not personal history.
 
-The existing sample family remains a separate explicit action. Its Child access,
-task approval, Seeds, rewards, League, academic goals and prepared media retain
-their current synthetic behavior. A cloud planning completion does not award Seeds
-or constitute Child/academic/reward evidence. Full synchronization of that legacy
-workflow is not implemented in this increment.
+The earlier adult-owned planning workspace remains available separately. Its member
+nicknames do not create Child identities or family memberships. Existing planning
+records are preserved, and their historical completion flags never grant Seeds,
+academic verification or reward evidence. No automatic workspace or local-demo
+import is performed.
 
-Device-local demo data is not imported, overwritten or attached to the next adult
-who signs in. Existing local records stay local. The cloud workspace starts empty.
-No tokens, pairing grants, remembered-device credentials or assistant/media state
-are serialized into account data. A sample reset cannot delete server records.
+Account-owned profiles and legacy plans are private to the authenticated owner.
+Family-shared records use authoritative membership and Child ownership. A joining
+member sees legitimately shared records without duplicating or resetting them.
+Conversations remain participant-only; Parent membership alone does not expose
+another Parent's messages or a Child–Child conversation.
+
+Device-local demo data is never attached to the next person who signs in. The sample
+remains an explicit separate experience; resetting it cannot delete server records.
+There is no permanent user-uploaded photo, attachment or recording flow in this
+increment: memories are text, artwork is bundled reference content, and temporary
+recordings remain outside saved family history.
 
 ## Configuration and migration
 
-The competition default remains `EXPO_PUBLIC_GHAF_AUTH_MODE=demo`. For the real
-account build, use the existing public configuration:
+Use the existing public configuration in the ignored `.env.pilot.local`:
 
 ```dotenv
 EXPO_PUBLIC_GHAF_AUTH_MODE=supabase
@@ -46,46 +58,76 @@ EXPO_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_YOUR_PUBLIC_KEY
 ```
 
+Start the configured account app with `npm run start:pilot` or
+`npm run start:pilot -- --web`. Its existing script name is retained. An absent mode
+selects Supabase; invalid mode, missing configuration or failed authentication does
+not fall back to demo records. For an explicitly synthetic preview, run
+`npm run start:demo -- --web --offline`.
+
 Use the existing Supabase project, email confirmation/recovery templates and
 administrator approval policy. New verified accounts remain pending until an
 administrator approves their `pilot_access` row. No administrator/service-role key
 belongs in Expo configuration. Auth email/abuse limits are enforced by Supabase;
 the UI submit guard is not a security boundary.
 
-Additive migrations:
+The versioned migrations under `supabase/migrations/` extend the existing
+pilot-access/profile/workspace schema. The verified account project is
+`bqcfynlbxevqlzbkimhy`; the separate historical messaging project must not receive
+these migrations. Follow [family data](backend/family-data.md) for exact migration
+order, schema/configuration review and remaining deployment steps. Do not assume
+that an earlier successful dry run includes later migration files.
 
-- `20260914000100_account_profiles.sql`
-- `20260914000200_account_workspaces.sql`
-- `20260914000300_account_provider_status.sql`
-
-They require the existing pilot-access migration. All three are now applied to
-the local `ghaf-parent-pilot` database and the verified hosted adult project
-`bqcfynlbxevqlzbkimhy`. The hosted baseline history was reconciled only after schema
-comparison; the final dry run has no pending migration. The separate messaging
-project uses its own migration stream and must not receive these migrations.
+Feature 020 requires anonymous Auth for restricted Child pairing and the authorized
+`app_families` Realtime publication. Anonymous signup by itself grants no family
+access. Earlier adult-only instructions to disable anonymous Auth and Realtime
+describe Feature 006/018 and do not apply to this family configuration.
 
 For local development with Docker and the validated Supabase CLI 2.117.0 on PATH
 (or its executable path in `SUPABASE_CLI`):
 
 ```powershell
-supabase start --exclude studio,postgres-meta,realtime,storage-api,imgproxy,edge-runtime,logflare,vector,supavisor
-node scripts/backend/verify-local.mjs
+supabase start
+supabase migration up --local
+supabase test db
 ```
 
-The verifier applies pending local migrations, lints SQL and runs every database
-test plus the real Auth harness. It rejects remote targets and leaves services
-running. Do not use `db reset` to bypass setup errors. The opt-in real-provider harness is
+These commands start the local project, apply additive migrations and exercise its
+SQL tests. Use the family-data guide's restricted-client HTTP checks as a separate
+layer; SQL or mocked controller tests alone do not prove SDK behavior. Do not use
+`db reset` to bypass setup errors. The earlier opt-in adult-only harness is
 `tests/access/parent-account-local.integration.test.ts`: set
 `GHAF_LOCAL_ACCOUNT_TEST=1` and `GHAF_LOCAL_SUPABASE_PUBLISHABLE_KEY` from local
 status, then run that file with Vitest. It refuses non-loopback endpoints, creates
 synthetic `@example.test` accounts, verifies local Mailpit codes and tests independent
-sign-ins. Do not log the full CLI status; it also contains privileged test keys.
+sign-ins. It remains regression coverage for its earlier scope, not full family
+acceptance. Do not log the full CLI status; it also contains privileged test keys.
+
+## Parent and Child identity
+
+An adult Auth user, a family membership and a managed Child profile are separate
+records. A Parent creates a Child with a chosen display name and age band; no demo
+children, fake emails or shared passwords are created. Current Free family capacity
+is enforced by the backend; demo premium flags do not grant real entitlements.
+
+For a separate Child device, the Parent creates a ten-minute single-use pairing
+token. The signed-out Child device uses its own Supabase anonymous Auth identity
+and redeems that token through an authorized RPC. The backend binds its live session
+to the exact managed Child. It never receives the Parent's token or privileges.
+Token hashes, expiry and revocation are enforced on the server. A selected local
+role, remembered avatar or unpaired anonymous session cannot grant family access.
+
+Inviting another Parent requires a server-issued family invitation and an already
+approved adult account. Direct membership insertion and self-promotion are denied.
+Parent revocation removes paired-device access while keeping the Child profile and
+earned history. Restrict test pairing to isolated development families.
 
 ## Identity, persistence and logout
 
-The canonical owner is `auth.users.id`. Profile/workspace initialization inserts
-only when absent. Workspace/member/task/study IDs are generated on the server.
-Each client signs in independently; no credentials are copied between devices.
+The adult identity is `auth.users.id`; family and Child UUIDs identify different
+owners. Profile initialization inserts only necessary missing records. Family
+creation and related writes use server authority and request IDs, so callbacks and
+retries do not create duplicate families or rewards. Each adult client signs in
+independently, and Child devices pair independently; credentials are not cloned.
 
 The installed Supabase SDK owns refresh and its process lock. The existing native
 adapter stores credentials through Expo SecureStore using Android Keystore-backed
@@ -94,21 +136,31 @@ write and deletion errors. Passwords are never persisted by the app. There is no
 AsyncStorage token fallback. See [Expo SecureStore](https://docs.expo.dev/versions/latest/sdk/securestore/)
 and [Supabase native lifecycle guidance](https://supabase.com/docs/guides/auth/quickstarts/react-native).
 
+Session storage is scoped to the backend project. An older matching-project
+credential may be considered for migration only after identity validation; it does
+not authorize an account by decoded metadata or import any sample data.
+
 Startup restores and remotely validates the session before exposing account data.
 Foregrounding revalidates access; the active gate also rechecks every 60 seconds.
-Workspace foreground refresh and its explicit refresh button retrieve saved data.
+Family revision notifications, foreground refresh and explicit refresh retrieve
+saved records through authorized RPCs. Realtime carries a coarse revision signal;
+it is not the durable copy of tasks or messages.
 Network failure preserves recoverable credentials. Failed startup/session
 revalidation closes protected access; a failed profile or workspace load hides
-the affected data until retry succeeds. A failed write retains the current
-in-memory data and unsaved draft, shows an error and does not report success.
-There is no durable private data cache or offline write queue in this increment.
+the affected data until retry succeeds. Account/family controllers reject identity
+or membership denial, clear private state and disregard old in-flight responses.
+Network failures do not become empty accounts. Failed mutations show an error;
+uncertain family commands retain their exact request ID for an explicit safe retry.
+There is no durable private family-data cache or offline write queue.
 
 Ordinary logout uses `scope: 'local'`, clears local access immediately and waits for
-credential cleanup. It does not delete profiles/workspaces or sign out other
+credential cleanup. It does not delete family/profile/workspace records or sign out other
 devices. Password recovery retains its separate existing global logout behavior.
 Remote revocation failure and durable-storage failure are surfaced. Revoking refresh
 tokens does not revoke an already-issued access JWT before its expiry; this is the
 [provider's documented behavior](https://supabase.com/docs/reference/javascript/auth-signout).
+Family operations additionally require the corresponding live server session and
+active membership; retaining a JWT does not bypass those application checks.
 
 Incomplete logout has a separate closed-access error screen. Retry repeats cleanup;
 it cannot restore the prior account. A later successful local cleanup does not
@@ -116,22 +168,24 @@ confirm revocation of an unreachable remote session whose local credentials have
 already been deleted. Stale provider events cannot reopen that account while
 cleanup is incomplete.
 
-Messaging currently has an independent configured identity boundary. It is not
-linked by email. Entering a different adult account and logging out clear its local
-credentials/private state; failed cleanup prevents subsequent sample access.
+Main-account messages use the same trusted family identity, with participant-only
+access and Parent-controlled optional sibling text. The older separately configured
+messaging project is preserved without email/name matching or automatic import.
+Switching accounts removes old subscriptions and private screen state. Transport
+calls pin the originating user and verified bearer token; a queued request cannot
+silently run as the next account.
 
 ## Ownership and conflicts
 
-RLS allows approved, verified owners to select only their own profile/workspace.
-The shared predicate also reads current provider status: active bans, soft deletion
-and anonymous identities deny reads and RPC writes even with a retained access JWT.
-An expired ban may recover only when the normal verified/approved checks also pass.
-Anonymous access and direct client insert/update/delete are denied. Narrow
-security-definer RPCs use an empty search path and derive ownership from `auth.uid()`;
-they never accept an owner ID. Workspace commands validate exact fields, lengths,
-limits and member/record references inside that owner's workspace.
+RLS allows approved, verified adult owners to read their own profile and legacy
+workspace. Family helpers check live Auth/session status, founding-owner approval,
+active membership and in-family Child references. Paired Child identities receive
+only their permitted projection; bare anonymous sessions receive none. Direct
+client mutations of authority, balances, rewards and application records are denied.
+Narrow RPCs use a constrained search path, derive the caller from trusted Auth and
+validate any supplied family/Child/record UUID against that authority.
 
-Every write requires the last observed server revision. A stale write fails without
+Updates that edit versioned records require the observed server revision. A stale write fails without
 overwriting server data. Editors retain the revision from when editing began;
 foreground refresh cannot quietly rebase a stale draft. Explicit reload replaces
 the draft. Success is shown only after server acknowledgment. A request already
@@ -142,7 +196,24 @@ Controllers and the service discard stale results on account changes/disposal.
 Account UI is keyed by the stable owner. Nothing from an old account is used as an
 initial value for another account.
 
-## Final hosted internal APK evidence
+Task confirmation, recognition and memory creation are transactional and retry-safe.
+The client cannot assign earned totals, badges or premium status. Private reward,
+League and other sensitive Parent changes require a recent server-verifiable
+password authentication event; a local PIN or hidden control is not sufficient.
+
+## Feature 020 verification boundary
+
+The [migration inventory](competition-readiness/supabase-data-migration.md) records
+the executed SQL, restricted Auth/HTTP clients and application-service scenarios.
+Fresh and returning accounts, separate-family attacks, Child restrictions,
+duplicate requests and account switching are checked at their stated levels.
+Native build/device/recovery and complete two-physical-device acceptance remain
+separate; the historical APK evidence below does not pass Feature 020.
+
+## Historical Feature 018 hosted internal APK evidence — 2026-09-14
+
+This section records the earlier adult planning-only source and artifact. It does
+not describe the current Feature 020 family application or a newly verified build.
 
 [Build 34851035020](https://github.com/abdalrahman-ismaik/Ghaf/actions/runs/34851035020)
 passed for source `5ad7faa63c90c63287b01da2045f58a1b17106d5`. The final artifact is
@@ -187,17 +258,17 @@ for its exact identity, internal signing limitation and completed shell-fix buil
 Native and physical-device results remain separately recorded in the validation
 record; a successful internal build does not establish release acceptance.
 
-## Two installations and their current backend environments
+## Historical installation snapshot — 2026-09-14
 
-The existing API 35 emulator now has `Ghaf — غاف` (`ae.ac.ku.ghaf.prototype`) and
+At this recorded Feature 018 checkpoint, the API 35 emulator had `Ghaf — غاف` (`ae.ac.ku.ghaf.prototype`) and
 `Ghaf Test 2` (`ae.ac.ku.ghaf.accounttest2`). They use separate Android UIDs, private
 storage and independent provider sign-ins. No credentials or storage were cloned.
 Both icons are in the app drawer.
 
-The original package now runs the fresh hosted APK against
+At that checkpoint, the original package ran the hosted APK against
 `bqcfynlbxevqlzbkimhy`. Test 2 retains its earlier local Supabase configuration and
-synthetic account data. These two currently installed copies therefore use
-different backend environments; they do not synchronize with each other as-is.
+synthetic account data. Those two recorded copies therefore used
+different backend environments and did not synchronize with each other as-is.
 The original needs no local Docker service or port forwarding. Test 2 still needs
 the local Supabase backend and port 54321 reversed to the explicit target emulator.
 Launch the original hosted installation with the SDK `adb`:

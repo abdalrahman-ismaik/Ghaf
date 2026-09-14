@@ -1,7 +1,9 @@
 # Development and testing
 
 This guide is the practical path for installing, running, resetting, and verifying the current
-Feature 003 prototype. Run every command from the repository root.
+Feature 020 Supabase family application and its separate Feature 003 synthetic demo.
+Run every command from the repository root. The [family-data guide](backend/family-data.md)
+owns backend deployment and service-verification instructions.
 
 ## Prerequisites
 
@@ -29,24 +31,55 @@ Install exactly from `package-lock.json`:
 npm ci
 ```
 
-The application needs no API key, backend, Expo account, camera permission, microphone permission,
-or real Child data. `EXPO_PUBLIC_GHAF_SERVICE_MODE=mock` is the optional explicit form of the built-in
-default. No live-provider URL or client-side provider secret is supported.
+Real-account mode is the default. It requires the configured Supabase project's URL,
+client-safe publishable key and reviewed migrations. Create the ignored `.env.pilot.local`:
+
+```dotenv
+EXPO_PUBLIC_GHAF_AUTH_MODE=supabase
+EXPO_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_YOUR_PUBLIC_KEY
+```
+
+Use placeholders only in tracked examples. A service-role key, database password or AI provider
+secret must never enter Expo configuration. Omitting the mode still selects Supabase; invalid or
+missing configuration shows a closed account gate rather than a sample family.
+
+Adult signup retains email confirmation, recovery and administrator approval. Once approved,
+create a genuinely empty family or accept an authorized family invitation. Add managed Children
+explicitly; a Child device pairs under its own restricted Supabase anonymous identity. See
+[authentication](auth.md) for session restoration, permissions and signout behavior.
 
 ## Run the app
 
 Use the web workflow for quick browser checks or the native workflow for authoritative Android
 device checks.
 
-### Offline web testing
+### Real-account browser development
 
 ```bash
-npm run web -- --offline
+npm run start:pilot -- --web
+```
+
+`start:pilot` retains its existing name and loads `.env.pilot.local` before starting Expo. It now
+opens the real family application after authentication. Supabase stores tasks, growth, memories,
+study/goals, rewards, League and main-account messages; the earlier adult planning workspace
+remains separately available. No local sample data is imported on sign-in.
+
+Use isolated test identities and synthetic content. A second independent client must use the same
+Supabase project to verify synchronization. Test fresh and returning accounts without resetting
+existing families. Missing network access is an error, not an empty-account or mock success.
+
+### Explicit offline demonstration
+
+```bash
+npm run start:demo -- --web --offline
 ```
 
 Open the URL printed by Expo, normally `http://localhost:8081`. Web is suitable for rapid layout,
 copy, deterministic-flow, and screenshot review. It cannot pass native Android, TalkBack, physical
-touch, IME, media, permission, predictive Back, or device-performance gates.
+touch, IME, media, permission, predictive Back, or device-performance gates. This command explicitly
+selects `EXPO_PUBLIC_GHAF_AUTH_MODE=demo` and fast demo entry. It needs no backend, uses synthetic
+people/history and does not synchronize between devices. It cannot verify real-account persistence.
 
 ### Android Studio and a physical USB device
 
@@ -127,7 +160,7 @@ $env:Path="$env:ANDROID_HOME\platform-tools;$env:Path"
 Set-Location $GhafWindowsRoot
 adb devices -l
 npm.cmd ci
-npx.cmd expo run:android --device SM_T835
+node --env-file=.env.pilot.local ./node_modules/expo/bin/cli run:android --device SM_T835
 ```
 
 The model name after `--device` is specific to the currently connected tablet. Use the model shown
@@ -175,7 +208,7 @@ From the repository root in the same operating system that owns the Android SDK 
 
 ```bash
 npm ci
-npx expo run:android --device
+node --env-file=.env.pilot.local ./node_modules/expo/bin/cli run:android --device
 ```
 
 Select the USB phone when prompted. Because `android/` is intentionally ignored and absent from a
@@ -192,7 +225,7 @@ missing native app.
 Generate the native project once if `android/` does not exist:
 
 ```bash
-npx expo prebuild --platform android
+node --env-file=.env.pilot.local ./node_modules/expo/bin/cli prebuild --platform android
 ```
 
 Open the generated `android/` directory in Android Studio, wait for Gradle sync, select the
@@ -201,7 +234,7 @@ terminal from the repository root:
 
 ```bash
 adb reverse tcp:8081 tcp:8081
-npx expo start --localhost
+npm run start:pilot -- --localhost
 ```
 
 The reverse tunnel makes the phone's `localhost:8081` reach Metro over USB, so phone and computer
@@ -218,7 +251,7 @@ After the debug app is installed, most changes need Metro only:
 ```bash
 adb devices -l
 adb reverse tcp:8081 tcp:8081
-npx expo start --localhost
+npm run start:pilot -- --localhost
 ```
 
 When Metro runs from this repository in WSL but Windows still owns the connected tablet, call the
@@ -229,13 +262,13 @@ GHAF_WINDOWS_ADB="/mnt/c/Users/windows-user/AppData/Local/Android/Sdk/platform-t
 GHAF_ANDROID_SERIAL="serial-from-adb-devices"
 "$GHAF_WINDOWS_ADB" devices -l
 "$GHAF_WINDOWS_ADB" -s "$GHAF_ANDROID_SERIAL" reverse tcp:8081 tcp:8081
-npx expo start --localhost
+npm run start:pilot -- --localhost
 ```
 
 Replace the Windows user and serial placeholders with Android Studio's SDK location and the first
 column from `adb devices -l`.
 
-Open Ghaf on the phone and use Fast Refresh. Run `npx expo run:android --device` again after adding
+Open Ghaf on the phone and use Fast Refresh. Repeat the configured `run:android --device` command after adding
 or changing a native dependency, an Expo config plugin, Android configuration, or native code.
 
 If more than one device or emulator is connected, target the phone explicitly:
@@ -244,7 +277,7 @@ If more than one device or emulator is connected, target the phone explicitly:
 GHAF_ANDROID_SERIAL="serial-from-adb-devices"
 GHAF_EXPO_DEVICE_NAME="model-from-adb-devices"
 adb -s "$GHAF_ANDROID_SERIAL" reverse tcp:8081 tcp:8081
-npx expo run:android --device "$GHAF_EXPO_DEVICE_NAME"
+node --env-file=.env.pilot.local ./node_modules/expo/bin/cli run:android --device "$GHAF_EXPO_DEVICE_NAME"
 ```
 
 ADB's `-s` option expects the serial from the first column of `adb devices -l`. The repository's
@@ -252,8 +285,9 @@ installed Expo CLI expects `--device` to receive the displayed device name or mo
 example, the connected `SM_T835` tablet is selected with `--device SM_T835`. Running
 `npx expo run:android --device` without a value remains the safest way to choose interactively.
 
-The native build is the Android evidence. A successful Metro start or web run alone is not a
-physical-device pass.
+A successful native build establishes that source compiled; it does not establish tested device
+behavior. Feature 020 Android build and physical-device acceptance remain separate from the
+earlier Feature 018 APK records. A successful Metro start or web run is not a native-flow pass.
 
 The commands above follow Expo's
 [local native build workflow](https://docs.expo.dev/guides/local-app-development/) and Android's
@@ -261,16 +295,15 @@ The commands above follow Expo's
 `usbipd` commands follow Microsoft's
 [WSL USB-device guide](https://learn.microsoft.com/windows/wsl/connect-usb).
 
-## Reset to the canonical baseline
+## Reset the explicit demo only
 
-1. Enter the prototype and choose Parent mode.
-2. Open a Parent route.
-3. Choose **Reset demo** in the top prototype bar.
-4. Confirm the reset.
-5. Verify route `/`, Arabic RTL, Parent demo mode, Salem selected, and no active assignment.
+1. Start the explicitly selected demo and enter through its Parent access flow.
+2. Use its Parent-only **Reset demo** action and confirm.
+3. Verify the signed-out Arabic entry and exact synthetic reset state described by the runbook.
 
 The full counter and fixture baseline is in [DEMO_RUNBOOK.md](competition-readiness/DEMO_RUNBOOK.md). Reloading alone is
-not the authoritative reset.
+not the authoritative reset. Real signout never resets a family, deletes saved records or awards
+new starter progress. Never run a remote database reset or use demo cleanup against real accounts.
 
 ## Validation
 
@@ -310,9 +343,13 @@ git diff --stat
 git status --short
 ```
 
-`npm test` covers domain, service, state, privacy, assistant safety, reset, and deterministic
-operator flows. It is not native UI automation. Record physical and named-human evidence only in
-the current [Feature 003 runbook](competition-readiness/DEMO_RUNBOOK.md).
+`npm test` covers domain, service, state, privacy, assistant safety, reset and controller flows.
+Its historical fixture suites explicitly select demo mode; mocked transports do not prove hosted
+Auth, persistence or authorization. Run the restricted-identity database and HTTP checks described
+in [family data](backend/family-data.md) separately, then record the environment, command, source and
+result in the [migration inventory](competition-readiness/supabase-data-migration.md). Native and
+physical-device checks remain separate. The [demo runbook](competition-readiness/DEMO_RUNBOOK.md)
+continues to own synthetic rehearsal evidence.
 
 Tests are grouped by subject; use `npm test -- tests/access` or another directory from the
 [test guide](../tests/README.md) for a focused run. Historical test paths are retained in its
@@ -334,15 +371,17 @@ install.
 ### Stale Metro or web bundle
 
 ```bash
-npm run web -- --offline --clear
+npm run start:pilot -- --web --clear
 ```
 
-Then reopen the printed local URL. `dist/` and `.expo/` are ignored and can be regenerated.
+Then reopen the printed local URL. For the synthetic preview, use
+`npm run start:demo -- --web --offline --clear`. `dist/` and generated Expo bundles are ignored;
+do not indiscriminately delete local fixture credentials, unsynced drafts or evidence directories.
 
 ### Port already in use
 
 ```bash
-npm run web -- --offline --port 8082
+npm run start:pilot -- --web --port 8082
 ```
 
 ### Android target does not open
@@ -372,7 +411,7 @@ If the app installs but cannot load JavaScript, restart the USB tunnel and Metro
 
 ```bash
 adb reverse tcp:8081 tcp:8081
-npx expo start --localhost --clear
+npm run start:pilot -- --localhost --clear
 ```
 
 Also verify the Android SDK path, `java -version`, available disk space, and that no other process
@@ -386,7 +425,9 @@ browser console errors separately from optional tooling-launch errors.
 
 ## Evidence discipline
 
-- Start every meaningful validation from the canonical reset.
+- For demo validation, start from the canonical synthetic reset. For real accounts, use isolated
+  test identities and preserve legitimate existing records; returning-account checks must restore
+  their saved data without resetting it.
 - Record the branch/commit and dirty files.
 - Keep automated, browser, native, and human results separate.
 - Do not commit `dist/`, `.expo/`, raw `.playwright-cli/` sessions, provider secrets, or real Child

@@ -20,6 +20,17 @@ authorship evidence remain tracked; private local notes are not a substitute for
 
 ## Current Feature
 
+Feature 020 (`specs/020-supabase-family-data/`) implements the owner's explicit
+2026-09-14 account-data migration request. Supabase is now the normal account mode;
+missing provider configuration fails closed. `npm run start:demo` explicitly opens
+the isolated synthetic experience. Real families start empty and use authoritative
+membership, managed Child profiles with separately paired Auth sessions, persisted
+tasks, recognition, memories, study, growth and participant-only messaging. No local
+demo history is imported. Earlier P0/018 limits below describe their historical
+scope; apply Feature 020 and Constitution 2.4.0 to real family data. Read
+`docs/backend/family-data.md` and `docs/competition-readiness/supabase-data-migration.md`
+for actual deployment, verification, compatibility and remaining limitations.
+
 Feature 018 (`specs/018-persistent-adult-accounts/`) extends the adult pilot with
 owner-approved persistent adult profiles and account-owned family, task and study
 records. The default competition build stays synthetic; existing local demo data
