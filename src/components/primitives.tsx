@@ -333,7 +333,7 @@ export function Button({
         onFocus?.(event);
       }}
       pressRetentionOffset={pressRetentionOffset ?? spacing.sm}
-      style={({ pressed }) => [
+      style={[
         styles.button,
         brand ? styles.buttonBrand : null,
         size === 'regular' ? styles.buttonRegular : styles.buttonCompact,
@@ -343,7 +343,6 @@ export function Button({
         { flexDirection: logicalRowDirection(direction) },
         brand ? style : null,
         focused ? (brand ? styles.brandFocusedControl : styles.focusedControl) : null,
-        pressed && !isDisabled ? { opacity: opacity.pressed } : null,
         isDisabled && dimWhenDisabled ? (brand ? styles.brandDisabled : styles.disabled) : null,
         brand ? null : style,
       ]}
