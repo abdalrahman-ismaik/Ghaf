@@ -1,5 +1,31 @@
 # Team Ownership
 
+## 2026-09-14 Messaging backend integration and Android acceptance
+
+The user explicitly authorized backend integration and physical Android testing
+using Android Studio. Root starts from clean `caf2d00` on
+`integration/messaging-android-20260914`. A dedicated synthetic team messaging
+project may be provisioned/configured and tested; the adult pilot remains separate.
+No paid plan, real Child data or broader production rollout is implied.
+
+- `/root`: hosted setup, ignored environment/build artifacts, Android Studio/SDK
+  integration, specification/evidence/runbook updates, `.env.example`, and final Git work.
+  Root also owns the explicit `package.json` messaging start command.
+- `/root/messaging_extension`: read-only backend readiness review until an exact
+  implementation grant is issued; now owns only
+  `workers/ghaf-family-messaging/README.md` and
+  `specs/016-real-family-messaging/quickstart.md` for current setup corrections,
+  plus `tests/messaging/hosted.integration.test.ts` for opt-in real HTTP acceptance.
+  The follow-up evidence boundary is only
+  `specs/016-real-family-messaging/backend-android-validation.md`.
+- `/root/study_map`: read-only native tool/device/build inventory; no build lane.
+- `/root/merge_core`: `scripts/native/build-apk.ps1` only, a Windows launcher for
+  the explicitly selected disposable D: candidate; root retains build execution.
+
+At most four active agents, no descendants, one writer per file, and one serialized
+heavy build/database/browser lane. Preserve existing work. Physical passes require
+an actual connected phone; emulator and local-service results stay separately labeled.
+
 ## 2026-09-13 Study and family support — Feature 017
 
 User selected proposals 8–12 and confirmed using their saved proposals. Root starts

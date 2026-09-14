@@ -1,5 +1,22 @@
 # AI assistance record — competition readiness inspection
 
+## 2026-09-14 Hosted messaging and Android integration
+
+The user authorized backend integration and physical testing using Android Studio,
+signed in to the provider dashboard, connected a phone and offered D: for build space.
+After the Expo Go attempt failed, the user asked for compilation or an Android Studio
+virtual device. Codex provisioned a dedicated synthetic Free messaging project,
+applied the reviewed SQL and retention schedule, and ran the actual HTTP acceptance
+harness. A bounded helper prepared the harness and setup/evidence documentation;
+another prepared the Windows build launcher, with root correcting observed Windows
+execution issues and supervising the build. Read-only tool inventory was delegated.
+
+The [integration record](../../specs/016-real-family-messaging/backend-android-validation.md)
+distinguishes the hosted pass, failed Expo Go attempt, build progress and outstanding
+physical/human gates. Generated code and documentation remain AI-assisted; no student
+authorship, production readiness or named human acceptance is inferred. Secrets and
+raw device identifiers remain outside tracked evidence.
+
 ## 2026-09-13 Study and family support
 
 The user selected saved proposals 8–12 for implementation and then instructed:

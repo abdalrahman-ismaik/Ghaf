@@ -1,5 +1,16 @@
 # Prototype Limitations
 
+## Dedicated hosted messaging test — 2026-09-14
+
+An explicitly configured synthetic test backend now passes real Auth/HTTP messaging
+acceptance, including Parent–Child delivery, approved peer conversations and revocation.
+The default unconfigured build still cannot send real messages. The adult pilot remains
+separate; study, goals and progression do not gain cloud synchronization.
+Physical APK acceptance and scheduled retention are pending in the
+[current integration record](../../specs/016-real-family-messaging/backend-android-validation.md).
+The Free test project has no verified backup/PITR recovery, and its default-off CAPTCHA
+setting does not establish production abuse prevention or a real Child rollout.
+
 ## Feature 017 study and family support — 2026-09-13
 
 Study records are synthetic, private and device-local in ordinary family mode;

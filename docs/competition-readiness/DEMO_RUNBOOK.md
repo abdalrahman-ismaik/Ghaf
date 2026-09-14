@@ -1,5 +1,15 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Dedicated messaging rehearsal — 2026-09-14
+
+The synthetic messaging backend is configured separately from the adult pilot.
+Use the ignored `.env.messaging.local` with `npm run start:messaging`; never put
+Parent passwords or provider administrative credentials in public configuration.
+Real HTTP acceptance passed for Parent–Child and permitted Child–Child conversations.
+Native installation and the phone journey are still in progress. Follow the
+[current backend and Android evidence](../../specs/016-real-family-messaging/backend-android-validation.md)
+before describing any device or retention gate as passed.
+
 ## Feature 017 study and family support rehearsal — 2026-09-13
 
 Use synthetic data. Open **Study space** from Parent Home, select Salem, create a
