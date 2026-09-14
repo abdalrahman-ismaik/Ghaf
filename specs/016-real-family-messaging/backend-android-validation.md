@@ -8,10 +8,14 @@ Android Studio. Root coordinates `integration/messaging-android-20260914`, start
 from `caf2d00`. Its initial D: build was stopped after native configuration and
 partial compilation to include the audited client correction at `7ee7f49`.
 The downloaded SDK/build cache is retained for the updated candidate.
-The current D: native build uses `273f97d` and is still in progress. The final
-accepted web and native candidates must also include the later browser-fetch
-correction at `b6f157c`.
-This record does not claim a completed APK, physical app acceptance or production readiness.
+The diagnostic D: build at `273f97d` subsequently passed, installed on the Samsung,
+and cold-launched without Metro. The corrected web export includes `b6f157c` and
+actual browser Parent Auth returned HTTP 200. The owner then requested a pause.
+The detailed table below preserves the earlier audit-stage observations; current
+build/phone results, safe shutdown and exact next actions are recorded in the
+[pause checkpoint](../../docs/competition-readiness/workstreams/messaging-android-resume-20260914.md).
+Full physical acceptance and the final corrected APK remain pending. No production
+readiness is claimed.
 
 ## Current evidence
 

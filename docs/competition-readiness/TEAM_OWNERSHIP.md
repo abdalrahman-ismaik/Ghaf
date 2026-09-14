@@ -2,6 +2,12 @@
 
 ## 2026-09-14 Messaging backend integration and Android acceptance
 
+**Owner-requested pause:** all audit helpers have released their boundaries, and
+native/web build and test servers are stopped. The installed diagnostic APK and
+all evidence are preserved. Read the
+[resume checkpoint](workstreams/messaging-android-resume-20260914.md) before continuing;
+do not restart work until the user resumes.
+
 The user explicitly authorized backend integration and physical Android testing
 using Android Studio. Root starts from clean `caf2d00` on
 `integration/messaging-android-20260914`. A dedicated synthetic team messaging
