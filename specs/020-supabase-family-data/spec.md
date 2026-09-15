@@ -1,5 +1,9 @@
 # Feature 020 — Fresh Supabase family accounts
 
+The September 15 correction that Masroofi is missing authorizes the additive
+[hosted Masroofi continuation](masroofi.md). Its saved card, locked task promises and simulated
+ledger extend this existing family authority; Feature019 remains separately preserved.
+
 Authority: the owner's current explicit request for complete migration of implemented
 account/family data to Supabase, fresh real accounts, secure Child pairing, persistence,
 family sharing and isolation. This supersedes Feature018's planning-only boundary for

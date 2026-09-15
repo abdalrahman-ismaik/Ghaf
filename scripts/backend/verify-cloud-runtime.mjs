@@ -52,7 +52,7 @@ class VerificationError extends Error {
 }
 
 // This facade supplies SQL dependencies only. It does not run GoTrue or verify JWT signatures.
-const authFacade = `
+export const authFacade = `
 create role anon nologin nosuperuser nocreatedb nocreaterole noinherit nobypassrls;
 create role authenticated nologin nosuperuser nocreatedb nocreaterole noinherit nobypassrls;
 create role service_role nologin nosuperuser nocreatedb nocreaterole noinherit bypassrls;
@@ -155,7 +155,7 @@ function readSqlFiles(directory, pattern, requiredNames) {
   };
 }
 
-function requireRollbackSuite(source) {
+export function requireRollbackSuite(source) {
   const withoutComments = source.replace(/^\s*--[^\r\n]*/gmu, '').trim();
   if (
     !/^begin\s*;/iu.test(withoutComments) ||
@@ -167,7 +167,7 @@ function requireRollbackSuite(source) {
   }
 }
 
-function isolatedModule(packageName, version, modulePath) {
+export function isolatedModule(packageName, version, modulePath) {
   const packageRoot = resolve(toolingRoot, 'node_modules', packageName);
   const installed = JSON.parse(readFileSync(resolve(packageRoot, 'package.json'), 'utf8'));
   if (installed.version !== version) throw new VerificationError('unexpected_tooling_version');

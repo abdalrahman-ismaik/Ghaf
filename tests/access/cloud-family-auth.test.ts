@@ -151,6 +151,64 @@ function harness(mode: 'signed-out' | 'adult' | 'child' | 'unpaired' = 'adult') 
 }
 
 describe('Supabase family account transport', () => {
+  it('pins the hosted Masroofi RPCs to the verified caller and denies internal helpers', async () => {
+    const h = harness();
+    for (const name of ['ghaf_family_masroofi', 'ghaf_family_masroofi_command']) {
+      await expect(
+        h.service.familyRequest(name, { p_family_id: familyId }, parentId),
+      ).resolves.toEqual({
+        authoritative: 'synthetic-response',
+      });
+    }
+    for (const call of h.client.rpc.mock.results)
+      expect(call.value.setHeader).toHaveBeenCalledWith(
+        'Authorization',
+        `Bearer synthetic-token-${parentId}`,
+      );
+    await expect(
+      h.service.familyRequest('ghaf_masroofi_credit', {}, parentId),
+    ).rejects.toMatchObject({
+      code: 'access_unavailable',
+    });
+  });
+
+  it.each([
+    [{ code: 'PGRST202' }, 'schema_unavailable'],
+    [{ code: 'PT400', message: 'age_ineligible' }, 'age_ineligible'],
+    [{ code: 'PT400', message: 'task_ineligible' }, 'task_ineligible'],
+    [{ code: 'PT400', message: 'promise_locked' }, 'promise_locked'],
+    [{ code: 'PT400', message: 'balance_limit' }, 'balance_limit'],
+    [{ code: 'PT409' }, 'request_conflict'],
+    [{ code: 'PT428' }, 'reauth_required'],
+    [{ code: 'PT400', message: 'private database diagnostic' }, 'invalid_profile'],
+    [{ code: 'constructor', message: 'private database diagnostic' }, 'provider_unavailable'],
+  ])(
+    'retains safe Masroofi failures while withholding arbitrary server messages',
+    async (error, code) => {
+      const h = harness();
+      h.rpc.mockResolvedValueOnce({ data: null, error });
+      await expect(
+        h.service.familyRequest('ghaf_family_masroofi_command', {}, parentId),
+      ).rejects.toMatchObject({ code });
+    },
+  );
+
+  it('does not publish a Masroofi response after the account changes', async () => {
+    const h = harness();
+    const waiting = deferred<{ data: unknown; error: unknown }>();
+    h.rpc.mockReturnValueOnce(waiting.promise);
+    const pending = h.service.familyRequest(
+      'ghaf_family_masroofi',
+      { p_family_id: familyId },
+      parentId,
+    );
+    const denied = expect(pending).rejects.toMatchObject({ code: 'operation_cancelled' });
+    await vi.waitFor(() => expect(h.rpc).toHaveBeenCalledOnce());
+    h.changeUser(otherId, 'SIGNED_IN');
+    waiting.resolve({ data: { authoritative: 'previous-family' }, error: null });
+    await denied;
+  });
+
   it('blocks stale legacy profile and workspace callers before any read or mutation RPC', async () => {
     const h = harness();
     const actions = [

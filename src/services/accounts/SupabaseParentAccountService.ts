@@ -10,6 +10,7 @@ import {
 } from '../../models/parentAccount';
 import { GuardedAccountStorage, RECOVERY_STORAGE_KEY } from './storage';
 import type { Database } from './database.types';
+import { CloudMasroofiError, type CloudMasroofiErrorCode } from '../../models/cloudMasroofi';
 import type {
   AccountWorkspace,
   AccountWorkspaceUpdate,
@@ -33,6 +34,8 @@ const allowedFamilyRpcNames = [
   'ghaf_family_document_command',
   'ghaf_family_growth',
   'ghaf_family_growth_command',
+  'ghaf_family_masroofi',
+  'ghaf_family_masroofi_command',
   'ghaf_family_message_threads',
   'ghaf_family_message_page',
   'ghaf_family_message_send',
@@ -198,7 +201,7 @@ function sanitize(
     '54000': 'rate_limited',
     '42501': 'access_unavailable',
   };
-  if (typeof candidate.code === 'string' && codes[candidate.code]) {
+  if (typeof candidate.code === 'string' && Object.hasOwn(codes, candidate.code)) {
     return new ParentAccountError(codes[candidate.code]!);
   }
   if (candidate.status === 429) return new ParentAccountError('rate_limited');
@@ -240,6 +243,33 @@ function checked<T>(result: ProviderResult<T>, fallback?: ParentAccountErrorCode
   if (result.error && result.status === 0) throw new ParentAccountError('network_unavailable');
   if (result.error) throw sanitize(result.error, fallback);
   return result.data;
+}
+
+function checkedMasroofi<T>(result: ProviderResult<T>): T {
+  if (!result.error) return result.data;
+  if (result.status === 0) throw new CloudMasroofiError('network_unavailable');
+  if (isRecord(result.error)) {
+    const { code, message } = result.error;
+    const codes: Readonly<Record<string, CloudMasroofiErrorCode>> = {
+      PGRST202: 'schema_unavailable',
+      PT409: 'request_conflict',
+      PT428: 'reauth_required',
+      '42501': 'access_unavailable',
+    };
+    if (typeof code === 'string' && Object.hasOwn(codes, code))
+      throw new CloudMasroofiError(codes[code]!);
+    const businessErrors: readonly CloudMasroofiErrorCode[] = [
+      'invalid_command',
+      'invalid_transition',
+      'age_ineligible',
+      'task_ineligible',
+      'promise_locked',
+      'balance_limit',
+    ];
+    if (code === 'PT400' && businessErrors.includes(message as CloudMasroofiErrorCode))
+      throw new CloudMasroofiError(message as CloudMasroofiErrorCode);
+  }
+  return checked(result);
 }
 
 function profileFromRow(data: unknown, userId: string): AccountProfile {
@@ -657,6 +687,7 @@ export class SupabaseParentAccountService implements ParentAccountService {
       } catch (error) {
         this.assertCurrent(generation);
         if (runtime.storage.hasFailed) throw new ParentAccountError('storage_unavailable');
+        if (error instanceof CloudMasroofiError) throw error;
         throw sanitize(error);
       }
     });
@@ -959,7 +990,9 @@ export class SupabaseParentAccountService implements ParentAccountService {
         generation,
         expectedUserId,
       );
-      const data = checked(await this.pinnedRpc(runtime, name as FamilyRpcName, args, token));
+      const response = await this.pinnedRpc(runtime, name as FamilyRpcName, args, token);
+      const masroofi = name === 'ghaf_family_masroofi' || name === 'ghaf_family_masroofi_command';
+      const data = masroofi ? response.data : checked(response);
       this.assertCurrent(generation);
       const after = await this.familyIdentity(runtime, generation);
       if (
@@ -969,7 +1002,7 @@ export class SupabaseParentAccountService implements ParentAccountService {
           (before.familyId !== after.familyId || before.childId !== after.childId))
       )
         throw new ParentAccountError('operation_cancelled');
-      return data;
+      return masroofi ? checkedMasroofi(response) : data;
     });
   }
 
