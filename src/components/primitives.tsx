@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text as NativeText,
@@ -556,7 +555,7 @@ export function IconButton({
   const [focused, setFocused] = useState(false);
 
   return (
-    <Pressable
+    <BotanicalPressable
       {...props}
       accessibilityLabel={label}
       accessibilityRole="button"
@@ -572,17 +571,16 @@ export function IconButton({
         onFocus?.(event);
       }}
       pressRetentionOffset={pressRetentionOffset ?? spacing.sm}
-      style={({ pressed }) => [
+      style={[
         styles.iconButton,
         brand ? styles.brandIconButton : null,
         style,
         focused ? (brand ? styles.brandFocusedControl : styles.focusedControl) : null,
-        pressed && !disabled ? (brand ? styles.brandPressed : styles.pressed) : null,
         disabled ? (brand ? styles.brandDisabled : styles.disabled) : null,
       ]}
     >
       {icon}
-    </Pressable>
+    </BotanicalPressable>
   );
 }
 
@@ -786,25 +784,6 @@ const styles = StyleSheet.create({
   buttonIcon: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  primaryPressed: {
-    backgroundColor: colors.ghafPressed,
-    borderColor: colors.ghafPressed,
-    transform: [{ scale: 0.985 }],
-  },
-  brandPrimaryPressed: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-    opacity: opacity.pressed,
-    transform: [{ scale: 0.985 }],
-  },
-  pressed: {
-    opacity: 0.76,
-    transform: [{ scale: 0.985 }],
-  },
-  brandPressed: {
-    opacity: opacity.pressed,
-    transform: [{ scale: 0.985 }],
   },
   disabled: {
     opacity: 0.46,

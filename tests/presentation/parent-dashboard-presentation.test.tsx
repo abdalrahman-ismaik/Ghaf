@@ -18,6 +18,7 @@ import {
 
 interface HostProps {
   children?: ReactNode;
+  expanded?: boolean;
   header?: ReactNode;
   footer?: ReactNode;
   testID?: string;
@@ -103,6 +104,8 @@ vi.mock('@/config/r002bFeatureFlags', async (importOriginal) => {
 vi.mock('@/components/access', () => ({ GhafIcon: () => null }));
 vi.mock('@/components/botanical', () => ({
   BotanicalPressable: (props: HostProps) => host('button', props),
+  // The measured disclosure needs mounted layout; this static render only reports the open state.
+  ExpandableSection: (props: HostProps) => (props.expanded ? host('div', props) : null),
 }));
 vi.mock('@/components/illustrations', () => ({ LocalIllustration: () => null }));
 vi.mock('@/components/primitives', () => ({

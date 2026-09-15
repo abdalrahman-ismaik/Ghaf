@@ -76,6 +76,19 @@ vi.mock('react-native', () => ({
 vi.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
+vi.mock('react-native-reanimated', () => ({
+  default: { View: HostView },
+  Easing: { cubic: (progress: number) => progress, out: (easing: unknown) => easing },
+  ReduceMotion: { Never: 'never', System: 'system' },
+  cancelAnimation: () => undefined,
+  interpolateColor: (progress: number, input: readonly number[], output: readonly string[]) =>
+    progress >= 1 ? output[1] : output[0],
+  useAnimatedStyle: (factory: () => unknown) => factory(),
+  useSharedValue: (initial: number) => ({ get: () => initial, set: () => undefined }),
+  withTiming: (target: number) => target,
+}));
+// This suite asserts committed instruction states, so it renders the static presentation.
+vi.mock('@/utils/useReducedMotionPreference', () => ({ useReducedMotionPreference: () => true }));
 vi.mock('@/components/access', () => ({ GhafIcon: () => null }));
 vi.mock('@/components/botanical', () => ({ BotanicalPressable: HostView }));
 vi.mock('@/components/illustrations', () => ({ LocalIllustration: () => null }));

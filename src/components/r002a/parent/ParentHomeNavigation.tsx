@@ -1,9 +1,10 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
+import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { Text } from '@/components/primitives';
-import { botanical, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
+import { botanical, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 type ParentNavigationKey = 'family' | 'garden' | 'home' | 'tasks';
@@ -61,11 +62,7 @@ export function ParentHomeNavigation({
               aria-selected={active}
               key={item.key}
               onPress={item.onPress}
-              style={({ pressed }) => [
-                styles.item,
-                active ? styles.activeItem : null,
-                pressed ? styles.pressed : null,
-              ]}
+              style={[styles.item, active ? styles.activeItem : null]}
               testID={`parent-nav-${item.key}`}
             >
               <GhafIcon
@@ -127,8 +124,5 @@ const styles = StyleSheet.create({
   },
   activeItem: {
     backgroundColor: botanical.colors.sage,
-  },
-  pressed: {
-    opacity: opacity.pressed,
   },
 });

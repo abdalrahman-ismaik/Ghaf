@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon, type GhafIconName } from '@/components/access';
 import { Text } from '@/components/primitives';
-import { botanical, layout, opacity, spacing } from '@/design/tokens';
+import { botanical, layout, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 
 export type ChildNavigationKey = 'league' | 'garden' | 'today';
@@ -69,10 +69,9 @@ export function ChildBottomNavigation({
               disabled={item.disabled}
               key={item.id}
               onPress={item.onPress}
-              style={({ pressed }) => [
+              style={[
                 styles.item,
                 active ? styles.activeItem : null,
-                pressed && !item.disabled ? styles.pressed : null,
                 item.disabled ? styles.disabled : null,
               ]}
               testID={`child-nav-${item.id}`}
@@ -140,9 +139,6 @@ const styles = StyleSheet.create({
   },
   activeLabel: { color: botanical.colors.onForest },
   inactiveLabel: { color: botanical.colors.muted },
-  pressed: {
-    opacity: opacity.pressed,
-  },
   disabled: {
     opacity: 0.72,
   },

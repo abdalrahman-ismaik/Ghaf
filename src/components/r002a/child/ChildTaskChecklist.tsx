@@ -1,10 +1,21 @@
+import { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, {
+  ReduceMotion,
+  cancelAnimation,
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
-import { botanical, colors, layout, logicalRowDirection, opacity, spacing } from '@/design/tokens';
+import { interactionMotion } from '@/design/motion';
+import { botanical, colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
+import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 
 export interface ChildTaskCheckpoint {
   detail: string;
@@ -21,6 +32,36 @@ interface ChildTaskChecklistProps {
   title: string;
 }
 
+// A toggle has already changed the store. Motion only carries the eye from the previous
+// state to the new one; the committed value is readable without it.
+function useSettledProgress(target: number) {
+  const reducedMotion = useReducedMotionPreference();
+  const progress = useSharedValue(target);
+  const settled = useRef(target);
+
+  useEffect(() => {
+    if (settled.current === target && !reducedMotion) return;
+    settled.current = target;
+    cancelAnimation(progress);
+    if (reducedMotion) {
+      progress.set(target);
+      return;
+    }
+    // Retargeting starts at the live value, so a fast second toggle never restarts.
+    progress.set(
+      withTiming(target, {
+        duration: interactionMotion.timing.progress,
+        easing: interactionMotion.easing,
+        // The live preference above supersedes Reanimated's startup snapshot.
+        reduceMotion: ReduceMotion.Never,
+      }),
+    );
+  }, [progress, reducedMotion, target]);
+
+  useEffect(() => () => cancelAnimation(progress), [progress]);
+  return progress;
+}
+
 export function ChildTaskChecklist({
   completedLabel,
   completedStepIds,
@@ -30,7 +71,10 @@ export function ChildTaskChecklist({
   title,
 }: ChildTaskChecklistProps) {
   const completedCount = completedStepIds.length;
-  const progress = steps.length === 0 ? 0 : (completedCount / steps.length) * 100;
+  const progress = steps.length === 0 ? 0 : completedCount / steps.length;
+  const fill = useSettledProgress(progress);
+  // The track clips the rounded ends, so the fill scales from the reading start edge.
+  const fillStyle = useAnimatedStyle(() => ({ transform: [{ scaleX: fill.get() }] }));
 
   return (
     <View style={styles.card} testID="child-task-checklist">
@@ -55,64 +99,97 @@ export function ChildTaskChecklist({
         style={styles.progressTrack}
         testID="task-step-progress"
       >
-        <View
+        <Animated.View
           style={[
             styles.progressFill,
-            { width: `${progress}%` },
             direction === 'rtl' ? styles.fillRtl : styles.fillLtr,
+            fillStyle,
           ]}
         />
       </View>
 
       <View style={styles.steps}>
-        {steps.map((step) => {
-          const completed = completedStepIds.includes(step.id);
-          return (
-            <Pressable
-              accessibilityLabel={`${step.title}. ${step.detail}`}
-              accessibilityRole="checkbox"
-              accessibilityState={{ checked: completed }}
-              aria-checked={completed}
-              key={step.id}
-              onPress={() => onToggle(step.id)}
-              style={({ pressed }) => [
-                styles.step,
-                direction === 'rtl' ? styles.rowRtl : styles.rowLtr,
-                completed ? styles.stepCompleted : null,
-                pressed ? styles.pressed : null,
-              ]}
-              testID={`task-step-${step.id}`}
-            >
-              <View style={[styles.check, completed ? styles.checkCompleted : null]}>
-                {completed ? (
-                  <GhafIcon color={botanical.colors.forest} name="check-filled" size={30} />
-                ) : null}
-              </View>
-              <View style={styles.copy}>
-                <Text
-                  brand
-                  color={completed ? 'ghafEmerald' : 'deepForest'}
-                  direction={direction}
-                  style={completed ? styles.completedText : null}
-                  variant="label"
-                >
-                  {step.title}
-                </Text>
-                <Text
-                  brand
-                  color="onSurfaceVariant"
-                  direction={direction}
-                  style={completed ? styles.completedText : null}
-                  variant="body"
-                >
-                  {step.detail}
-                </Text>
-              </View>
-            </Pressable>
-          );
-        })}
+        {steps.map((step) => (
+          <ChecklistStep
+            completed={completedStepIds.includes(step.id)}
+            direction={direction}
+            key={step.id}
+            onToggle={onToggle}
+            step={step}
+          />
+        ))}
       </View>
     </View>
+  );
+}
+
+function ChecklistStep({
+  completed,
+  direction,
+  onToggle,
+  step,
+}: {
+  completed: boolean;
+  direction: TextDirection;
+  onToggle: (stepId: string) => void;
+  step: ChildTaskCheckpoint;
+}) {
+  const settle = useSettledProgress(completed ? 1 : 0);
+  const surfaceStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      settle.get(),
+      [0, 1],
+      [botanical.colors.paper, botanical.colors.sage],
+    ),
+    borderColor: interpolateColor(
+      settle.get(),
+      [0, 1],
+      [colors.transparent, botanical.colors.sageStrong],
+    ),
+  }));
+  // The mark stays mounted so a reopened or reordered row never replays an entrance.
+  const markStyle = useAnimatedStyle(() => ({
+    opacity: settle.get(),
+    transform: [{ scale: 0.72 + settle.get() * 0.28 }],
+  }));
+
+  return (
+    <Pressable
+      accessibilityLabel={`${step.title}. ${step.detail}`}
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked: completed }}
+      aria-checked={completed}
+      onPress={() => onToggle(step.id)}
+      animatedStyle={surfaceStyle}
+      style={[styles.step, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
+      testID={`task-step-${step.id}`}
+    >
+      <View style={[styles.check, completed ? styles.checkCompleted : null]}>
+        <Animated.View style={markStyle}>
+          <GhafIcon color={botanical.colors.forest} name="check-filled" size={30} />
+        </Animated.View>
+      </View>
+      <View style={styles.copy}>
+        <Text
+          brand
+          color={completed ? 'ghafEmerald' : 'deepForest'}
+          direction={direction}
+          style={completed ? styles.completedText : null}
+          variant="label"
+        >
+          {step.title}
+        </Text>
+        <Text
+          brand
+          color="onSurfaceVariant"
+          direction={direction}
+          style={completed ? styles.completedText : null}
+          variant="body"
+        >
+          {step.detail}
+        </Text>
+      </View>
+    </Pressable>
   );
 }
 
@@ -138,15 +215,15 @@ const styles = StyleSheet.create({
     backgroundColor: botanical.colors.line,
   },
   progressFill: {
+    width: '100%',
     height: '100%',
-    borderRadius: botanical.radius.pill,
     backgroundColor: botanical.colors.forest,
   },
   fillRtl: {
-    alignSelf: 'flex-end',
+    transformOrigin: 'right center',
   },
   fillLtr: {
-    alignSelf: 'flex-start',
+    transformOrigin: 'left center',
   },
   steps: {
     gap: spacing.sm,
@@ -158,16 +235,10 @@ const styles = StyleSheet.create({
     borderRadius: botanical.radius.control,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: colors.transparent,
-    backgroundColor: botanical.colors.paper,
     padding: spacing.md,
   },
   rowRtl: { flexDirection: 'row-reverse' },
   rowLtr: { flexDirection: 'row' },
-  stepCompleted: {
-    borderColor: botanical.colors.sageStrong,
-    backgroundColor: botanical.colors.sage,
-  },
   check: {
     width: 38,
     height: 38,
@@ -189,8 +260,5 @@ const styles = StyleSheet.create({
   },
   completedText: {
     opacity: 1,
-  },
-  pressed: {
-    opacity: opacity.pressed,
   },
 });

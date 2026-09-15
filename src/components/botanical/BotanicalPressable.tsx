@@ -5,9 +5,11 @@ import {
   type PressableProps,
   type PressableStateCallbackType,
   type View,
+  type ViewProps,
 } from 'react-native';
 import Animated, {
   ReduceMotion,
+  type AnimatedProps,
   cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
@@ -21,6 +23,9 @@ import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export interface BotanicalPressableProps extends PressableProps {
+  // The host is already an animated component, so a caller may drive a state tint from the
+  // UI runtime through this prop instead of adding a wrapper view behind the content.
+  animatedStyle?: AnimatedProps<ViewProps>['style'];
   // A surface may request static feedback, but cannot override the system preference.
   reducedMotion?: boolean;
 }
@@ -30,6 +35,7 @@ export const BotanicalPressable = forwardRef<View, BotanicalPressableProps>(
   function BotanicalPressable(
     {
       android_ripple,
+      animatedStyle: hostStyle,
       disabled,
       onHoverIn,
       onHoverOut,
@@ -109,6 +115,7 @@ export const BotanicalPressable = forwardRef<View, BotanicalPressableProps>(
         ref={ref}
         style={[
           typeof style === 'function' ? style(interactionState) : style,
+          hostStyle,
           animatedStyle,
           reducedMotion && interactionState.pressed && !nativeRipple
             ? { opacity: interactionMotion.reduced.pressedOpacity }
