@@ -149,6 +149,14 @@ function ChecklistStep({
       [botanical.colors.paper, botanical.colors.sageStrong],
     ),
   }));
+  // The box edge settles with the same value, so nothing inside one completion snaps.
+  const boxStyle = useAnimatedStyle(() => ({
+    borderColor: interpolateColor(
+      settle.get(),
+      [0, 1],
+      [botanical.colors.line, botanical.colors.forest],
+    ),
+  }));
   // The mark stays mounted so a reopened or reordered row never replays an entrance.
   const markStyle = useAnimatedStyle(() => ({
     opacity: settle.get(),
@@ -166,11 +174,11 @@ function ChecklistStep({
       style={[styles.step, direction === 'rtl' ? styles.rowRtl : styles.rowLtr]}
       testID={`task-step-${step.id}`}
     >
-      <View style={[styles.check, completed ? styles.checkCompleted : null]}>
+      <Animated.View style={[styles.check, boxStyle]}>
         <Animated.View style={markStyle}>
           <GhafIcon color={botanical.colors.forest} name="check-filled" size={30} />
         </Animated.View>
-      </View>
+      </Animated.View>
       <View style={styles.copy}>
         <Text
           brand
@@ -249,11 +257,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: botanical.radius.small,
     borderWidth: 2,
-    borderColor: botanical.colors.line,
     backgroundColor: botanical.colors.paper,
-  },
-  checkCompleted: {
-    borderColor: botanical.colors.forest,
   },
   copy: {
     flex: 1,
