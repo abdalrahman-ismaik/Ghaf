@@ -1,7 +1,14 @@
 # Development and testing
 
 This guide is the practical path for installing, running, resetting, and verifying the current
-Feature 003 prototype. Run every command from the repository root.
+app and its preserved Feature 003 sample. Run every command from the repository root.
+
+Feature 019's normalized Supabase runtime is documented in
+[full-family-migration.md](backend/full-family-migration.md). Apply the two additive normalized
+migrations to the adult project and enable its anonymous Auth before testing Child enrollment.
+`npm run start:pilot` selects the real runtime; missing schema/access closes the view rather than
+substituting sample data. `node scripts/backend/verify-cloud-runtime.mjs` runs isolated PostgreSQL
+tests when its documented local tooling is present. Hosted and native checks remain distinct.
 
 ## Prerequisites
 
@@ -29,9 +36,10 @@ Install exactly from `package-lock.json`:
 npm ci
 ```
 
-The application needs no API key, backend, Expo account, camera permission, microphone permission,
-or real Child data. `EXPO_PUBLIC_GHAF_SERVICE_MODE=mock` is the optional explicit form of the built-in
-default. No live-provider URL or client-side provider secret is supported.
+The deterministic sample needs no backend, camera permission, microphone permission or real Child
+data. `EXPO_PUBLIC_GHAF_SERVICE_MODE=mock` selects its local service path. Real adult accounts and
+saved family/task/study records use the separate Supabase account configuration below. Never put
+an admin/service-role key or AI provider secret in an `EXPO_PUBLIC_` variable.
 
 ## Run the app
 
@@ -40,6 +48,9 @@ device checks.
 
 ### Offline web testing
 
+This selects the sample only when `EXPO_PUBLIC_GHAF_AUTH_MODE=demo`. If your local `.env` selects
+`supabase`, the same web command opens real adult sign-in and requires a network connection.
+
 ```bash
 npm run web -- --offline
 ```
@@ -47,6 +58,40 @@ npm run web -- --offline
 Open the URL printed by Expo, normally `http://localhost:8081`. Web is suitable for rapid layout,
 copy, deterministic-flow, and screenshot review. It cannot pass native Android, TalkBack, physical
 touch, IME, media, permission, predictive Back, or device-performance gates.
+
+### Real adult accounts and saved family tasks
+
+Set the public account project values in your ignored `.env` or optional `.env.pilot.local`:
+
+```dotenv
+EXPO_PUBLIC_GHAF_AUTH_MODE=supabase
+EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-public-publishable-key
+```
+
+```bash
+npm run start:pilot -- --web --localhost --port 8093
+```
+
+The account launcher always selects Supabase access. The mode-specific env file is optional;
+ordinary Expo env files and explicit shell variables also work. Shell values win over file values;
+the selected optional mode file wins over the ordinary Expo files. `start:messaging` loads only
+the messaging overlay and retains its separate project/identity configuration. Neither launcher
+clears caches automatically. On Windows, use `npm.cmd` if PowerShell blocks `npm.ps1`.
+
+Sign in with **email and password**. New accounts verify their email with the emailed code;
+forgotten passwords use a recovery code. The existing pilot approval check still applies. After
+approval, **Family and tasks** opens your saved account workspace: save a family name, add a member,
+then choose that member when creating a task or study plan. Reload verifies server persistence.
+Completion/reopening records planning progress and does not grant Seeds or money.
+
+Account settings and the sample family are separate navigation choices. Switching sections or
+interface language retains unsaved workspace input; logout or changing accounts clears it.
+On a concurrent edit, reload the latest saved data, review your retained draft, then save explicitly.
+Only a successful server response displays a saved notice. Sample reset never resets account data.
+
+See [Feature 018](../specs/018-persistent-adult-accounts/spec.md) for migrations, approval and access
+boundaries. The client cannot fix missing hosted migrations or grant approval to itself.
 
 ### Android Studio and a physical USB device
 
@@ -286,7 +331,7 @@ That command runs:
 2. strict TypeScript;
 3. Expo ESLint;
 4. Prettier checks for maintained source/developer docs;
-5. all deterministic Vitest suites;
+5. launcher tests and all deterministic Vitest suites;
 6. Expo dependency alignment; and
 7. a static web export to ignored `dist/`.
 

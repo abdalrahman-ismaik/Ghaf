@@ -1510,3 +1510,50 @@ The [merge record](workstreams/masroofi-merge-20260914.md) records exact scope, 
 checks and remaining gates. Both Feature 017 packages retain their paths and capability limits.
 This is AI-assisted integration, not evidence of independent student work, human cultural review,
 native acceptance or real financial capability. No files were deleted or changes pushed.
+
+## September 14 — account, family, task and language stability
+
+Actual user request: “I feel there's many errors overall in the app with the auth, task creation
+and compilations, etc. fix all of them and use real data from supabase instead of predefined, use
+the supabase skill for more info about supabase”. Follow-up confirms “Email and password” and
+prioritizes “familiy creation page, task creation, and langauge selectors”.
+
+Codex root used the Supabase, React Native, quality-workflow and interface skills, documented the
+additive Feature 018 scope, promoted the existing real saved workspace, corrected language
+persistence/reversion and integrated the work. Scoped helpers repaired launch configuration, cloud
+workspace forms, local child-form feedback and candidate task-history visibility; read-only helpers
+mapped provider authority and dependency/build boundaries. Root ran the serialized checks and fresh
+browser/public-provider verification recorded in the
+[stability workstream](workstreams/account-stability-20260914.md). These are AI-generated changes,
+not evidence of independent student implementation, named Arabic review or native acceptance.
+No private credentials, real Child data, new schema, real payments or data deletion are introduced.
+
+## September 14 — full normalized Supabase migration
+
+Actual user correction: “for the database, you didn't create proper database cheme in supabase to
+handle the tasks and other stuff, I want a full migration to supabase from predefined”. Codex root
+used the Supabase and React Native skills, updated Feature 019/constitution/ownership, integrated
+the real async family runtime and separate Child Auth boundary, and ran serialized verification.
+Seven scoped helpers authored core SQL/contracts, extended domains, Family/Task UI, rewards/study
+UI, growth/learning/League and preserved companion features, strict validation, and isolated
+tooling/credential tests. The helpers and root reviewed concrete cross-boundary defects without
+sharing write ownership.
+
+The work is AI-generated/AI-assisted implementation, not independent student authorship, named
+cultural review or physical-device acceptance. Exact files, failures/fixes, test results, browser
+interception limits and missing hosted-admin access are recorded in the
+[migration evidence](workstreams/supabase-family-migration-20260914.md). No live child media,
+financial provider, hosted deletion, destructive reset, commit, push or public deployment occurred.
+Prepared educational content remains labeled, and simulated Masroofi money remains simulated
+despite its new persisted ledger.
+
+## September 15 — normalized migration delivery
+
+Actual user request: “continue and push”. Codex root fetched the remote, found 49 newer commits
+including a separate Feature 020 Supabase implementation, and preserved both histories by preparing
+`feature/019-normalized-supabase-family-runtime`. Root owns the cohesive commits and ordinary push;
+no helper writes or new authored application behavior are part of this continuation. The
+[delivery record](workstreams/supabase-family-push-20260915.md) distinguishes prior local checks,
+unresolved schema reconciliation and the missing administrative connection. User-owned lockfile
+and skill changes are excluded. This delivery does not establish hosted installation, native
+acceptance or independent student authorship of the AI-assisted source.

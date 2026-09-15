@@ -1,5 +1,116 @@
 # Team Ownership
 
+## Supabase continuation and push — 2026-09-15
+
+The user explicitly requests “continue and push”. Root owns the existing released source changes,
+the new `workstreams/supabase-family-push-20260915.md` delivery record, this ownership update and
+the append-only AI-assistance entry. Preserve the user's `package-lock.json`, `skills-lock.json`
+and `.agents/skills/supabase/` changes outside these commits.
+
+Fetching `origin` found 49 incoming commits beyond the shared ancestor, including a separate
+Feature 020 family schema and hosted evidence. Preserve both histories by pushing the validated
+Feature 019 work on `feature/019-normalized-supabase-family-runtime`. Do not replace remote `main`,
+combine incompatible schemas without reconciliation, or imply that the Feature 019 SQL has been
+applied to the hosted project. Root creates cohesive commits and verifies the remote branch head.
+
+## Full Supabase family migration — 2026-09-14
+
+The user's correction explicitly authorizes a complete normalized schema and migration of actual
+family/task/progression/reward/study application data, superseding the narrow Feature018 planner.
+Root owns specs/019-supabase-family-runtime/**, the additive constitution/AGENTS/PRODUCT updates,
+service/auth integration, primary navigation and final serialized validation. Existing uncommitted
+stability fixes and user lockfile/skill edits must remain. No deletion, destructive migration,
+database reset, public deployment or real-money provider is authorized.
+
+Database writer: the one CLI-generated normalized_family_runtime migration, any explicitly
+allocated later migration, supabase/tests/database/normalized_family_runtime.test.sql,
+src/models/cloudFamily.ts and specs/019-supabase-family-runtime/api-contract.md.
+Tooling writer: ignored output/supabase-migration/tooling/** plus creation of the empty migration;
+transfer that migration to the database writer immediately. Root reserves
+src/features/cloudFamily/{controller,service}.ts, src/components/cloudFamily/{CloudFamilyBoundary,
+CloudFamilyScreen,CloudChildEntry}.tsx, src/services/accounts/**, src/models/parentAccount.ts,
+src/components/pilot/{PilotGate,PilotAccountView}.tsx, src/i18n/resources.ts,
+tests/cloudFamily/**, docs/backend/full-family-migration.md, .env.example and scripts/backend/**.
+Further UI scopes will be allocated once the stable API contract is published. One writer per file,
+no helper descendants, one heavy validation lane. Keep all existing account/messaging projects and
+data intact. Source-only work does not count as an applied hosted migration.
+
+Allocated exact boundaries: core SQL writer owns 20260914182327_normalized_family_runtime.sql;
+extended SQL writer owns 20260914182411_normalized_family_extensions.sql and
+supabase/tests/database/normalized_family_extensions.test.sql. Family/task UI writer owns
+src/components/cloudFamily/{FamilyPanel,TasksPanel,TaskEditor,ChildTaskPanel}.tsx,
+src/i18n/cloudFamilyCore.ts and tests/cloudFamily/family-task-ui.test.tsx. Rewards/study UI writer
+owns src/components/cloudFamily/{RewardsPanel,MasroofiPanel,StudyPanel,GoalsPanel}.tsx,
+src/i18n/cloudFamilyRewards.ts and tests/cloudFamily/rewards-study-ui.test.tsx. Growth/League UI
+writer owns src/components/cloudFamily/{GrowthPanel,LearningPanel,LeaguePanel}.tsx,
+src/i18n/cloudFamilyGrowth.ts and tests/cloudFamily/growth-league-ui.test.tsx. Root owns the remaining
+tests/cloudFamily files and src/i18n/cloudFamily.ts shell-resource integration.
+The validation writer owns src/features/cloudFamily/validation.ts and
+tests/cloudFamily/snapshot-validation.test.ts. Root adds ownership for
+src/features/cloudFamily/childService.ts, src/components/cloudFamily/CloudAccessGate.tsx,
+supabase/config.toml and package.json for the integrated runtime/test commands.
+
+Preservation extension: Growth/League UI writer additionally owns
+src/components/cloudFamily/CompanionPanel.tsx, src/i18n/cloudFamilyCompanion.ts,
+tests/cloudFamily/companion-ui.test.tsx,
+src/components/familyMessaging/{FamilyMessagingScreen,MessagingLifecycle}.tsx and
+src/components/familyPractices/FamilyPracticesScreen.tsx. Family/task UI writer additionally owns
+src/components/family/FamilyConnectionPlan.tsx for a neutral display contract with real UUIDs.
+Tooling/test writer owns tests/cloudFamily/{child-access-service,credential-namespace}.test.ts.
+Root owns scripts/backend/verify-cloud-runtime.mjs and serialized SQL/TypeScript/UI execution.
+Root also owns metro.config.js to exclude ignored verification artifacts from source watching.
+Root owns src/components/primitives.tsx for the reproduced web selectable-attribute warning.
+
+Handoff: all seven scoped helpers have released their boundaries. Root's integrated local SQL,
+strict response, TypeScript, lint, format, regression and browser checks are recorded in
+[the migration workstream](workstreams/supabase-family-migration-20260914.md). Hosted application
+and real Auth/readback remain BLOCKED pending an administrative connection; native/human gates
+are NOT RUN. No public activation, commit or push is included in this source handoff.
+
+## Account, family, task and language stability — 2026-09-14
+
+The user requests app-wide error fixes, real Supabase data instead of predefined records, and
+specifically prioritizes family creation, task creation/completion and language selectors.
+The user confirms email/password login. Root owns the integration and serialized validation lane.
+Existing package-lock.json, skills-lock.json and the newly installed Supabase skill are preserved.
+No file/data deletion, database reset, dependency reinstall, native build or push is allocated.
+
+Root reserves this record, the additive Feature018 stability amendment and spec/plan/tasks links,
+docs/PRODUCT.md, docs/DEVELOPMENT.md, docs/product/PROTOTYPE_LIMITATIONS.md,
+docs/competition-readiness/{DEMO_RUNBOOK,ai-assistance-ledger}.md,
+docs/competition-readiness/workstreams/account-stability-20260914.md,
+src/components/pilot/{PilotGate,PilotAccountView,AccountWorkspaceBoundary}.tsx,
+src/features/pilot/{controller,workspaceController}.ts, src/components/LanguageSwitcher.tsx,
+src/i18n/index.ts, app/_layout.tsx and tests/access/{pilot-account-controller,pilot-account-ui,
+account-workspace-controller,pilot-gate,account-workspace-boundary}.test.*.
+
+The workspace UI writer owns src/components/pilot/AccountWorkspaceView.tsx, src/i18n/pilotResources.ts,
+and tests/access/account-workspace-ui.test.tsx. A startup writer owns package.json,
+scripts/development/start-expo.mjs and scripts/development/start-expo.test.mjs. A bounded
+read-only reviewer inspects local family creation and language interactions before any further
+exact write grant. Read-only task/build/backend maps are complete; those scopes are released.
+Helpers may not run heavy checks or spawn descendants. Root reserves ignored output/account-stability/**
+for small synthetic evidence. One real authenticated workspace is primary; the existing complete
+sample is an explicit separate choice. No synthetic data is uploaded or masquerades as cloud data.
+
+The local-family repair writer owns src/components/access/ChildProfileForm.tsx,
+app/access/parent/add-first-child.tsx and tests/access/required-child-profile-personalization.test.tsx
+for missing custom-answer feedback and per-child scroll reset. Root also reserves
+tests/platform/native-language-direction.test.ts for the reproduced RTL round-trip persistence bug.
+
+The task-history writer owns app/parent/index.tsx,
+src/components/r002a/parent/ParentTaskWorkspace.tsx and
+tests/tasks/parent-task-workspace{,-history}.test.tsx for the candidate's missing saved task list.
+The startup and local-family scopes are released to root for integration; helpers run no heavy checks.
+All four writer scopes are now released to root. Root also reserves scripts/README.md to document
+the new launcher's location. Existing lockfile and skill installation edits remain user-owned.
+
+Handoff: typecheck, lint, formatting, 3,118 Vitest tests (2 integration skips), 12 launcher tests
+and repository checks passed. Fresh login AR/EN browser checks and the public provider probe passed;
+authenticated hosted writes and fresh native evidence remain unverified. See
+workstreams/account-stability-20260914.md. No files/data were deleted or changes committed/pushed.
+All source reservations are released at handoff; the running local test server may remain available.
+
 ## Incoming merge with Masroofi ? 2026-09-14
 
 The user authorizes resolving the incoming merge additively and requires asking before deleting
@@ -24,7 +135,6 @@ see `workstreams/masroofi-merge-20260914.md` for exact evidence and preservation
 All conflicts are resolved and staged. Automatic approval review rejected the final local merge
 commit for lack of separate explicit commit authorization; it remains pending owner approval.
 
-
 ## Masroofi category and card revision — 2026-09-13
 
 User requests more spending categories (confirmed), a stronger UAE card identity, and fewer demo
@@ -32,7 +142,7 @@ marks. Root reserves specs/017-masroofi-demo/**, docs/PRODUCT.md, this entry,
 docs/competition-readiness/{DEMO_RUNBOOK,ai-assistance-ledger}.md,
 docs/competition-readiness/workstreams/masroofi-20260913.md, docs/product/PROTOTYPE_LIMITATIONS.md,
 src/state/usePrototypeStore.ts, src/components/masroofi/{MasroofiParentScreen,MasroofiChildScreen,shared}.tsx,
-src/i18n/masroofi.ts, tests/family/masroofi-{presentation,workflow}.test.* and ignored output/masroofi/**.
+src/i18n/masroofi.ts, tests/family/masroofi-{presentation,workflow}.test.\* and ignored output/masroofi/**.
 Domain helper alone owns src/models/masroofi.ts, src/features/masroofi/service.ts and
 tests/family/masroofi-service.test.ts. UI helper alone owns src/components/masroofi/MasroofiCard.tsx
 and src/design/masroofi.ts for the scoped card artwork palette. Root serializes checks/browser;
@@ -71,6 +181,7 @@ Handoff: Feature 017 source is complete; all helper scopes are released. Root's 
 ends with the local integration commit. Typecheck/lint/format, 170 files / 2329 tests, repository
 checks and bounded web-phone inspection passed. Physical Android and named human review remain
 NOT RUN. See workstreams/masroofi-20260913.md for exact evidence and assistance disclosure.
+
 ## 2026-09-14 Backend readiness, spec completion and publication
 
 **BACKEND-DELIVERY-ACK to MOTION-PASS2-001 — 2026-09-14 14:33 UTC**:

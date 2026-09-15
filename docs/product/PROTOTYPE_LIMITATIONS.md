@@ -1,5 +1,30 @@
 # Prototype Limitations
 
+## Full migration — Feature 019, 2026-09-14
+
+The normalized source schema and app now cover family, task lifecycle, recognition, gardens,
+rewards/Masroofi, study/goals, learning/badges and League. These supersede the narrow planner in
+Supabase mode; the local sample remains separate. Persistent card money is still simulated.
+Prepared assistance does not become live AI, and media permissions do not enable real Child
+recording. Messaging continues to use its separate provider account and database.
+
+Local PostgreSQL and browser checks do not apply migrations or enable hosted anonymous Auth.
+This run lacks an authenticated database-admin connection, so hosted installation, real provider
+enrollment/email and multi-client readback are BLOCKED. Android/native and named human review are
+NOT RUN. Unsupported learning/activity packages remain explicitly unavailable; all 16 badge
+definitions persist without fabricated awards. History pagination and operational retention need
+later scaling work. See [the operator workflow](../backend/full-family-migration.md).
+
+## Account and form stability continuation — 2026-09-14
+
+Supabase mode now opens the saved family/task/study workspace first; the existing account RPCs and
+ownership guards remain its authority. The separate sample retains Child tasks, Seeds, growth,
+study goals and Masroofi. Cloud planning completion cannot issue rewards or authenticate a Child.
+The latest language fixes cover profile-refresh reversion and persisted native direction selection;
+JavaScript tests and web inspection do not establish native restart/keyboard/Back acceptance.
+See the [current stability evidence](../competition-readiness/workstreams/account-stability-20260914.md)
+for fresh checks. Earlier provider/native passes below are historical, not new passes for this change.
+
 ## Masroofi competition simulation — Feature 017
 
 The user-authorized card experience is a synthetic educational ledger in the current app session.
@@ -12,6 +37,7 @@ Age 9–11 profiles require Parent attestation of age 10+; this is not age verif
 prototype access guards do not become production financial security. Task progress/card history
 does not synchronize across devices or recover after restart. Existing Family Reward promise
 metadata and Seeds remain separate. Native and named-human acceptance are still required.
+
 ## Persistent account continuation — 2026-09-14
 
 Feature 018 now stores a bounded adult profile and private family/task/study

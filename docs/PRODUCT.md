@@ -1,5 +1,34 @@
 # Product
 
+## Full saved family runtime — Feature 019, 2026-09-14
+
+The user explicitly requested a full migration beyond the Feature 018 planning document. Supabase
+mode now uses normalized family, task lifecycle, recognition, Seed/garden, reward/Masroofi,
+study/goal, learning/badge and League records. Parent email/password identity and distinct,
+revocable Child enrollment replace sample identity selection in this mode. The real runtime starts
+without predefined people, achievements or balances. The UAE card design remains; money is still
+simulated, with its ledger persisted and governed by the server.
+
+Legacy workspace transfer is additive, keeps existing family edits/source records and grants no
+invented history. Prepared practice/help and the separately authenticated messaging service remain
+reachable. The explicit sample preserves its local competition journey. The earlier planner and
+local-only Masroofi descriptions below are historical for that mode, not the new cloud authority.
+See the [full workflow and installation](backend/full-family-migration.md) and
+[Feature 019](../specs/019-supabase-family-runtime/spec.md). Hosted installation is a separate gate;
+local SQL/app checks do not prove that the hosted project has received these migrations.
+
+## Primary saved workspace and stability — 2026-09-14
+
+The owner reconfirmed email/password login and prioritized family creation, task creation/completion
+and language selectors. In Supabase mode, successful approved sign-in now opens the account-owned
+family/task/study workspace first. Account settings and the full sample family remain explicit
+secondary choices. Empty accounts guide the Parent through family name, member and first task;
+no predefined family is presented as saved account data. Saved member selection is explicit.
+Drafts survive interface/section changes and failed refreshes; concurrent edits require reload,
+review and explicit save. A planning completion does not award Seeds, growth or Masroofi credit.
+The [Feature 018 amendment](../specs/018-persistent-adult-accounts/stability-and-primary-workspace.md)
+owns this continuation; prior feature evidence and the complete sample remain available.
+
 ## Masroofi competition card — Feature 017, 2026-09-13
 
 The user-authorized **مصروفي / Masroofi** experience adds an optional, private simulated card
@@ -16,6 +45,7 @@ in-memory and one-device only. No issuer, custody, transfer or real purchase exi
 growth, League and existing Family Reward promises are separate. See the
 [workflow](../specs/017-masroofi-demo/quickstart.md) and
 [evidence](competition-readiness/workstreams/masroofi-20260913.md).
+
 ## Feature 018 persistent adult planning data — 2026-09-14
 
 The owner extended the real adult account pilot with a private cloud profile,
