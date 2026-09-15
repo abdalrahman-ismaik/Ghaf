@@ -1681,3 +1681,16 @@ an ordinary push. The Ghaf quality workflow guides this bounded validation. The
 [delivery record](workstreams/backend-preserving-push-20260915.md) records source, resolutions,
 evidence and limitations. No hosted database operation, independent student authorship or new
 native/human acceptance is claimed by this AI-assisted integration.
+
+## September 15 — user-authorized Claude co-author cleanup
+
+After inspecting ten Claude co-author trailers and explaining the history rewrite, guarded push
+and contributor refresh, the user explicitly approved proceeding. Codex root creates local
+backups, recreates only affected commit objects and their merge descendant, and verifies exact
+file-tree, human-metadata and backend-ancestry preservation. One read-only helper independently
+audits the raw objects. A separate repository setting disables future Claude commit trailers.
+This changes Git co-author display metadata; it does not erase the AI assistance documented in
+existing workstreams or claim independent human implementation. The
+[cleanup record](workstreams/coauthor-cleanup-20260915.md) records the scope, evidence and
+collaborator synchronization requirements. Root owns the authorized guarded main push; no
+hosted data operation or external support message is part of this work.

@@ -1,5 +1,21 @@
 # Team Ownership
 
+## Claude co-author cleanup — 2026-09-15
+
+The user explicitly approves removing Claude from historical commit co-author credit and
+publishing the corrected history. Root owns the metadata-only rewrite of ten messages and their
+merge descendant, local backups and ignored `output/coauthor-cleanup-20260915/**` evidence,
+`.claude/settings.json`, this entry, `workstreams/coauthor-cleanup-20260915.md` and the append-only
+AI-assistance entry. One read-only helper audits raw commit headers and preservation requirements;
+no helper writes, descendants or heavy jobs. Root must preserve every original tree, human
+author/committer metadata, merge topology and unchanged backend ancestry. Publish only main with
+an explicit expected-remote-SHA lease; retain old backups locally. AI-assistance records remain.
+
+The independent read-only audit passed all eleven old/new raw-object comparisons and released
+its scope. Both histories contain 610 commits and differ only by the eleven mapped IDs. All 599
+backend ancestor IDs are unchanged. Repository and scoped formatting checks passed. Root retains
+only the administrative commit, guarded publication and remote verification boundary.
+
 ## Backend-preserving current-code push — 2026-09-15
 
 The user requests pushing current code while prioritizing the other contributor's full backend
