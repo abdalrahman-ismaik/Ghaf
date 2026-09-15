@@ -1,7 +1,7 @@
 import { CatalogTaskList } from '@/components/catalog/CatalogTaskList';
 import { StudyEntries } from '@/components/study/StudyEntries';
-import { useEffect, useRef, useState } from 'react';
-import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
+import { useFocusEffect, useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -127,19 +127,23 @@ export default function ParentHomeScreen() {
     if (taskAddedToken) setDismissedTaskAddedToken(taskAddedToken);
   };
 
-  useEffect(() => {
-    if (role !== 'parent') router.replace('/');
-  }, [role, router]);
+  useFocusEffect(
+    useCallback(() => {
+      if (role !== 'parent') router.replace('/');
+    }, [role, router]),
+  );
 
-  useEffect(() => {
-    if (role !== 'parent' || section !== 'home' || !hasValidProgressRestore) {
-      return;
-    }
-    const frame = requestAnimationFrame(() => {
-      focusAccessibilityTarget(progressEntryRef.current);
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [hasValidProgressRestore, role, section]);
+  useFocusEffect(
+    useCallback(() => {
+      if (role !== 'parent' || section !== 'home' || !hasValidProgressRestore) {
+        return;
+      }
+      const frame = requestAnimationFrame(() => {
+        focusAccessibilityTarget(progressEntryRef.current);
+      });
+      return () => cancelAnimationFrame(frame);
+    }, [hasValidProgressRestore, role, section]),
+  );
 
   if (role !== 'parent') {
     return (

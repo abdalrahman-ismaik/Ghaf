@@ -1,5 +1,6 @@
 import { CatalogCheckIn } from '@/components/catalog/CatalogCheckIn';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { AccessibilityInfo, findNodeHandle, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -99,14 +100,16 @@ function OriginalParentCheckIn({
   const supportActionRef = useRef<View>(null);
   const supportSentRef = useRef<View>(null);
 
-  useEffect(() => {
-    if (journey?.lifecycle !== 'retry' || Platform.OS === 'web') return undefined;
-    const frame = requestAnimationFrame(() => {
-      const handle = findNodeHandle(supportSentRef.current);
-      if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [journey?.lifecycle]);
+  useFocusEffect(
+    useCallback(() => {
+      if (journey?.lifecycle !== 'retry' || Platform.OS === 'web') return undefined;
+      const frame = requestAnimationFrame(() => {
+        const handle = findNodeHandle(supportSentRef.current);
+        if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
+      });
+      return () => cancelAnimationFrame(frame);
+    }, [journey?.lifecycle]),
+  );
 
   if (!journey?.submission) return null;
 

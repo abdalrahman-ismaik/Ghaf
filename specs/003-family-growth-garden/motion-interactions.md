@@ -82,3 +82,23 @@ concurrent login session's source and exclusive device/build lane.
 
 Second-pass implementation and exact validation/remaining native gates are recorded
 in [the workstream report](../../docs/competition-readiness/workstreams/motion-pass2-20260914.md).
+
+## Native page-transition continuation
+
+The user's follow-up explicitly requests polished page transitions. Use the existing
+Expo Router native Stack for Parent pages (currently a Slot without native transitions),
+preserving URLs, actions, history router, access guards and navigator-owned Back.
+Covered Parent pages must relinquish hardware Back, redirect/restore effects and
+pending accessibility focus work. Verify retained composer/review state before handoff.
+
+Use installed Android `fade_from_bottom` for detail depth, iOS default transitions,
+and a fade on web. Main navigation peers stay immediate. Route-level settings use
+the shared live reduced-motion preference; unknown/disabled motion selects `none`.
+The existing family-created success sheet remains the sole animation owner of its
+transparent modal. No extra root content animation, new gesture, artificial wait,
+custom Android duration, dependency, or business action is introduced.
+
+Record actual host execution separately from unrun native Back, keyboard, RTL,
+large-text, transition interruption and frame-time acceptance in the navigation
+workstream report. Updating native options does not establish immediate cancellation
+of an Android transition already in flight.

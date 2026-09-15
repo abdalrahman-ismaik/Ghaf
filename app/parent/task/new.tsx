@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { ParentTaskComposer } from '@/components/family-growth/ParentTaskComposer';
@@ -13,7 +13,6 @@ export default function ParentTaskNewScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const role = usePrototypeStore((state) => state.role);
-  const journey = usePrototypeStore((state) => state.journey);
   const activeChildId = usePrototypeStore((state) => state.activeChildId);
   const params = useLocalSearchParams();
   const initialPrefill = resolveParentProgressTaskPrefill({
@@ -21,13 +20,25 @@ export default function ParentTaskNewScreen() {
     activeChildId,
     params,
   });
+  const hasPresentedComposer = useRef(false);
+  const [composerVisit, setComposerVisit] = useState(0);
 
-  useEffect(() => {
-    if (role !== 'parent') {
-      router.replace('/');
-      return;
-    }
-  }, [journey, role, router]);
+  useFocusEffect(
+    useCallback(() => {
+      if (role !== 'parent') {
+        router.replace('/');
+        return;
+      }
+    }, [role, router]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      // Slot previously remounted this draft on return; covered stacks must not revive stale text.
+      if (hasPresentedComposer.current) setComposerVisit((visit) => visit + 1);
+      hasPresentedComposer.current = true;
+    }, []),
+  );
 
   if (role !== 'parent') {
     return (
@@ -39,6 +50,7 @@ export default function ParentTaskNewScreen() {
 
   return (
     <ParentTaskComposer
+      key={composerVisit}
       initialPrefill={initialPrefill ?? undefined}
       onBack={() => router.replace({ pathname: '/parent', params: { section: 'tasks' } })}
       onReadyForReview={() => router.push('/parent/task/review')}

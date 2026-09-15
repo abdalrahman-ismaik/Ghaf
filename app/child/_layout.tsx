@@ -1,10 +1,12 @@
 import { Redirect, Stack, type Href } from 'expo-router';
-import { useReducedMotion } from 'react-native-reanimated';
+import { Platform } from 'react-native';
 
+import { navigationMotionOptions } from '@/design/navigationMotion';
 import { selectCanEnterChildExperience, usePrototypeStore } from '@/state/usePrototypeStore';
+import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 
 export default function ChildLayout() {
-  const reducedMotion = Boolean(useReducedMotion());
+  const reducedMotion = useReducedMotionPreference();
   const activeExperience = usePrototypeStore((state) => state.activeExperience);
   const canEnterChildExperience = usePrototypeStore(selectCanEnterChildExperience);
   const authorizeChildExperience = usePrototypeStore((state) => state.authorizeChildExperience);
@@ -14,7 +16,15 @@ export default function ChildLayout() {
   if (!authorization?.ok) return <Redirect href={'/' as Href} />;
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack
+      screenOptions={({ route }) =>
+        navigationMotionOptions(
+          Platform.OS,
+          reducedMotion,
+          route.name === 'index' ? 'peer' : 'detail',
+        )
+      }
+    >
       <Stack.Screen
         name="reveal/[bundleId]"
         options={{

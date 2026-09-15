@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { useRouter, type Href } from 'expo-router';
+import { useCallback, useRef } from 'react';
+import { useFocusEffect, useRouter, type Href } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { ParentCheckIn } from '@/components/family-growth/ParentCheckIn';
@@ -25,13 +25,15 @@ export default function ParentCheckInScreen() {
       ? serviceRegistry.recognition.resolveCheckInState(usePrototypeStore.getState(), submissionId)
       : null;
 
-  useEffect(() => {
-    if (role !== 'parent') {
-      router.replace('/');
-      return;
-    }
-    if (!admission?.ok && !intentionalExitRef.current) router.replace('/parent');
-  }, [admission?.ok, role, router]);
+  useFocusEffect(
+    useCallback(() => {
+      if (role !== 'parent') {
+        router.replace('/');
+        return;
+      }
+      if (!admission?.ok && !intentionalExitRef.current) router.replace('/parent');
+    }, [admission?.ok, role, router]),
+  );
 
   const resumablePlan =
     admission?.ok && admission.data.state === 'confirmation_pending'
@@ -43,9 +45,11 @@ export default function ParentCheckInScreen() {
       confirmationPlan.renderState !== resumablePlan.renderState),
   );
 
-  useEffect(() => {
-    if (submissionId && needsRestore) restoreCheckInState(submissionId);
-  }, [needsRestore, restoreCheckInState, submissionId]);
+  useFocusEffect(
+    useCallback(() => {
+      if (submissionId && needsRestore) restoreCheckInState(submissionId);
+    }, [needsRestore, restoreCheckInState, submissionId]),
+  );
 
   if (role !== 'parent') return null;
   if (!admission?.ok) return null;

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigationContainerRef, useRouter, type Href } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
+import { useFocusEffect, useNavigationContainerRef, useRouter, type Href } from 'expo-router';
 import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -179,27 +179,31 @@ export default function ParentTaskReviewScreen() {
     router.replace('/parent/task/new');
   }, [returnReviewedTaskToDraft, router, t]);
 
-  useEffect(() => {
-    if (role !== 'parent') {
-      router.replace('/');
-      return;
-    }
-    if (!content || (!reviewable && !approvalNavigationPending.current)) {
-      router.replace('/parent/task/new');
-    }
-  }, [content, reviewable, role, router]);
+  useFocusEffect(
+    useCallback(() => {
+      if (role !== 'parent') {
+        router.replace('/');
+        return;
+      }
+      if (!content || (!reviewable && !approvalNavigationPending.current)) {
+        router.replace('/parent/task/new');
+      }
+    }, [content, reviewable, role, router]),
+  );
 
-  useEffect(() => {
-    if (Platform.OS !== 'android' || role !== 'parent' || !reviewable || successVisible) {
-      return undefined;
-    }
+  useFocusEffect(
+    useCallback(() => {
+      if (Platform.OS !== 'android' || role !== 'parent' || !reviewable || successVisible) {
+        return undefined;
+      }
 
-    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
-      edit();
-      return true;
-    });
-    return () => subscription.remove();
-  }, [edit, reviewable, role, successVisible]);
+      const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+        edit();
+        return true;
+      });
+      return () => subscription.remove();
+    }, [edit, reviewable, role, successVisible]),
+  );
 
   const approve = () => {
     setError(null);

@@ -66,6 +66,7 @@ vi.mock('react', async (importOriginal) => ({
 vi.mock('expo-router', () => ({
   useRouter: () => rendered.router,
   useNavigationContainerRef: () => rendered.navigation,
+  useFocusEffect: () => undefined,
 }));
 vi.mock('react-native', () => ({
   BackHandler: { addEventListener: vi.fn() },

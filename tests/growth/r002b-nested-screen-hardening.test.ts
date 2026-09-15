@@ -39,7 +39,8 @@ describe('R002b nested screen system-inset hardening', () => {
   it('turns off native route transitions when the system requests reduced motion', () => {
     const layout = source('app/_layout.tsx');
 
-    expect(layout).toContain("import { useReducedMotion } from 'react-native-reanimated'");
-    expect(layout).toContain("animation: reducedMotion ? 'none' : 'fade'");
+    expect(layout).toContain('const reducedMotion = useReducedMotionPreference()');
+    expect(layout).toContain('navigationMotionOptions(');
+    expect(layout).not.toContain('useReducedMotion }');
   });
 });

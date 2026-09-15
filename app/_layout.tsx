@@ -11,7 +11,6 @@ import { Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { useReducedMotion } from 'react-native-reanimated';
 import { TamaguiProvider } from 'tamagui';
 
 import { MessagingLifecycle } from '@/components/familyMessaging/MessagingLifecycle';
@@ -27,6 +26,7 @@ import {
 } from '@/components/onboarding';
 import { GhafFontProvider } from '@/components/primitives';
 import { colors, firstRunMotion } from '@/design/tokens';
+import { navigationMotionOptions } from '@/design/navigationMotion';
 import { ghafTamaguiConfig } from '@/design/tamagui';
 import {
   preloadDeferredImages,
@@ -37,6 +37,7 @@ import {
 import { configureNativeDirection, setI18nLocale, synchronizeWebDocumentLocale } from '@/i18n';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { entryMode } from '@/config/demoEntry';
+import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 
 void SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -63,7 +64,7 @@ export default function RootLayout() {
     webHydrationBoundary.getServerSnapshot,
   );
   const pathname = usePathname();
-  const reducedMotion = Boolean(useReducedMotion());
+  const reducedMotion = useReducedMotionPreference();
   const splashStartedAt = useRef<number | null>(null);
   const loadingStartedAt = useRef<number | null>(null);
   const [nativeSplashHidden, setNativeSplashHidden] = useState(false);
@@ -228,11 +229,15 @@ export default function RootLayout() {
         <View style={styles.root}>
           {usesLightSystemChrome ? null : <PrototypeStatusBar />}
           <Stack
-            screenOptions={{
-              animation: reducedMotion ? 'none' : 'fade',
-              contentStyle: { backgroundColor: colors.ivory },
-              headerShown: false,
-            }}
+            screenOptions={({ route }) =>
+              navigationMotionOptions(
+                Platform.OS,
+                reducedMotion,
+                ['index', 'parent', 'child', 'garden', 'league'].includes(route.name)
+                  ? 'peer'
+                  : 'detail',
+              )
+            }
           />
           <SectionTransitionOverlay />
           <BrandedSplash phase={startupPhase} />

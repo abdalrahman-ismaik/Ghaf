@@ -73,6 +73,7 @@ vi.mock('react', async (importOriginal) => ({
 vi.mock('expo-router', () => ({
   useRouter: () => rendered.router,
   useLocalSearchParams: () => rendered.params,
+  useFocusEffect: () => undefined,
 }));
 vi.mock('react-native', () => ({
   Platform: { OS: 'web', select: (options: Record<string, unknown>) => options.default },

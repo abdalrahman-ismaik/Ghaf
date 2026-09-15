@@ -69,7 +69,9 @@ vi.mock('react-native', () => ({
   StyleSheet: { create: <T,>(styles: T) => styles, hairlineWidth: 1 },
   View: (props: HostProps) => host('div', props),
 }));
-vi.mock('react-native-reanimated', () => ({ useReducedMotion: () => true }));
+vi.mock('@/utils/useReducedMotionPreference', () => ({
+  useReducedMotionPreference: () => true,
+}));
 vi.mock('expo-crypto', () => ({ randomUUID: () => 'prepared-demo-route-test' }));
 vi.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: () => undefined },
@@ -353,7 +355,8 @@ describe('demo welcome route and real controller handoff', () => {
     expect(rendered.slots + rendered.stacks).toBe(0);
     render(parent ? run.Parent : run.Child);
     expect(rendered.redirects).toEqual([]);
-    expect(rendered.slots + rendered.stacks).toBe(1);
+    expect(rendered.slots).toBe(0);
+    expect(rendered.stacks).toBe(1);
     render(run.Access);
     expect(rendered.redirects).toEqual(['/']);
     expect(rendered.slots).toBe(0);

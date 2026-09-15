@@ -1,4 +1,5 @@
-import { useEffect, type PropsWithChildren, type ReactNode } from 'react';
+import { useCallback, type PropsWithChildren, type ReactNode } from 'react';
+import { useFocusEffect } from 'expo-router';
 import {
   BackHandler,
   Platform,
@@ -45,15 +46,17 @@ export function R002bNestedScreen({
   testID,
   title,
 }: R002bNestedScreenProps) {
-  useEffect(() => {
-    if (Platform.OS !== 'android') return undefined;
+  useFocusEffect(
+    useCallback(() => {
+      if (Platform.OS !== 'android') return undefined;
 
-    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
-      onBack();
-      return true;
-    });
-    return () => subscription.remove();
-  }, [onBack]);
+      const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+        onBack();
+        return true;
+      });
+      return () => subscription.remove();
+    }, [onBack]),
+  );
 
   const safeAreaEdges = footer
     ? (['top', 'left', 'right'] as const)

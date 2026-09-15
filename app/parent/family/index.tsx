@@ -1,7 +1,7 @@
 import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
 import { StudyEntries } from '@/components/study/StudyEntries';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { useFocusEffect, useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -77,17 +77,19 @@ export default function ParentFamilyScreen() {
       : 0;
   const familyScrollOffsetRef = useRef(restoredScrollOffset);
 
-  useEffect(() => {
-    if (!restoredFocusTarget) return;
-    const frame = requestAnimationFrame(() => {
-      focusAccessibilityTarget(
-        restoredFocusTarget === 'r003-family-progress-row'
-          ? progressEntryRef.current
-          : sharedGardenEntryRef.current,
-      );
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [restoredFocusTarget]);
+  useFocusEffect(
+    useCallback(() => {
+      if (!restoredFocusTarget) return;
+      const frame = requestAnimationFrame(() => {
+        focusAccessibilityTarget(
+          restoredFocusTarget === 'r003-family-progress-row'
+            ? progressEntryRef.current
+            : sharedGardenEntryRef.current,
+        );
+      });
+      return () => cancelAnimationFrame(frame);
+    }, [restoredFocusTarget]),
+  );
 
   const openProgress = (childId: SyntheticChildId) => {
     setTransitionError(null);

@@ -67,7 +67,9 @@ vi.mock('expo-splash-screen', () => ({
   preventAutoHideAsync: async () => undefined,
   hideAsync: async () => undefined,
 }));
-vi.mock('react-native-reanimated', () => ({ useReducedMotion: () => false }));
+vi.mock('@/utils/useReducedMotionPreference', () => ({
+  useReducedMotionPreference: () => false,
+}));
 vi.mock('@/state/usePrototypeStore', () => ({
   usePrototypeStore: (selector: (state: { locale: string }) => unknown) =>
     selector({ locale: mock.locale }),
