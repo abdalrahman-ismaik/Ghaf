@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { AppState } from 'react-native';
 
+import { getPilotConfig } from '@/features/pilot/config';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
@@ -10,6 +11,7 @@ export function MessagingLifecycle() {
     const update = () => {
       const state = usePrototypeStore.getState();
       controller.setLocale(state.locale);
+      if (getPilotConfig().enabled && !state.pilotSampleActive) return;
       controller.setLocalContext(
         `${state.demoEntryEpoch}:${state.activeExperience}:${state.activeChildId}:${state.journey?.lifecycle ?? 'none'}`,
         state.activeExperience === 'signed_out' ? null : state.activeExperience,

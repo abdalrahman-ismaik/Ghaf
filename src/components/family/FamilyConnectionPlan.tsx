@@ -18,7 +18,7 @@ import type { LocaleCode } from '@/models/familyGrowth';
 import type {
   FamilyConnectionDirectory,
   FamilyConnectionIdeaKind,
-  FamilyConnectionPlan as FamilyConnectionPlanModel,
+  FamilyRelationship,
   FamilyConnectionRhythm,
 } from '@/models/familyConnections';
 import {
@@ -30,8 +30,19 @@ import { selectHasActiveParentExperience, usePrototypeStore } from '@/state/useP
 export interface FamilyConnectionPlanProps {
   readonly direction: LayoutDirection;
   readonly language: LocaleCode;
-  readonly plan: FamilyConnectionPlanModel;
+  readonly plan: FamilyConnectionPlanPresentation;
   readonly editable?: boolean;
+}
+
+export interface FamilyConnectionPlanPresentation {
+  readonly guardianDisplayNames: readonly string[];
+  readonly entries: readonly {
+    readonly relativeId: string;
+    readonly displayName: string;
+    readonly relationship: FamilyRelationship;
+    readonly rhythm: FamilyConnectionRhythm;
+    readonly ideaKind: FamilyConnectionIdeaKind;
+  }[];
 }
 
 function rhythmKey(value: FamilyConnectionRhythm): string {

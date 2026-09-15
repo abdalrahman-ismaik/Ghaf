@@ -1192,6 +1192,11 @@ export type Database = {
         Returns: Json;
       };
       ghaf_family_identity: { Args: never; Returns: Json };
+      ghaf_family_masroofi: { Args: { p_family_id: string }; Returns: Json };
+      ghaf_family_masroofi_command: {
+        Args: { p_family_id: string; p_request_id: string; p_command: Json };
+        Returns: Json;
+      };
       ghaf_family_message_mark_read: {
         Args: { p_family_id: string; p_sequence: number; p_thread_id: string };
         Returns: Json;

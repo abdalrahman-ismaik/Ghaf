@@ -109,6 +109,8 @@ describe('approved R001 Parent onboarding integration', () => {
         '/messages',
         '/garden/memories',
         '/parent/family/connections',
+        '/child/masroofi',
+        '/parent/family/masroofi',
       ].sort(),
     );
     for (const route of R001_ACCESS_ROUTES) expect(authoredRoutes()).toContain(route);

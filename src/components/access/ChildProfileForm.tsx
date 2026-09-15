@@ -178,6 +178,9 @@ export function ChildProfileForm({
           autoCorrect
           direction="auto"
           editable={!disabled}
+          errorText={
+            customValue.trim().length < 2 ? t('access.setup.customAnswerRequired') : undefined
+          }
           label={customLabel}
           language={language}
           maxLength={80}

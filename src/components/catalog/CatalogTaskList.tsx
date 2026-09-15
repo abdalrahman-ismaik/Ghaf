@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MasroofiTaskRewardNotice } from '@/components/masroofi/MasroofiTaskRewardNotice';
 import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -108,6 +109,12 @@ export function CatalogTaskList({
           >
             {role === 'parent' ? t('catalog.review') : t('common.continue')}
           </Button>
+          {role === 'child' ? (
+            <MasroofiTaskRewardNotice
+              assignmentId={entry.journey.assignment?.id}
+              taskVersion={entry.journey.task.version}
+            />
+          ) : null}
           {role === 'parent' ? (
             <ExpandableSection
               expanded={expanded === entry.id}

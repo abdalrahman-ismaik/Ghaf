@@ -2,6 +2,7 @@ import { entryMode } from '../config/demoEntry';
 import { createFamilyMemoryRepository } from './local/familyMemoryRepository';
 import { createOnboardingCompletionRepository } from './local/onboardingCompletionRepository';
 import { createStudyRepository } from './local/studyRepository';
+import { masroofiService, type MasroofiService } from '../features/masroofi/service';
 import { createFamilyMessaging } from '../features/familyMessaging';
 import {
   createFeature003ServiceRegistry,
@@ -121,6 +122,7 @@ const repositoryStorage =
 
 export const serviceRegistry: Feature003ServiceRegistry & {
   readonly createParentAccountService: () => ParentAccountService | null;
+  readonly masroofi: MasroofiService;
   readonly familyMessaging: ReturnType<typeof createFamilyMessaging>;
   readonly ambientAudioPreferences: ReturnType<typeof createAmbientAudioPreferencesRepository>;
   readonly deviceAccess: ReturnType<typeof createDeviceAccessRepository>;
@@ -130,6 +132,7 @@ export const serviceRegistry: Feature003ServiceRegistry & {
   readonly familyMemories: ReturnType<typeof createFamilyMemoryRepository>;
   readonly onboardingCompletion: ReturnType<typeof createOnboardingCompletionRepository>;
 } = {
+  masroofi: masroofiService,
   ...createFeature003ServiceRegistry(),
   createParentAccountService() {
     const config = getPilotConfig();

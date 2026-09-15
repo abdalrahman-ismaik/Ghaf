@@ -126,9 +126,11 @@ describe('R003 first-run experience', () => {
     const rasterPresentation = `${logo}\n${brandLockup}\n${splash}\n${transition}`;
 
     const routes = authoredRoutes();
-    expect(routes).toHaveLength(44);
+    expect(routes).toHaveLength(46);
     for (const addition of [
       'messages/index.tsx',
+      'child/masroofi.tsx',
+      'parent/family/masroofi.tsx',
       'parent/study.tsx',
       'parent/practices.tsx',
       'child/study.tsx',

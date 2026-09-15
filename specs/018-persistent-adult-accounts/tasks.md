@@ -1,5 +1,23 @@
 # Tasks
 
+## Primary workspace and reported stability failures
+
+- [x] S01 Repair startup when optional pilot/messaging environment files are absent.
+- [x] S02 Make real account-owned family/tasks/study the primary post-login experience.
+- [x] S03 Verify and repair family/task creation, completion, validation and conflict recovery.
+- [x] S04 Verify and repair language selection and draft preservation in account/local forms.
+- [x] S05 Preserve sample tasks, Masroofi and existing account-switch/reset boundaries.
+- [x] S06 Run focused/full checks and available real-backend/browser verification; record gaps.
+- [ ] BLOCKED: fresh authenticated hosted save/reload needs a controlled signed-in test session.
+- [ ] NOT RUN: fresh Android build, RTL restart, native keyboard/Back and named-human acceptance.
+
+Current [stability evidence](../../docs/competition-readiness/workstreams/account-stability-20260914.md)
+records 3,118 passing Vitest tests, 12 launcher tests and the exact browser/provider limits.
+
+Scope and authority: [stability amendment](stability-and-primary-workspace.md).
+
+## Earlier implementation evidence
+
 - [x] Recover real provider/session and local-only data boundaries.
 - [x] Record adult profile plus family/task/study planning scope and no automatic guest migration.
 - [x] Add typed owned workspace, atomic validated commands and RLS isolation tests.

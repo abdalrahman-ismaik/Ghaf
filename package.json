@@ -7,20 +7,21 @@
   "scripts": {
     "start": "expo start",
     "start:demo": "node scripts/start-demo.mjs",
-    "start:pilot": "node --env-file=.env.pilot.local ./node_modules/expo/bin/cli start --clear",
-    "start:messaging": "node --env-file=.env.messaging.local ./node_modules/expo/bin/cli start --clear",
+    "start:pilot": "node scripts/development/start-expo.mjs pilot",
+    "start:messaging": "node scripts/development/start-expo.mjs messaging",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint --max-warnings=0 && eslint tests workers scripts/repository --max-warnings=0",
+    "lint": "expo lint --max-warnings=0 && eslint tests workers scripts/repository scripts/development --max-warnings=0",
     "typecheck": "node scripts/repository/refresh-route-types.mjs && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "build:web": "expo export --platform web --output-dir dist",
-    "verify": "npm run repo:check && npm run typecheck && npm run lint && npm run format:check && npm test && expo install --check && npm run build:web",
-    "format": "prettier --write \"app/**/*.{ts,tsx}\" \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" app.config.ts eslint.config.js vitest.config.mts package.json README.md CONTRIBUTING.md docs/README.md docs/DEVELOPMENT.md \"docs/architecture/**/*.md\" \"scripts/repository/*.{mjs,json}\" \"tests/**/*.json\" \"{src,assets,scripts,specs,tests,workers,tools}/README.md\" \".github/**/*.md\" \".github/workflows/*.yml\"",
-    "format:check": "prettier --check \"app/**/*.{ts,tsx}\" \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" app.config.ts eslint.config.js vitest.config.mts package.json README.md CONTRIBUTING.md docs/README.md docs/DEVELOPMENT.md \"docs/architecture/**/*.md\" \"scripts/repository/*.{mjs,json}\" \"tests/**/*.json\" \"{src,assets,scripts,specs,tests,workers,tools}/README.md\" \".github/**/*.md\" \".github/workflows/*.yml\"",
-    "repo:check": "node --test scripts/repository/check.test.mjs && node scripts/repository/check.mjs"
+    "verify": "npm run repo:check && npm run typecheck && npm run lint && npm run format:check && npm run test:startup && npm test && expo install --check && npm run build:web",
+    "format": "prettier --write \"app/**/*.{ts,tsx}\" \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" app.config.ts eslint.config.js vitest.config.mts package.json README.md CONTRIBUTING.md docs/README.md docs/DEVELOPMENT.md \"docs/architecture/**/*.md\" \"scripts/repository/*.{mjs,json}\" \"scripts/development/*.mjs\" \"tests/**/*.json\" \"{src,assets,scripts,specs,tests,workers,tools}/README.md\" \".github/**/*.md\" \".github/workflows/*.yml\"",
+    "format:check": "prettier --check \"app/**/*.{ts,tsx}\" \"src/**/*.{ts,tsx}\" \"tests/**/*.{ts,tsx}\" app.config.ts eslint.config.js vitest.config.mts package.json README.md CONTRIBUTING.md docs/README.md docs/DEVELOPMENT.md \"docs/architecture/**/*.md\" \"scripts/repository/*.{mjs,json}\" \"scripts/development/*.mjs\" \"tests/**/*.json\" \"{src,assets,scripts,specs,tests,workers,tools}/README.md\" \".github/**/*.md\" \".github/workflows/*.yml\"",
+    "repo:check": "node --test scripts/repository/check.test.mjs && node scripts/repository/check.mjs",
+    "test:startup": "node --test scripts/development/start-expo.test.mjs"
   },
   "dependencies": {
     "@expo-google-fonts/alexandria": "^0.4.2",

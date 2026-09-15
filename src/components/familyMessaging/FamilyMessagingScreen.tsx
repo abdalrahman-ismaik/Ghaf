@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +15,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { GhafIcon } from '@/components/access';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { logicalRowDirection } from '@/design/tokens';
+import type { MessagingRole } from '@/features/familyMessaging';
+import type { FamilyMessagingController } from '@/features/familyMessaging/controller';
 import { serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { MessagingAccess } from './MessagingAccess';
@@ -21,8 +24,20 @@ import { MessagingConversation } from './MessagingConversation';
 import { MessagingManagement } from './MessagingManagement';
 import { MessageButton, MessageText, styles } from './shared';
 
-export function FamilyMessagingScreen() {
-  const controller = serviceRegistry.familyMessaging.controller;
+export interface FamilyMessagingScreenProps {
+  readonly controller?: FamilyMessagingController;
+  readonly onExit?: () => void;
+  readonly embedded?: boolean;
+  readonly localContext?: { readonly scope: string; readonly role: MessagingRole };
+}
+
+export function FamilyMessagingScreen({
+  controller = serviceRegistry.familyMessaging.controller,
+  onExit,
+  embedded = false,
+  localContext,
+}: FamilyMessagingScreenProps = {}) {
+  const { height } = useWindowDimensions();
   const state = useSyncExternalStore(
     controller.subscribe,
     controller.getSnapshot,
@@ -31,8 +46,13 @@ export function FamilyMessagingScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const direction = usePrototypeStore((store) => store.direction);
+  const [boundScope, setBoundScope] = useState<string | null>(null);
   const [managementDevice, setManagementDevice] = useState<string | null>(null);
+  const contextScope = localContext?.scope;
+  const contextRole = localContext?.role;
+  const scopeReady = !contextScope || boundScope === contextScope;
   const management =
+    scopeReady &&
     state.phase === 'ready' &&
     Boolean(state.context) &&
     managementDevice === state.context?.deviceId;
@@ -50,14 +70,20 @@ export function FamilyMessagingScreen() {
       controller.closeThread();
       return;
     }
-    if (router.canGoBack()) router.back();
+    if (onExit) onExit();
+    else if (router.canGoBack()) router.back();
     else router.replace('/');
-  }, [controller, management, router, state.threadId]);
+  }, [controller, management, onExit, router, state.threadId]);
   useFocusEffect(
     useCallback(() => {
+      if (contextScope && contextRole) {
+        controller.setLocalContext(contextScope, contextRole);
+        controller.openFor(contextRole);
+      }
       controller.setVisible(true);
+      setBoundScope(contextScope ?? null);
       return () => controller.setVisible(false);
-    }, [controller]),
+    }, [contextRole, contextScope, controller]),
   );
   useFocusEffect(
     useCallback(() => {
@@ -68,14 +94,21 @@ export function FamilyMessagingScreen() {
       return () => subscription.remove();
     }, [back]),
   );
-  const thread = state.threads.find((candidate) => candidate.id === state.threadId);
-  const ready = state.phase === 'ready' && state.context !== null;
+  const thread = scopeReady
+    ? state.threads.find((candidate) => candidate.id === state.threadId)
+    : undefined;
+  const ready = scopeReady && state.phase === 'ready' && state.context !== null;
   const access =
-    state.phase === 'signedOut' || state.phase === 'authenticating' || state.phase === 'revoked';
+    scopeReady &&
+    (state.phase === 'signedOut' || state.phase === 'authenticating' || state.phase === 'revoked');
   return (
     <SafeAreaView
-      style={[styles.root, Platform.OS === 'web' ? null : { direction: 'ltr' }]}
-      edges={['top', 'left', 'right', 'bottom']}
+      style={[
+        styles.root,
+        embedded ? { flex: 0, height: Math.max(360, height - 160) } : null,
+        Platform.OS === 'web' ? null : { direction: 'ltr' },
+      ]}
+      edges={embedded ? [] : ['top', 'left', 'right', 'bottom']}
       testID="family-messaging-screen"
     >
       <KeyboardAvoidingView
@@ -97,6 +130,7 @@ export function FamilyMessagingScreen() {
               fullWidth={false}
               icon={<GhafIcon name="arrow-back" direction={direction} />}
               onPress={back}
+              testID="messaging-back"
             >
               {t('messaging.back')}
             </MessageButton>
@@ -146,7 +180,7 @@ export function FamilyMessagingScreen() {
                 <MessageText>{t('messaging.unavailableBody')}</MessageText>
               </>
             ) : null}
-            {state.phase === 'validating' ? (
+            {!scopeReady || state.phase === 'validating' ? (
               <MessageText accessibilityLiveRegion="polite">{t('messaging.loading')}</MessageText>
             ) : null}
             {state.phase === 'locked' ? (

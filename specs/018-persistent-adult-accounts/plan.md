@@ -1,5 +1,14 @@
 # Implementation plan
 
+## Primary workspace stability continuation
+
+Follow the [2026-09-14 amendment](stability-and-primary-workspace.md): repair missing-file
+launchers, promote the existing authenticated workspace into primary daily navigation, simplify
+real family/task creation, and reconcile language selection without losing drafts. Preserve
+account ownership/revisions, private teardown and the explicit sample. Root owns integration and
+one validation lane; bounded writers own workspace UI and startup scripts. No schema expansion
+or synthetic-store hydration is needed for these existing records.
+
 ## Backend readiness continuation
 
 The 2026-09-14 maintenance/publication request extends execution in this order:

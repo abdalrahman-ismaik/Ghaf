@@ -22,7 +22,17 @@ export function FamilyPracticesScreen({ role }: { role: 'parent' | 'child' }) {
   return <PracticeSessionScreen key={`${role}:${childId}`} role={role} />;
 }
 
-export function PracticeSessionScreen({ role }: { role: 'parent' | 'child' }) {
+export interface PracticeSessionScreenProps {
+  readonly role: 'parent' | 'child';
+  readonly onExit?: () => void;
+  readonly embedded?: boolean;
+}
+
+export function PracticeSessionScreen({
+  role,
+  onExit,
+  embedded = false,
+}: PracticeSessionScreenProps) {
   const router = useRouter();
   const { t } = useTranslation();
   const locale = usePrototypeStore((state) => state.locale);
@@ -32,8 +42,9 @@ export function PracticeSessionScreen({ role }: { role: 'parent' | 'child' }) {
   const back = useCallback(() => {
     setSourceError(false);
     if (session) dispatch({ type: 'back' });
+    else if (onExit) onExit();
     else router.replace(role === 'parent' ? '/parent' : '/child');
-  }, [role, router, session]);
+  }, [onExit, role, router, session]);
 
   useFocusEffect(
     useCallback(() => {
@@ -57,20 +68,16 @@ export function PracticeSessionScreen({ role }: { role: 'parent' | 'child' }) {
   const textProps = { brand: true, direction, language: locale } as const;
   const buttonProps = { ...textProps, fullWidth: true } as const;
 
-  return (
-    <R002aScreen
-      header={
-        <R002aFlowHeader
-          backLabel={t('familyPractices.back')}
-          direction={direction}
-          onBack={back}
-          title={t('familyPractices.navTitle')}
-        />
-      }
-      key={`${session?.practiceId ?? 'catalog'}:${session?.phase ?? ''}:${session?.stepIndex ?? ''}`}
-      safeAreaEdges={['top', 'left', 'right', 'bottom']}
-      testID="family-practices-screen"
-    >
+  const header = (
+    <R002aFlowHeader
+      backLabel={t('familyPractices.back')}
+      direction={direction}
+      onBack={back}
+      title={t('familyPractices.navTitle')}
+    />
+  );
+  const content = (
+    <>
       <LanguageSwitcher compact showGuidance={false} />
       {!session || !practice ? (
         <>
@@ -240,6 +247,21 @@ export function PracticeSessionScreen({ role }: { role: 'parent' | 'child' }) {
           </View>
         </>
       )}
+    </>
+  );
+  return embedded ? (
+    <View style={styles.copy} testID="family-practices-screen">
+      {header}
+      {content}
+    </View>
+  ) : (
+    <R002aScreen
+      header={header}
+      key={`${session?.practiceId ?? 'catalog'}:${session?.phase ?? ''}:${session?.stepIndex ?? ''}`}
+      safeAreaEdges={['top', 'left', 'right', 'bottom']}
+      testID="family-practices-screen"
+    >
+      {content}
     </R002aScreen>
   );
 }

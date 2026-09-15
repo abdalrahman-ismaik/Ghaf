@@ -1,6 +1,7 @@
 export const cloudFamilyResources = {
   en: {
     messages: 'Messages',
+    masroofi: 'Masroofi',
     title: 'Your Ghaf family',
     parent: 'Parent account',
     child: 'Paired Child device',
@@ -188,6 +189,7 @@ export const cloudFamilyResources = {
   },
   ar: {
     messages: 'الرسائل',
+    masroofi: 'مصروفي',
     title: 'عائلتك في غاف',
     parent: 'حساب وليّ الأمر',
     child: 'جهاز طفل مقترن',

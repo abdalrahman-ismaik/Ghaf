@@ -158,7 +158,11 @@ function textAccessibilityProps(
   if (Platform.OS !== 'web') return props;
   const webProps = Object.fromEntries(
     Object.entries(props).filter(
-      ([key]) => !key.startsWith('accessibility') && key !== 'accessible' && key !== 'nativeID',
+      ([key]) =>
+        !key.startsWith('accessibility') &&
+        key !== 'accessible' &&
+        key !== 'nativeID' &&
+        key !== 'selectable',
     ),
   );
   const role = textWebRole(props.role ?? props.accessibilityRole);
@@ -254,6 +258,9 @@ export function Text({
               : styles.writingAuto,
         { textAlign: logicalTextAlign(align, alignmentDirection) },
         tabular ? styles.tabularNumbers : null,
+        Platform.OS === 'web' && props.selectable !== undefined
+          ? { userSelect: props.selectable ? 'text' : 'none' }
+          : null,
         style,
       ])}
     />

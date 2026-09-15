@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   // across the section and leaving the rest of it empty.
   compactWrapper: {
     width: 'auto',
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
   },
   segment: {
     width: '100%',

@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PARENT_VERIFICATION_CODE } from '../../src/features/access';
+import { createMasroofiRuntime } from '../../src/features/masroofi/service';
 import { INITIAL_CHILD_VOICE_VIEW } from '../../src/features/assistants/childVoiceController';
 import { TASK_TEMPLATES } from '../../src/features/tasks/demoContent';
 import { FAMILY_MEMORY_STORAGE_KEY } from '../../src/models/familyMemory';
@@ -112,6 +113,28 @@ afterEach(() => {
 });
 
 describe('confirmed corrupt saved-family recovery', () => {
+  it('preserves Masroofi without confirmation and clears it with confirmed recovery', async () => {
+    await enterParentExperienceForTest();
+    expect(usePrototypeStore.getState().enableMasroofi('child_alya', true).ok).toBe(true);
+    expect(
+      usePrototypeStore.getState().topUpMasroofi('child_alya', 1200, 'recovery-funds').ok,
+    ).toBe(true);
+    const previous = usePrototypeStore.getState().masroofi;
+    expect(previous).not.toEqual(createMasroofiRuntime());
+    expect(usePrototypeStore.getState().signOutExperience().ok).toBe(true);
+    corrupt();
+    expect(retry().ok).toBe(false);
+    expect(
+      usePrototypeStore.getState().confirmCorruptLocalFamilyRecovery({ confirmed: false }).ok,
+    ).toBe(false);
+    expect(usePrototypeStore.getState().masroofi).toEqual(previous);
+
+    expect(confirm()).toMatchObject({ ok: true, data: { navigateTo: '/', replaceHistory: true } });
+    expect(usePrototypeStore.getState().masroofi).toEqual(createMasroofiRuntime());
+    expect(usePrototypeStore.getState().activeExperience).toBe('signed_out');
+    expect(usePrototypeStore.getState().locale).toBe('ar');
+  });
+
   it.each([
     [LOCAL_FAMILY_STORAGE_KEY, 'synthetic-corrupt-json'],
     [LOCAL_FAMILY_STORAGE_KEY, '{"schemaVersion":999}'],

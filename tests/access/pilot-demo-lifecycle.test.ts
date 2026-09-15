@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { DEVICE_ACCESS_STORAGE_KEY } from '../../src/models/deviceAccess';
+import { createMasroofiRuntime } from '../../src/features/masroofi/service';
 import { LOCAL_FAMILY_STORAGE_KEY } from '../../src/models/localFamily';
 import { createMemoryLocalKeyValueStorage } from '../../src/services/local/memory';
 import type { LocalKeyValueStorage } from '../../src/services/local/storageTypes';
@@ -66,6 +67,20 @@ describe('real Parent pilot sample lifecycle', () => {
     expect((await usePrototypeStore.getState().startPilotSample()).ok).toBe(false);
     expect(usePrototypeStore.getState().clearPilotSample().ok).toBe(false);
     expect(storage.getItem(LOCAL_FAMILY_STORAGE_KEY)).toBe('existing corrupt family');
+  });
+
+  it('clears private Masroofi funds before another adult account opens the sample', async () => {
+    const { usePrototypeStore } = await loadStore('supabase', createMemoryLocalKeyValueStorage());
+    assertOk(await usePrototypeStore.getState().startPilotSample());
+    assertOk(usePrototypeStore.getState().enableMasroofi('child_alya', true));
+    assertOk(usePrototypeStore.getState().topUpMasroofi('child_alya', 1200, 'first-account-funds'));
+    expect(usePrototypeStore.getState().masroofi).not.toEqual(createMasroofiRuntime());
+
+    assertOk(usePrototypeStore.getState().clearPilotSample());
+    expect(usePrototypeStore.getState().masroofi).toEqual(createMasroofiRuntime());
+    expect(usePrototypeStore.getState().getMasroofiParent('child_alya').ok).toBe(false);
+    assertOk(await usePrototypeStore.getState().startPilotSample());
+    expect(usePrototypeStore.getState().masroofi).toEqual(createMasroofiRuntime());
   });
 
   it('keeps invalid explicit modes in isolated memory but refuses sample entry', async () => {

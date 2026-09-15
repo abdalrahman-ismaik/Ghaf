@@ -1,5 +1,10 @@
 # Feature 018: Persistent adult account data
 
+The later [primary workspace and stability amendment](stability-and-primary-workspace.md)
+authorizes promoting real family/task/study data into the primary signed-in experience and
+repairing the reported family, task, language and startup failures. Historical evidence below
+remains attributed to the earlier increment.
+
 Authority: the user's 2026-09-14 request for real login/logout, persistent sessions,
 account-owned backend data, independent-device access and isolation on `main`.
 The initial increment did not authorize publication or hosted deployment. The

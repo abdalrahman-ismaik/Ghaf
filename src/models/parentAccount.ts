@@ -54,6 +54,11 @@ export class ParentAccountError extends Error {
 export type ParentAccountEvent = 'signed-out' | 'changed' | 'refreshed' | 'recovery' | 'error';
 
 export interface ParentAccountService {
+  normalizedFamilyRequest?(
+    name: 'ghaf_read' | 'ghaf_command',
+    parameters: Record<string, unknown> | undefined,
+    expectedUserId: string,
+  ): Promise<{ data: unknown; error: unknown; status?: number }>;
   familyRequest?(
     name: string,
     args?: Record<string, unknown>,

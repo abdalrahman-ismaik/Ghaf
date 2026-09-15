@@ -280,6 +280,8 @@ describe('US6 bilingual offline operator and reset flow', () => {
         ...FEATURE017_ROUTES,
         '/garden/memories',
         '/parent/family/connections',
+        '/child/masroofi',
+        '/parent/family/masroofi',
       ].sort(),
     );
     for (const legacyRoute of LEGACY_ROUTES) {

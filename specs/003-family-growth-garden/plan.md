@@ -1,5 +1,9 @@
 # Implementation Plan: Family Growth Garden
 
+## Masroofi extension
+
+Implement the separate [Feature 017 plan](../017-masroofi-demo/plan.md) through the existing
+registry and guarded store, preserving every prior recognition and reset authority.
 ## Android motion repair — 2026-09-14
 
 Apply the bounded [motion implementation plan](motion-interactions.md) with the

@@ -15,7 +15,10 @@ export class GuardedAccountStorage implements AccountStorage {
   private queue: Promise<unknown> = Promise.resolve();
   private sessionSnapshot: string | null = null;
 
-  constructor(private readonly storage: AccountStorage) {}
+  constructor(
+    private readonly storage: AccountStorage,
+    private readonly storageKey = ACCOUNT_STORAGE_KEY,
+  ) {}
 
   get hasFailed() {
     return this.failed;
@@ -46,11 +49,11 @@ export class GuardedAccountStorage implements AccountStorage {
 
   getItem(key: string): Promise<string | null> {
     return this.run(async () => {
-      if (!this.writable && key === ACCOUNT_STORAGE_KEY && this.sessionSnapshot) {
+      if (!this.writable && key === this.storageKey && this.sessionSnapshot) {
         return this.sessionSnapshot;
       }
       const value = await this.storage.getItem(key);
-      if (this.writable && key === ACCOUNT_STORAGE_KEY) this.sessionSnapshot = value;
+      if (this.writable && key === this.storageKey) this.sessionSnapshot = value;
       return value;
     });
   }
@@ -59,7 +62,7 @@ export class GuardedAccountStorage implements AccountStorage {
     return this.run(async () => {
       if (this.writable) {
         await this.storage.setItem(key, value);
-        if (key === ACCOUNT_STORAGE_KEY) this.sessionSnapshot = value;
+        if (key === this.storageKey) this.sessionSnapshot = value;
       }
     });
   }
@@ -71,10 +74,10 @@ export class GuardedAccountStorage implements AccountStorage {
   async clearCredentials(preserveRecovery = false): Promise<void> {
     const results = await Promise.allSettled(
       [
-        ACCOUNT_STORAGE_KEY,
-        `${ACCOUNT_STORAGE_KEY}-user`,
-        `${ACCOUNT_STORAGE_KEY}-code-verifier`,
-        ...(preserveRecovery ? [] : [RECOVERY_STORAGE_KEY]),
+        this.storageKey,
+        `${this.storageKey}-user`,
+        `${this.storageKey}-code-verifier`,
+        ...(preserveRecovery ? [] : [`${this.storageKey}.recovery`]),
       ].map((key) => this.removeItem(key)),
     );
     if (results.some((result) => result.status === 'rejected')) {

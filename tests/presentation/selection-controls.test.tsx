@@ -172,9 +172,9 @@ describe('selection surfaces across the Parent journey', () => {
     expect(catalog).toContain("t(filter ? 'catalog.emptySection' : 'catalog.empty')");
   });
 
-  it('lets a compact language switcher hug its own options', () => {
+  it('centers a compact language switcher around its own options', () => {
     const switcher = read('src/components/LanguageSwitcher.tsx');
 
-    expect(switcher).toMatch(/compactWrapper:\s*\{[\s\S]*?alignSelf:\s*'flex-start'/u);
+    expect(switcher).toMatch(/compactWrapper:\s*\{\s*width:\s*'auto',\s*alignSelf:\s*'center'/u);
   });
 });

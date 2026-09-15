@@ -460,85 +460,81 @@ export default function ParentHomeScreen() {
             onCreateTask={openTaskBuilderFor}
             onOpenCurrent={openTaskAction}
           />
-        ) : (
-          <>
-            {!journey ? (
-              <Button
-                brand
+        ) : !journey ? (
+          <Button
+            brand
+            direction={direction}
+            icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
+            onPress={openTaskAction}
+            size="regular"
+            testID="parent-tasks-create-task"
+          >
+            {t('r002aTasks.createTask')}
+          </Button>
+        ) : null}
+
+        {adjustmentError ? (
+          <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
+            {adjustmentError}
+          </Text>
+        ) : null}
+
+        <View
+          accessibilityRole="radiogroup"
+          style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {Object.values(children)
+            .filter((child) => localFamily.configuredChildIds.includes(child.id))
+            .map((child) => {
+              const selected = child.id === activeChildId;
+              return (
+                <SelectionChip
+                  direction={direction}
+                  fill
+                  key={child.id}
+                  label={profileName(child.id)}
+                  onPress={() => chooseChild(child.id)}
+                  role="radio"
+                  selected={selected}
+                  testID={`parent-tasks-child-${child.id}`}
+                />
+              );
+            })}
+        </View>
+
+        <View
+          accessibilityRole="tablist"
+          style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {(
+            [
+              ['assigned', t('r002aTasks.assignedTab')],
+              ['pending', t('r002aTasks.pendingTab')],
+              ['completed', t('r002aTasks.completedTab')],
+            ] as const
+          ).map(([key, label]) => {
+            const selected = taskFilter === key;
+            return (
+              <SelectionChip
                 direction={direction}
-                icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
-                onPress={openTaskAction}
-                size="regular"
-                testID="parent-tasks-create-task"
-              >
-                {t('r002aTasks.createTask')}
-              </Button>
-            ) : null}
+                fill
+                key={key}
+                label={label}
+                onPress={() => {
+                  dismissTaskAdded();
+                  setTaskFilter(key);
+                }}
+                role="tab"
+                selected={selected}
+                testID={`parent-tasks-tab-${key}`}
+              />
+            );
+          })}
+        </View>
 
-            {adjustmentError ? (
-              <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
-                {adjustmentError}
-              </Text>
-            ) : null}
-
-            <View
-              accessibilityRole="radiogroup"
-              style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
-            >
-              {Object.values(children)
-                .filter((child) => localFamily.configuredChildIds.includes(child.id))
-                .map((child) => {
-                  const selected = child.id === activeChildId;
-                  return (
-                    <SelectionChip
-                      direction={direction}
-                      fill
-                      key={child.id}
-                      label={profileName(child.id)}
-                      onPress={() => chooseChild(child.id)}
-                      role="radio"
-                      selected={selected}
-                      testID={`parent-tasks-child-${child.id}`}
-                    />
-                  );
-                })}
-            </View>
-
-            <View
-              accessibilityRole="tablist"
-              style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
-            >
-              {(
-                [
-                  ['assigned', t('r002aTasks.assignedTab')],
-                  ['pending', t('r002aTasks.pendingTab')],
-                  ['completed', t('r002aTasks.completedTab')],
-                ] as const
-              ).map(([key, label]) => {
-                const selected = taskFilter === key;
-                return (
-                  <SelectionChip
-                    direction={direction}
-                    fill
-                    key={key}
-                    label={label}
-                    onPress={() => {
-                      dismissTaskAdded();
-                      setTaskFilter(key);
-                    }}
-                    role="tab"
-                    selected={selected}
-                    testID={`parent-tasks-tab-${key}`}
-                  />
-                );
-              })}
-            </View>
-
-            <View accessibilityLiveRegion="polite">
-              <CatalogTaskList role="parent" filter={taskFilter} />
-            </View>
-          </>
-        )}
+        <View accessibilityLiveRegion="polite">
+          <CatalogTaskList role="parent" filter={taskFilter} />
+        </View>
       </R002aScreen>
     );
   }

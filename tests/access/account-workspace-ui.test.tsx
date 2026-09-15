@@ -161,7 +161,12 @@ describe('saved account workspace presentation', () => {
         nodes().some((node) => node.props.children === pilotResources[locale].workspace.separate),
       ).toBe(true);
       expect(byId('workspace-family-name')?.props.children).toBe(saved.familyName);
-      expect(byId('workspace-show-family')?.props.accessibilityState).toEqual({ expanded: true });
+      expect(byId('workspace-navigation')?.props.accessibilityRole).toBe('tablist');
+      expect(byId('workspace-show-family')?.props).toMatchObject({
+        accessibilityRole: 'tab',
+        accessibilityState: { selected: true },
+      });
+      expect(byId('workspace-show-task')?.props.accessibilityState).toEqual({ selected: false });
       press('workspace-rename-family');
       render();
       expect(byId('workspace-editor-primary')?.props).toMatchObject({
@@ -196,7 +201,7 @@ describe('saved account workspace presentation', () => {
     };
     render();
     expect(byId('workspace-members-empty')).toBeDefined();
-    expect(byId('workspace-add-member')?.props.disabled).toBe(false);
+    expect(byId('workspace-add-member')?.props.disabled).toBe(true);
     press('workspace-show-task');
     render();
     expect(byId('workspace-tasks-empty')).toBeDefined();
@@ -215,7 +220,7 @@ describe('saved account workspace presentation', () => {
     mock.state = { ...mock.state, data: { ...saved, familyName: 'Other client', revision: 2 } };
     render();
     expect(byId('workspace-editor-primary')?.props.value).toBe('My unsaved family');
-    expect(byId('workspace-show-task')?.props.disabled).toBe(true);
+    expect(byId('workspace-show-task')?.props.disabled).toBe(false);
     expect(byId('workspace-add-member')?.props.disabled).toBe(true);
     press('workspace-editor-save');
     await settle();
@@ -229,7 +234,7 @@ describe('saved account workspace presentation', () => {
     );
   });
 
-  it('retains conflicted edits until an explicit reload succeeds', async () => {
+  it('reloads a conflicted revision without discarding the draft and lets the user retry', async () => {
     render();
     press('workspace-rename-family');
     render();
@@ -238,15 +243,24 @@ describe('saved account workspace presentation', () => {
     render();
     expect(byId('workspace-editor-save')?.props.disabled).toBe(true);
     expect(byId('workspace-reload')?.props.children).toBe(
-      pilotResources.ar.workspace.discardReload,
+      pilotResources.ar.workspace.reloadKeepDraft,
     );
     press('workspace-reload');
     await settle();
     expect(byId('workspace-editor-primary')?.props.value).toBe('Retained draft');
-    vi.mocked(mock.controller.reload).mockResolvedValueOnce(true);
+    vi.mocked(mock.controller.reload).mockImplementationOnce(async () => {
+      mock.state = { ...mock.state, data: { ...saved, revision: 2 }, conflict: false, error: null };
+      return true;
+    });
     press('workspace-reload');
     await settle();
-    expect(byId('workspace-family-editor')).toBeUndefined();
+    expect(byId('workspace-editor-primary')?.props.value).toBe('Retained draft');
+    press('workspace-editor-save');
+    await settle();
+    expect(mock.controller.update).toHaveBeenCalledWith(
+      { type: 'rename_family', name: 'Retained draft' },
+      2,
+    );
   });
 
   it('cancels an unsubmitted draft without writing and removes a successfully saved editor', async () => {
@@ -280,11 +294,12 @@ describe('saved account workspace presentation', () => {
     expect(byId('workspace-editor-save')?.props.disabled).toBe(true);
     expect(byId('workspace-choose-member-a')?.props).toMatchObject({
       accessibilityRole: 'radio',
-      accessibilityState: { checked: true },
+      accessibilityState: { checked: false },
     });
+    enter('Prepared new task');
+    expect(byId('workspace-editor-save')?.props.disabled).toBe(true);
     press('workspace-choose-member-b');
     render();
-    enter('Prepared new task');
     press('workspace-editor-save');
     await settle();
     expect(mock.controller.update).toHaveBeenCalledWith(
@@ -386,5 +401,198 @@ describe('saved account workspace presentation', () => {
     expect(byId('workspace-editor-save')?.props.disabled).toBe(true);
     expect(byId('workspace-editor-cancel')?.props.disabled).toBe(true);
     expect(byId('workspace-reload')?.props.disabled).toBe(true);
+  });
+
+  it('keeps a selected member and task draft through language and section changes', () => {
+    render();
+    press('workspace-show-task');
+    render();
+    press('workspace-add-task');
+    render();
+    enter('ترتيب الكتب My books');
+    press('workspace-choose-member-b');
+    render();
+    mock.locale = 'en';
+    render();
+    expect(byId('workspace-editor-primary')?.props).toMatchObject({
+      value: 'ترتيب الكتب My books',
+      direction: 'ltr',
+      label: pilotResources.en.workspace.taskTitle,
+    });
+    expect(byId('workspace-choose-member-b')?.props.accessibilityState).toEqual({ checked: true });
+    press('workspace-show-family');
+    render();
+    expect(byId('workspace-family-section')).toBeDefined();
+    expect(byId('workspace-show-family')?.props.accessibilityState).toEqual({ selected: true });
+    expect(byId('workspace-show-task')?.props.accessibilityState).toEqual({ selected: false });
+    expect(byId('workspace-resume-draft')).toBeDefined();
+    press('workspace-resume-draft');
+    render();
+    expect(byId('workspace-show-task')?.props.accessibilityState).toEqual({ selected: true });
+    expect(byId('workspace-editor-primary')?.props.value).toBe('ترتيب الكتب My books');
+    expect(byId('workspace-choose-member-b')?.props.accessibilityState).toEqual({ checked: true });
+    expect(mock.controller.update).not.toHaveBeenCalled();
+  });
+
+  it('keeps an editor visible on a transient refresh failure and restores the selected saved member', async () => {
+    render();
+    press('workspace-show-task');
+    render();
+    press('workspace-add-task');
+    render();
+    press('workspace-choose-member-b');
+    render();
+    enter('Retained on network failure');
+    mock.state = { ...mock.state, data: null, error: 'network_unavailable' };
+    render();
+    expect(byId('workspace-editor-primary')?.props.value).toBe('Retained on network failure');
+    expect(byId('workspace-editor-save')?.props.disabled).toBe(true);
+    vi.mocked(mock.controller.reload).mockImplementationOnce(async () => {
+      mock.state = { ...mock.state, data: { ...saved, revision: 2 }, error: null };
+      return true;
+    });
+    press('workspace-reload');
+    await settle();
+    expect(byId('workspace-editor-primary')?.props.value).toBe('Retained on network failure');
+    expect(byId('workspace-choose-member-b')?.props.accessibilityState).toEqual({ checked: true });
+    press('workspace-editor-save');
+    await settle();
+    expect(mock.controller.update).toHaveBeenCalledWith(
+      { type: 'add_task', childId: 'member-b', title: 'Retained on network failure' },
+      2,
+    );
+  });
+
+  it('issues one write for rapid save taps and keeps failed input available for retry', async () => {
+    render();
+    press('workspace-rename-family');
+    render();
+    enter('One family write');
+    let finish: (value: boolean) => void = () => undefined;
+    vi.mocked(mock.controller.update).mockImplementationOnce(
+      () =>
+        new Promise<boolean>((resolve) => {
+          finish = resolve;
+        }),
+    );
+    press('workspace-editor-save');
+    press('workspace-editor-save');
+    press('workspace-editor-save');
+    expect(mock.controller.update).toHaveBeenCalledTimes(1);
+    finish(false);
+    await settle();
+    expect(byId('workspace-editor-primary')?.props.value).toBe('One family write');
+    press('workspace-editor-save');
+    await settle();
+    expect(mock.controller.update).toHaveBeenCalledTimes(2);
+  });
+
+  it('issues one completion request while a result is pending and preserves the saved status', async () => {
+    render();
+    press('workspace-show-task');
+    render();
+    let finish: (value: boolean) => void = () => undefined;
+    vi.mocked(mock.controller.update).mockImplementationOnce(
+      () =>
+        new Promise<boolean>((resolve) => {
+          finish = resolve;
+        }),
+    );
+    press('workspace-complete-task-task-a');
+    press('workspace-complete-task-task-a');
+    press('workspace-complete-task-task-a');
+    expect(mock.controller.update).toHaveBeenCalledExactlyOnceWith(
+      { type: 'complete_task', id: 'task-a', completed: true },
+      1,
+    );
+    expect(byId('workspace-task-status-task-a')?.props.children).toBe(
+      pilotResources.ar.workspace.open,
+    );
+    finish(false);
+    await settle();
+    expect(byId('workspace-task-status-task-a')?.props.children).toBe(
+      pilotResources.ar.workspace.open,
+    );
+  });
+
+  it('requires a selected member to still exist in the reloaded server records', async () => {
+    render();
+    press('workspace-show-task');
+    render();
+    press('workspace-add-task');
+    render();
+    press('workspace-choose-member-b');
+    render();
+    enter('Do not reassign my task');
+    vi.mocked(mock.controller.reload).mockImplementationOnce(async () => {
+      mock.state = { ...mock.state, data: { ...saved, revision: 2, members: [saved.members[0]!] } };
+      return true;
+    });
+    press('workspace-reload');
+    await settle();
+    expect(byId('workspace-editor-primary')?.props.value).toBe('Do not reassign my task');
+    expect(byId('workspace-editor-save')?.props.disabled).toBe(true);
+    expect(byId('workspace-choose-member-a')?.props.accessibilityState).toEqual({ checked: false });
+    expect(mock.controller.update).not.toHaveBeenCalled();
+  });
+
+  it('withholds private editor text when account access is denied', () => {
+    render();
+    press('workspace-rename-family');
+    render();
+    enter('Private family draft');
+    mock.state = { ...mock.state, data: null, error: 'session_expired' };
+    render();
+    expect(byId('workspace-editor-primary')).toBeUndefined();
+    expect(byId('workspace-family-section')).toBeUndefined();
+  });
+
+  it('guides the first server-confirmed family name and member into task creation', async () => {
+    mock.state = {
+      ...mock.state,
+      data: { ...saved, familyName: '', members: [], tasks: [], studyPlans: [] },
+    };
+    render();
+    expect(byId('workspace-setup-guidance')).toBeDefined();
+    expect(byId('workspace-add-member')?.props.disabled).toBe(true);
+    press('workspace-rename-family');
+    render();
+    enter('عائلتنا');
+    vi.mocked(mock.controller.update).mockImplementationOnce(async () => {
+      mock.state = {
+        ...mock.state,
+        data: { ...mock.state.data!, familyName: 'عائلتنا', revision: 2 },
+        notice: 'saved',
+      };
+      return true;
+    });
+    press('workspace-editor-save');
+    await settle();
+    expect(byId('workspace-add-member')?.props.disabled).toBe(false);
+    press('workspace-add-member');
+    render();
+    enter('نور');
+    vi.mocked(mock.controller.update).mockImplementationOnce(async () => {
+      mock.state = {
+        ...mock.state,
+        data: {
+          ...mock.state.data!,
+          members: [{ id: 'saved-noor', nickname: 'نور' }],
+          revision: 3,
+        },
+      };
+      return true;
+    });
+    press('workspace-editor-save');
+    await settle();
+    expect(byId('workspace-member-saved-noor')).toBeDefined();
+    press('workspace-setup-tasks');
+    render();
+    expect(byId('workspace-add-task')?.props.disabled).toBe(false);
+    press('workspace-add-task');
+    render();
+    expect(byId('workspace-choose-saved-noor')?.props.accessibilityState).toEqual({
+      checked: false,
+    });
   });
 });

@@ -47,6 +47,7 @@ describe('R002a Child Today and task presentation', () => {
     ).toEqual([
       '_layout.tsx',
       'index.tsx',
+      'masroofi.tsx',
       'practices.tsx',
       'settings.tsx',
       'study.tsx',
