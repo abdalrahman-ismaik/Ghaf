@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+import { ExpandableSection } from '@/components/botanical';
 import { Button, Text } from '@/components/primitives';
 import { selectAssignedTasks } from '@/features/tasks/assignmentInstances';
 import { localize } from '@/i18n';
@@ -105,8 +106,13 @@ export function CatalogTaskList({
           >
             {role === 'parent' ? t('catalog.review') : t('common.continue')}
           </Button>
-          {expanded === entry.id && role === 'parent' ? (
-            <CatalogDetails content={entry.journey.task.content} safety />
+          {role === 'parent' ? (
+            <ExpandableSection
+              expanded={expanded === entry.id}
+              testID={`catalog-details-${entry.id}`}
+            >
+              <CatalogDetails content={entry.journey.task.content} safety />
+            </ExpandableSection>
           ) : null}
         </View>
       ))}
