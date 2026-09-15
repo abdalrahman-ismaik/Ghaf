@@ -46,19 +46,20 @@ both family experiences are retained, with separate normalized models/resources/
 No tracked file is deleted. The deployed lockfile, including its YAML security fix, remains intact;
 the original checkout's separate user edits are unchanged. All three helpers released ownership.
 
-| Check                                   | Result and exact scope                                                                                                                                                               |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Clean dependency installation           | PASSED: 1,002 packages from the existing main lockfile. The first sandboxed download failed; its partial files were preserved before the successful isolated install.                |
-| TypeScript                              | PASSED again after all auth/test integration changes.                                                                                                                                |
-| Lint                                    | PASSED complete application/test/script check.                                                                                                                                       |
-| Formatting                              | PASSED complete maintained-file check after four namespace-related line wraps.                                                                                                       |
-| Full initial regressions                | 3,846 passed, 7 opt-in integration skips; two test failures and one suite setup failure were repaired. No production runtime test failure remained.                                  |
-| Corrected affected regressions          | PASSED: 306 tests in 13 files, including both runtime contracts and Child access cleanup. Fixes corrected a mock Platform export, translation mock namespace and merged route count. |
-| Normalized SQL lane                     | PASSED: 447 assertions and 25 SQL-to-app response contracts. Six selected migrations/suites; Feature020/Cron explicitly excluded from this PGlite lane.                              |
-| Startup and repository                  | PASSED: 12 launcher tests, five repository tests, navigation/artifact checks and whitespace/conflict checks.                                                                         |
-| Combined database and clean web export  | GitHub backend/repository workflows are the final integration gate before updating main; results will be linked after execution.                                                     |
-| Hosted project mutation                 | NOT RUN: this Git merge applies no hosted SQL or Auth configuration.                                                                                                                 |
-| Physical Android and named human review | NOT RUN for this merge; existing evidence retains its original source scope.                                                                                                         |
+| Check                                   | Result and exact scope                                                                                                                                                                             |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Clean dependency installation           | PASSED: 1,002 packages from the existing main lockfile. The first sandboxed download failed; its partial files were preserved before the successful isolated install.                              |
+| TypeScript                              | PASSED again after all auth/test integration changes.                                                                                                                                              |
+| Lint                                    | PASSED complete application/test/script check.                                                                                                                                                     |
+| Formatting                              | PASSED complete maintained-file check after four namespace-related line wraps.                                                                                                                     |
+| Full initial regressions                | 3,846 passed, 7 opt-in integration skips; two test failures and one suite setup failure were repaired. No production runtime test failure remained.                                                |
+| Corrected affected regressions          | PASSED: 306 tests in 13 files, including both runtime contracts and Child access cleanup. Fixes corrected a mock Platform export, translation mock namespace and merged route count.               |
+| Normalized SQL lane                     | PASSED: 447 assertions and 25 SQL-to-app response contracts. Six selected migrations/suites; Feature020/Cron explicitly excluded from this PGlite lane.                                            |
+| Startup and repository                  | PASSED: 12 launcher tests, five repository tests, navigation/artifact checks and whitespace/conflict checks.                                                                                       |
+| Clean web export                        | PASSED: both web/server bundles and 48 static routes (46 authored plus two generated). Existing web file-system warnings and Expo's forced process exit were reported; export exited successfully. |
+| Combined database CI                    | The user-requested main push triggers the existing repository/backend workflows. Their results are separate from the scoped local SQL pass.                                                        |
+| Hosted project mutation                 | NOT RUN: this Git merge applies no hosted SQL or Auth configuration.                                                                                                                               |
+| Physical Android and named human review | NOT RUN for this merge; existing evidence retains its original source scope.                                                                                                                       |
 
 The isolated SQL receipt is
 `output/supabase-migration/sql-verification-2026-09-15T07-40-59-914Z.json`. Test logs and original
@@ -66,3 +67,9 @@ conflict stages remain under ignored `output/integration/`. The original publish
 commit `ed14804` separately passed both repository and backend CI; that evidence does not establish
 combined migration compatibility. Main retains the deployed runtime until explicit normalized
 installation and selection. No automatic cross-runtime import or hosted activation is part of delivery.
+
+The resolved merge is `aa7460a` with parents `35631f7` and `ed14804`. Automatic approval review
+rejected an extra integration-branch push because the explicit destination approval covered the
+feature branch and the subsequently requested main update. No integration branch was published.
+Delivery therefore uses the user's exact “add them to main also” request and checks CI on main
+after its ordinary fast-forward push. No force push or history replacement is used.
