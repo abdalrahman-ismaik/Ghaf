@@ -1,5 +1,15 @@
 # Product
 
+## Hosted Masroofi — 2026-09-15 continuation
+
+Masroofi now has a tab in the normal Parent and paired Child saved-family menu. It retains the
+UAE card and eight spending categories, with zero-balance Parent enrollment, protected controls,
+hidden fixed task promises and a simulated ledger keyed to the existing hosted family records.
+The [additive contract](../specs/020-supabase-family-data/masroofi.md) requires its own migration;
+an unavailable backend displays artwork and an error rather than an invented card balance.
+The [dated evidence](competition-readiness/workstreams/hosted-masroofi-20260915.md) owns actual
+installation status. The separate normalized runtime and sample remain preserved.
+
 ## Integrated main runtime selection — 2026-09-15
 
 The deployed Feature 020 family experience remains the default. The separately preserved Feature

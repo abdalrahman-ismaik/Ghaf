@@ -1657,3 +1657,16 @@ and sample features, and ran serialized integration checks. The
 [main integration record](workstreams/supabase-main-integration-20260915.md) owns exact evidence.
 This AI-assisted merge is not independent student authorship, a hosted migration, live banking or
 new physical-device acceptance. Existing user-owned lockfile/skill edits stay in the original tree.
+
+## September 15 — browser repair and hosted Masroofi continuation
+
+The user reported the family-service error, requested direct work on main and identified missing
+Masroofi pages. Codex root diagnosed the older local checkout, preserved local edits, moved the
+original folder to main and restarted its browser server. A read-only SQL explorer identified
+the existing hosted actor/task/recognition hooks; three bounded writers implemented additive
+Masroofi SQL/tests, strict services/controller and bilingual UI. Root owns integration, provider
+errors, navigation and serialized verification. Supabase, React Native, design and plugin
+connection skills assisted this work. This is AI-assisted authorship, not independent student
+implementation, named cultural review or native acceptance. The
+[continuation record](workstreams/hosted-masroofi-20260915.md) separates actual checks from
+unavailable hosted administrator access. No real card issuer, custody or payment is introduced.

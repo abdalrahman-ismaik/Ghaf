@@ -1,5 +1,22 @@
 # Supabase family data
 
+## Masroofi continuation — September 15
+
+The hosted family menu now includes Masroofi for Parent and paired Child sessions. It reuses
+the UAE card artwork and actual Feature020 family/Child/task UUIDs. Parent enables a zero-balance
+simulated card with age10+ attestation, sets spending controls, adds practice funds and locks an
+eligible task reward. The Child's pending reward response omits its amount; existing Parent
+recognition posts the reward once. Child practice purchases use server-fixed item prices.
+
+Migration `20260915095557_hosted_family_masroofi.sql` adds the required relational card, control,
+promise and ledger tables plus two guarded RPCs. Its presence in source is not hosted activation.
+Until this migration is installed, the tab shows the preserved artwork and an explicit unavailable
+state; it invents no balance and makes no mock save. See the [contract](../../specs/020-supabase-family-data/masroofi.md)
+and [current installation/verification evidence](../competition-readiness/workstreams/hosted-masroofi-20260915.md).
+The separate normalized Feature019 runtime stays opt-in and is not needed for this hosted card.
+
+## Existing family backend
+
 Feature 020 extends the existing approved Supabase account project to real family
 records. Its authority is the current owner migration request and
 [Feature 020](../../specs/020-supabase-family-data/spec.md). The historical

@@ -1,5 +1,24 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Masroofi in the normal family menu
+
+After the [hosted Masroofi migration and verification](workstreams/hosted-masroofi-20260915.md):
+
+1. Sign in as Parent, open **Masroofi / مصروفي**, select an actual Child and confirm age10+.
+   Enable the card with Parent password; it starts with zero simulated balance.
+2. Set allowed spending categories, online access and per-purchase/daily limits. Review any
+   conflict before saving; another session cannot silently overwrite the open draft.
+3. Assign an eligible unchanged catalog task, then lock its reward in Masroofi before the Child
+   accepts. The Child can see the promise exists, but its amount is omitted until earned.
+4. On the separately paired Child device, complete/submit that task. Parent praise and recognition
+   create one reward credit. Repeating the same confirmation cannot duplicate the amount.
+5. Open Child Masroofi to see the revealed reward and attempt a practice purchase. Demonstrate
+   a blocked category or frozen card, then an approved purchase. These are simulated funds and
+   reference purchases, not banking, merchant checkout or measured impact.
+
+The Masroofi tab is discoverable before migration, but only artwork and an explicit unavailable
+state can be shown then. Do not claim saved controls/ledger acceptance without hosted evidence.
+
 ## Main integration — 2026-09-15
 
 Normal real-account builds keep Feature020's deployed family experience. Use explicit

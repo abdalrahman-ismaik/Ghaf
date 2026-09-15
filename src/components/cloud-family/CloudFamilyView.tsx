@@ -13,6 +13,7 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { CloudStudyView } from '@/components/cloud-study/CloudStudyView';
 import { CloudGrowthView } from '@/components/cloud-growth';
 import { CloudMessagingView } from '@/components/cloud-messaging';
+import { CloudMasroofiView } from '@/components/cloud-masroofi/CloudMasroofiView';
 import { LocalIllustration } from '@/components/illustrations';
 import { Text } from '@/components/primitives';
 import { botanical, logicalRowDirection, spacing } from '@/design/tokens';
@@ -31,7 +32,7 @@ import { CloudCustomTaskView } from './CloudCustomTaskView';
 import { CloudTaskCatalog, CloudTaskDetail } from './CloudTaskViews';
 import { CloudAction, CloudActions, CloudSection, cloudStyles, useCloudCopy } from './common';
 
-type Tab = 'family' | 'tasks' | 'garden' | 'study' | 'messages' | 'settings';
+type Tab = 'family' | 'tasks' | 'garden' | 'study' | 'masroofi' | 'messages' | 'settings';
 
 export interface CloudFamilyViewProps extends CloudFamilyBoundaryProps {
   readonly controller: CloudFamilyController;
@@ -148,7 +149,7 @@ export function CloudFamilyView({
       (childFilter === 'all' || item.childId === childFilter),
   );
   const tabs: Tab[] = snapshot.family
-    ? ['family', 'tasks', 'garden', 'study', 'messages', 'settings']
+    ? ['family', 'tasks', 'garden', 'study', 'masroofi', 'messages', 'settings']
     : ['family', 'settings'];
   const hasBack =
     editor !== null || catalogOpen || customOpen || growthOpen || taskId !== null || tab !== home;
@@ -374,6 +375,15 @@ export function CloudFamilyView({
         </>
       ) : tab === 'study' ? (
         documents('study')
+      ) : tab === 'masroofi' && snapshot.family ? (
+        <CloudMasroofiView
+          service={service}
+          userId={userId}
+          familyId={snapshot.family.id}
+          actor={snapshot.actor}
+          childProfiles={snapshot.children}
+          tasks={snapshot.tasks}
+        />
       ) : tab === 'messages' && snapshot.family ? (
         <CloudMessagingView
           service={service}

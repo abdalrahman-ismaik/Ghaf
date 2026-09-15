@@ -1,5 +1,10 @@
 # Full Supabase family runtime
 
+For Masroofi inside the normal hosted family menu, use the additive
+[Feature020 Masroofi continuation](family-data.md#masroofi-continuation--september-15).
+That card uses existing hosted family/Child/task records and does not require selecting or importing
+this normalized runtime. Its own migration still requires separate hosted installation evidence.
+
 Feature 019 replaces the narrow account planning document with a normalized family runtime.
 The app uses the existing adult project, `bqcfynlbxevqlzbkimhy`. The separately authenticated
 messaging project, `ijiwkmvjppfallaoahmh`, keeps its existing schema and identities.

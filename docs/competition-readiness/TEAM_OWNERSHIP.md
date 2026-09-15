@@ -1,5 +1,30 @@
 # Team Ownership
 
+## Hosted Masroofi continuation — 2026-09-15
+
+The user reports the browser family-service error and missing Masroofi pages after the main
+merge. Root has switched the original checkout to main while preserving the user's lockfile
+and skill edits, and restarted port 8081 using the installed hosted runtime. Root reserves
+specs/020-supabase-family-data/{masroofi.md,spec.md,plan.md,tasks.md}, shared provider RPC types
+and allowlist, CloudFamilyView navigation, bilingual navigation labels, integration tests,
+backend verification tooling, this record and the append-only assistance/evidence records.
+The bounded schema reviewer initially owns read-only research only. Subsequent exact writer
+allocations will be recorded here; one writer per file and one serialized heavy-check lane.
+No sample records are uploaded, no family authority is remapped, and no hosted SQL application
+is claimed without migration history and authenticated readback evidence.
+
+Writer allocations: SQL owns supabase/migrations/20260915095557_hosted_family_masroofi.sql,
+supabase/tests/database/family_masroofi.test.sql and specs/020-supabase-family-data/contracts/masroofi.md.
+Service owns src/models/cloudMasroofi.ts, src/features/cloud-masroofi/**,
+src/services/cloud-masroofi/** and tests/cloud-masroofi/**. UI owns src/components/cloud-masroofi/**,
+src/i18n/cloudMasroofiResources.ts and tests/cloud-masroofi-ui/**. Root owns their navigation/resource
+registration and shared account provider integration. Helpers do not commit or run heavy jobs.
+Root also owns docs/PRODUCT.md, docs/backend/{family-data,full-family-migration}.md and
+docs/competition-readiness/DEMO_RUNBOOK.md for this continuation's discoverability and evidence.
+
+All three writers have completed their scopes and released their files to root for final
+verification and delivery. User-owned lockfiles and the local Supabase skill remain excluded.
+
 ## Main integration — 2026-09-15
 
 The user explicitly requests adding the published Feature019 work to public `main`. Root owns the

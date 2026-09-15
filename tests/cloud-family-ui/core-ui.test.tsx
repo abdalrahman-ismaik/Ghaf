@@ -78,6 +78,9 @@ vi.mock('@/components/LanguageSwitcher', () => ({ LanguageSwitcher: 'LanguageSwi
 vi.mock('@/components/cloud-study/CloudStudyView', () => ({ CloudStudyView: 'CloudStudyView' }));
 vi.mock('@/components/cloud-growth', () => ({ CloudGrowthView: 'CloudGrowthView' }));
 vi.mock('@/components/cloud-messaging', () => ({ CloudMessagingView: 'CloudMessagingView' }));
+vi.mock('@/components/cloud-masroofi/CloudMasroofiView', () => ({
+  CloudMasroofiView: 'CloudMasroofiView',
+}));
 vi.mock('@/components/illustrations', () => ({ LocalIllustration: 'LocalIllustration' }));
 vi.mock('@/components/primitives', () => ({ Button: 'Button', Text: 'Text' }));
 vi.mock('@/components/family-growth/GardenLandscape', () => ({
@@ -256,7 +259,7 @@ describe('real family controls with synthetic test DTOs', () => {
       expect(find('cloud-empty-garden-artwork')!.props.decorative).toBe(true);
       mock.fontScale = 1.5;
       render(renderView);
-      expect(tabs()).toHaveLength(6);
+      expect(tabs()).toHaveLength(7);
       const enlargedSelection = tabs().filter((node) => node.props['aria-selected']);
       expect(enlargedSelection).toHaveLength(1);
       expect(enlargedSelection[0]!.props.testID).toBe('cloud-tab-garden');
@@ -264,6 +267,40 @@ describe('real family controls with synthetic test DTOs', () => {
       expect(controller.command).not.toHaveBeenCalled();
     },
   );
+  it.each(['parent', 'child'] as const)(
+    'opens saved Masroofi using the actual %s family identity',
+    (role) => {
+      const data = snapshot(role);
+      const service = {} as ParentAccountService;
+      const renderView = () =>
+        CloudFamilyView({
+          controller,
+          state: state(data),
+          snapshot: data,
+          service,
+          userId: data.actor.userId,
+          onSignOut: () => undefined,
+        });
+      render(renderView);
+      const tab = visit((tree as Node).props.footer as ReactNode).find(
+        (node) => node.props.testID === 'cloud-tab-masroofi',
+      );
+      expect(tab).toBeDefined();
+      (tab!.props.onPress as () => void)();
+      render(renderView);
+      const view = nodes().find((node) => node.type === 'CloudMasroofiView');
+      expect(view?.props).toMatchObject({
+        service,
+        userId: data.actor.userId,
+        familyId,
+        actor: data.actor,
+        childProfiles: data.children,
+        tasks: data.tasks,
+      });
+      expect(controller.command).not.toHaveBeenCalled();
+    },
+  );
+
   it('keeps the prepared helper scoped to this task and advances to its next instruction', () => {
     const first = template.catalogExecution!.steps[0]!;
     const second = template.catalogExecution!.steps[1]!;

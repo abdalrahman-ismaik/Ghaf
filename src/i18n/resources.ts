@@ -4,6 +4,7 @@ import { cloudAccessResources } from './cloudAccessResources';
 import { cloudDocumentResources } from '../features/cloud-study/resources';
 import { cloudGrowthResources } from './cloudGrowthResources';
 import { cloudMessagingResources } from './cloudMessagingResources';
+import { cloudMasroofiResources } from './cloudMasroofiResources';
 import { memoryResources } from './memoryResources';
 import { onboardingControlResources } from './onboardingControlResources';
 import { profileRecommendationResources } from './profileRecommendationResources';
@@ -26,6 +27,7 @@ export const resources = {
       cloudDocuments: cloudDocumentResources.ar,
       cloudGrowth: cloudGrowthResources.ar,
       cloudMessaging: cloudMessagingResources.ar,
+      cloudMasroofi: cloudMasroofiResources.ar,
       memories: memoryResources.ar,
       onboardingControls: onboardingControlResources.ar,
       profileRecommendations: profileRecommendationResources.ar,
@@ -2149,6 +2151,7 @@ export const resources = {
       cloudDocuments: cloudDocumentResources.en,
       cloudGrowth: cloudGrowthResources.en,
       cloudMessaging: cloudMessagingResources.en,
+      cloudMasroofi: cloudMasroofiResources.en,
       memories: memoryResources.en,
       onboardingControls: onboardingControlResources.en,
       profileRecommendations: profileRecommendationResources.en,
