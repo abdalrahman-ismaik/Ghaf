@@ -51,6 +51,14 @@ const errorsEn: Record<ParentAccountErrorCode, string> = {
 
 export const pilotResources = {
   ar: {
+    main: {
+      title: 'مساحة عائلتك',
+      body: 'عائلتك ومهامك وخطط الدراسة المحفوظة في حسابك.',
+      workspace: 'العائلة والمهام',
+      account: 'إعدادات الحساب',
+      sample: 'استكشاف العائلة التجريبية',
+      backToWorkspace: 'العودة إلى مساحة العائلة',
+    },
     label: 'تجربة غاف للبالغين',
     account: 'حساب التجربة',
     accountTitle: 'حسابك',
@@ -106,8 +114,23 @@ export const pilotResources = {
       discardReload: 'تجاهل التعديلات وتحميل الملف المحفوظ',
     },
     workspace: {
-      title: 'عائلتك المحفوظة',
-      body: 'احفظ أسماء العائلة والمهام وخطط الدراسة في حسابك، ثم حمّلها عند تسجيل الدخول على جهاز آخر.',
+      title: 'عائلتك',
+      body: 'خطّط للمهام والدراسة مع عائلتك. تظهر هنا البيانات التي حفظتها في حسابك.',
+      setupName: 'ابدأ باسم عائلتك، ثم أضف فردًا وأنشئ أول مهمة له.',
+      setupMember: 'حُفظ اسم العائلة. أضف فردًا لتتمكن من إسناد مهمة أو خطة دراسة إليه.',
+      setupTask: 'أصبح فرد العائلة جاهزًا. انتقل إلى المهام واختر له أول خطوة.',
+      setupTasksButton: 'الانتقال إلى أول مهمة',
+      familyFirst: 'احفظ اسم العائلة أولًا، ثم أضف أفرادها.',
+      tasksBody: 'اختر فردًا محفوظًا في عائلتك، ثم حدّد مهمة واضحة له.',
+      studyBody: 'اختر فردًا وحدّد موضوع الدراسة وخطوته التالية.',
+      completionNote: 'تسجّل علامة الاكتمال تقدّم خطتك فقط، ولا تمنح بذورًا أو مالًا.',
+      chooseMemberPrompt: 'اختر بنفسك فردًا من العائلة قبل الحفظ.',
+      assignedMember: 'الفرد المحدّد: {{name}}',
+      draftAway: 'لديك تعديل لم يُحفظ في قسم آخر. يمكنك العودة إليه متى أردت.',
+      resumeDraft: 'العودة إلى التعديل',
+      reloadKeepDraft: 'تحميل الأحدث مع الاحتفاظ بالتعديل',
+      reloadedDraft: 'حُمّلت البيانات الأحدث وبقي تعديلك كما هو. راجعه ثم احفظه عندما تكون جاهزًا.',
+      draftWaitingForData: 'بقيت كتابتك محفوظة هنا. أعد تحميل بيانات الحساب قبل إرسال التعديل.',
       separate: 'تبقى بيانات التجربة على الجهاز منفصلة. لا تُستورد تلقائياً إلى هذا الحساب.',
       family: 'العائلة',
       tasks: 'المهام',
@@ -145,7 +168,7 @@ export const pilotResources = {
       unsaved: 'هذه التعديلات لم تُحفظ بعد.',
       cancel: 'إلغاء التعديل',
       loading: 'جارٍ تحميل بيانات العائلة المحفوظة',
-      reload: 'تحميل البيانات المحفوظة',
+      reload: 'تحديث البيانات',
       discardReload: 'تجاهل التعديلات وتحميل البيانات المحفوظة',
       invalid: 'تحقّق من الحقول وحدود النص، ثم حاول الحفظ مجدداً.',
       conflict:
@@ -215,6 +238,14 @@ export const pilotResources = {
     errors: errorsAr,
   },
   en: {
+    main: {
+      title: 'Your family space',
+      body: 'Your family, tasks and study plans, saved to your account.',
+      workspace: 'Family workspace',
+      account: 'Account settings',
+      sample: 'Explore the sample family',
+      backToWorkspace: 'Back to family workspace',
+    },
     label: 'Ghaf adult pilot',
     account: 'Pilot account',
     accountTitle: 'Your account',
@@ -271,8 +302,26 @@ export const pilotResources = {
       discardReload: 'Discard edits and load saved profile',
     },
     workspace: {
-      title: 'Your saved family',
-      body: 'Save family names, tasks and study plans to your account, then load them when you sign in on another device.',
+      title: 'Your family',
+      body: 'Plan tasks and study with your family. This space shows the records saved to your account.',
+      setupName: 'Start with your family name, then add a member and create their first task.',
+      setupMember: 'Your family name is saved. Add a member to assign a task or study plan.',
+      setupTask: 'Your family member is ready. Open Tasks to choose their first step.',
+      setupTasksButton: 'Go to the first task',
+      familyFirst: 'Save your family name first, then add its members.',
+      tasksBody: 'Choose a saved family member, then give them one clear task.',
+      studyBody: 'Choose a member, a study topic and a clear next step.',
+      completionNote: 'Completion updates your plan only; it awards no Seeds or money.',
+      chooseMemberPrompt: 'Choose a family member yourself before saving.',
+      assignedMember: 'Selected member: {{name}}',
+      draftAway:
+        'You have an unsaved edit in another section. You can return to it whenever you are ready.',
+      resumeDraft: 'Return to the edit',
+      reloadKeepDraft: 'Load latest and keep my edit',
+      reloadedDraft:
+        'The latest records are loaded and your edit is still here. Review it, then save when you are ready.',
+      draftWaitingForData:
+        'Your writing is still here. Reload your account records before sending the edit.',
       separate:
         'Device demo data stays separate. It is never imported into this account automatically.',
       family: 'Family',
@@ -311,7 +360,7 @@ export const pilotResources = {
       unsaved: 'These edits are not saved yet.',
       cancel: 'Cancel edit',
       loading: 'Loading saved family data',
-      reload: 'Load saved data',
+      reload: 'Refresh records',
       discardReload: 'Discard edits and load saved data',
       invalid: 'Check the fields and text limits, then try saving again.',
       conflict:

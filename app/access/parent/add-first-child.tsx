@@ -17,6 +17,13 @@ import { isChildProfileComplete } from '@/features/access/parentOnboarding';
 import type { ParentOnboardingChildDraft } from '@/models/parentOnboarding';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
+type ProfileErrorKey =
+  | 'access.states.interrupted'
+  | 'access.setup.childNameError'
+  | 'access.setup.sexRequiredError'
+  | 'access.setup.customAnswerRequired'
+  | 'access.setup.chooseUpToThree';
+
 function childIndexFrom(value: string | string[] | undefined): 0 | 1 {
   return (Array.isArray(value) ? value[0] : value) === '1' ? 1 : 0;
 }
@@ -36,17 +43,18 @@ export default function AddFirstChildScreen() {
   );
   const childIndex = childIndexFrom(params.child);
   const child = parentOnboarding.draft.children[childIndex];
-  const [error, setError] = useState<string | null>(null);
+  const [errorKey, setError] = useState<ProfileErrorKey | null>(null);
   const [busy, setBusy] = useState(false);
+  const error = errorKey ? t(errorKey) : null;
 
   const updateChild = useCallback(
     (patch: Partial<ParentOnboardingChildDraft>) => {
       setError(null);
       const result = updateParentOnboardingDraft({ childIndex, child: patch });
-      if (!result.ok) setError(t('access.states.interrupted'));
+      if (!result.ok) setError('access.states.interrupted');
       return result.ok;
     },
-    [childIndex, t, updateParentOnboardingDraft],
+    [childIndex, updateParentOnboardingDraft],
   );
 
   const goBack = useCallback(() => {
@@ -54,7 +62,7 @@ export default function AddFirstChildScreen() {
       if (pendingFamilyCreation === 'profile_repair') {
         const cancelled = cancelParentVerification();
         if (!cancelled.ok) {
-          setError(t('access.states.interrupted'));
+          setError('access.states.interrupted');
           return;
         }
         router.replace('/access/parent/sign-in');
@@ -64,7 +72,7 @@ export default function AddFirstChildScreen() {
       return;
     }
     router.replace('/access/parent/add-first-child?child=0' as Href);
-  }, [cancelParentVerification, childIndex, pendingFamilyCreation, router, t]);
+  }, [cancelParentVerification, childIndex, pendingFamilyCreation, router]);
 
   const familyIsValid = parentOnboarding.draft.familyName.trim().length >= 2;
   const indexIsConfigured = childIndex < parentOnboarding.draft.childCount;
@@ -101,12 +109,12 @@ export default function AddFirstChildScreen() {
 
   const validateProfile = () => {
     const valid = isChildProfileComplete(child);
-    const message =
+    const message: ProfileErrorKey =
       child.nickname.trim().length < 2
-        ? t('access.setup.childNameError')
+        ? 'access.setup.childNameError'
         : child.sex === null
-          ? t('access.setup.sexRequiredError')
-          : t('access.setup.customAnswerRequired');
+          ? 'access.setup.sexRequiredError'
+          : 'access.setup.customAnswerRequired';
     setError(valid ? null : message);
     return valid;
   };
@@ -176,6 +184,7 @@ export default function AddFirstChildScreen() {
         />
       }
       keyboardAware
+      scrollResetKey={`child-${childIndex}`}
       testID="add-first-child-screen"
     >
       <View style={styles.heading}>
@@ -224,7 +233,7 @@ export default function AddFirstChildScreen() {
         disabled={busy}
         errorText={child.nickname.trim().length < 2 ? (error ?? undefined) : undefined}
         language={locale}
-        onLimitReached={() => setError(t('access.setup.chooseUpToThree'))}
+        onLimitReached={() => setError('access.setup.chooseUpToThree')}
         onPatch={updateChild}
         onValidateName={validateProfile}
       />

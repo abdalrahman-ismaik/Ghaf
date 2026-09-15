@@ -78,7 +78,8 @@ export async function configureNativeDirection(locale: LocaleCode): Promise<bool
     I18nManager.swapLeftAndRightInRTL(true);
   }
 
-  if (restartRecommended && typeof I18nManager.forceRTL === 'function') {
+  // isRTL is cached at startup; persist the latest choice even after a language round trip.
+  if (typeof I18nManager.forceRTL === 'function') {
     I18nManager.forceRTL(shouldUseRtl);
   }
 

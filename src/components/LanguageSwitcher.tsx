@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   },
   compactWrapper: {
     width: 'auto',
+    alignSelf: 'center',
   },
   segment: {
     width: '100%',
