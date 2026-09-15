@@ -20,6 +20,13 @@ authorship evidence remain tracked; private local notes are not a substitute for
 
 ## Current Feature
 
+Feature 019 (`specs/019-supabase-family-runtime/`) is the user's explicitly requested complete
+normalized Supabase migration, superseding Feature018's limited planning document in real mode.
+It includes actual family/task/recognition/progression/reward/study/learning/League persistence,
+revocable Child identity, preserved legacy import and full async primary application flows.
+Constitution 2.4.0 records this exception. Preserve existing data and the explicit sample; no
+fixture authority in real mode, no real banking and no claim of applied hosted SQL without proof.
+
 Feature 018 (`specs/018-persistent-adult-accounts/`) extends the adult pilot with
 owner-approved persistent adult profiles and account-owned family, task and study
 records. The default competition build stays synthetic; existing local demo data

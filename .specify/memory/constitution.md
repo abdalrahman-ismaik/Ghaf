@@ -1,6 +1,8 @@
 <!--
 Sync Impact Report
-- Version change: 2.2.0 -> 2.3.0
+- Version change: 2.3.0 -> 2.4.0
+- Approved Feature019 exception: complete normalized Supabase family runtime, durable domain
+  authority, preserved legacy import and explicit revocable Child enrollment.
 - Approved Feature018 exception: real adult-owned profile/family/task/study planning,
   scoped backend maintenance and internal APK delivery; synthetic progression remains separate.
 - Approved Feature017 exception: selected study, jointly agreed academic prizes and family peer text.
@@ -181,4 +183,14 @@ an updated Sync Impact Report, semantic versioning, and review by the current in
 Feature artifacts MUST be rechecked after any material amendment. Reviewers MUST reject scope or
 architecture that contradicts MVP Prototype First unless the constitution is explicitly amended.
 
-**Version**: 2.3.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-14
+## Feature019 full Supabase migration amendment — 2026-09-14
+
+The user's explicit full-migration correction supersedes the planning-only persistence exception.
+Real mode may persist the complete family/task/recognition/progression/reward/study/learning/League
+runtime with normalized schema, server authorization and explicit revocable Child enrollment.
+The deterministic store remains an explicit rehearsal option, never a fallback for failed real
+writes. Existing records are preserved; imports cannot invent historical approval or awards.
+Money remains simulated; paid resources, real media processing, destructive changes and public
+production release are not authorized. Feature019 owns acceptance and exact deployment evidence.
+
+**Version**: 2.4.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-14
