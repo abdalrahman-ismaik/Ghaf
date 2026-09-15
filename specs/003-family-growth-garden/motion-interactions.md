@@ -102,3 +102,35 @@ Record actual host execution separately from unrun native Back, keyboard, RTL,
 large-text, transition interruption and frame-time acceptance in the navigation
 workstream report. Updating native options does not establish immediate cancellation
 of an Android transition already in flight.
+
+## Interaction convergence continuation
+
+The user's further request for interaction quality is answered by converging the
+existing press policy and by making two committed state changes continuous. No new
+product behavior, route, gesture surface, dependency or native configuration is added.
+
+1. One press treatment. The Parent bottom navigation, the Child bottom navigation,
+   the checklist rows and the shared `IconButton` all use `BotanicalPressable`, so a
+   subtle scale with a firm release replaces a stacked second opacity. Static pressed
+   opacity remains the alternative when system motion is disabled. Accessibility roles,
+   selected and disabled states, hit slop, press retention and focus rings are unchanged.
+2. Selected-tab pills stay immediate in both navigations. A moving or cross-fading
+   indicator would place a tab label over a partly changed background, and the Child
+   pill is a dark surface with a light label; instant selection is the accessible
+   choice, not a missing animation.
+3. The Child checklist advances its progress fill and its completed row tint from the
+   live value to the committed one, and the check mark stays mounted so a reopened or
+   reordered row never replays an entrance. The announced progress value remains the
+   committed step count, never an in-flight animated value.
+4. A measured `ExpandableSection` carries the Parent task-details disclosure between
+   its real closed and open heights. Nothing is stretched or scaled to imitate
+   expansion. A closed section is removed from touch and from TalkBack while it
+   settles, and the first opening waits one layout pass for a real measurement.
+
+Every new animation reads the shared live reduced-motion preference and passes
+`ReduceMotion.Never` so the preference, not Reanimated's startup snapshot, decides.
+Reduced motion assigns final values directly. Toggles commit to the store immediately
+and independently of animation.
+
+Executed static and interruption checks and the remaining native gates are recorded in
+[the interaction workstream report](../../docs/competition-readiness/workstreams/interaction-motion-20260915.md).

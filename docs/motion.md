@@ -189,3 +189,40 @@ and warm/cold state. Record commit/APK hashes and device/build identity for each
 6. Repeat on long task content and recycled lists. No new row entrance should play.
    Slow drag/flick tests apply to existing native scrolling only; this slice adds
    no custom drag surface or shared-element transition.
+
+## Interaction convergence — 2026-09-15
+
+A later pass finished the press policy above and made two committed state changes
+continuous. Authority and exact acceptance are in the
+[motion repair contract](../specs/003-family-growth-garden/motion-interactions.md);
+files, audit, presets and remaining native gates are in the
+[interaction workstream report](competition-readiness/workstreams/interaction-motion-20260915.md).
+
+| Preset            | Value / purpose                                              | Applied to                                  |
+| ----------------- | ------------------------------------------------------------ | ------------------------------------------- |
+| progress timing   | 200 ms; one readable advance of a committed step             | Child checklist fill and completed row tint |
+| disclosure timing | 220 ms; measured travel between real closed and open heights | ExpandableSection height                    |
+| disclosure fade   | 140 ms; content legible before the height settles            | ExpandableSection content                   |
+
+`BotanicalPressable` now also accepts an `animatedStyle` prop so a caller can drive a
+state tint from the UI runtime without adding a wrapper view behind the content.
+`ParentHomeNavigation`, `ChildBottomNavigation`, `ChildTaskChecklist` and the shared
+`IconButton` all use that primitive, and none of them stacks a second press opacity
+under its scale. Selected-tab pills stay instant in both navigations: a moving or
+fading indicator would place a tab label over a partly changed background, and the
+Child pill is a dark surface with a light label.
+
+Runtime files added or changed: `src/design/motion.ts`,
+`src/components/botanical/{BotanicalPressable,ExpandableSection,index}`,
+`src/components/primitives.tsx`,
+`src/components/r002a/parent/ParentHomeNavigation.tsx`,
+`src/components/r002a/child/{ChildBottomNavigation,ChildTaskChecklist}.tsx` and
+`src/components/catalog/CatalogTaskList.tsx`. No dependency, native configuration,
+navigator option, route, guard, store or award rule changed, and no haptics,
+blur, shadow or gesture surface was added.
+
+Typecheck, both lint invocations, format check, `repo:check` and the full suite
+(3,437 passed, 7 skipped) passed, including a serial run and a recorded red/green
+check of the new suites against `35631f7`. Android device, TalkBack, keyboard,
+large-text, live animation-setting and frame-timing acceptance is **NOT RUN**; the
+workstream report lists the exact reproduction steps.
