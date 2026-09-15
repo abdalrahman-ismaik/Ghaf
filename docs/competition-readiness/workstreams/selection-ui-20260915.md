@@ -63,13 +63,30 @@ dropping the label's contrast partway through, which is why both bottom navigati
 instant selection. Keeping filters light on light leaves a future transition available and
 matches the Parent navigation's selected pill.
 
+**This is a trade, not a pure gain.** The previous child filter separated its selected option by
+a dark fill with a white label, which is a much larger luminance step than sage on paper. The
+selected chip is now quieter, and more of the signal is carried by the 1 dp `sageStrong` edge and
+the darker label. That buys one idiom across every row, an unselected option that reads as a
+control, and a state that can change gradually later. Whether the remaining separation is
+sufficient is not settled by these screenshots: native gate 2 measures it with an instrument.
+
+Both filter rows use equal-width segments. An early version left the child chips hugging their
+labels, which measured 64 dp and 61 dp beside each other where the previous row had been a
+uniform 88 dp; adjacent chips of different widths read as ragged in the row this pass exists to
+tidy. They now measure 164 dp each, matching the 106 dp segments of the status row directly
+below. Hugging chips remain the right layout for the four sound levels, whose labels differ in
+length and wrap as a set.
+
 ## Measured state after the change
 
 Read from the running app at 375x812 and again at 360x640:
 
 - Tasks child filter and status filter: unselected `rgb(255,252,245)` paper with a
   `rgb(220,221,207)` line border; selected `rgb(231,236,221)` sage with a `rgb(202,217,187)`
-  border. Every chip 48 dp tall with a single-line label at both widths.
+  border. Every chip 48 dp tall with a single-line label at both widths. The two child chips
+  measure 164 dp each and the three status chips 106 dp each, so both rows are equal segments.
+- Task history empty section: a 335 x 162 dp card whose single accessible name is the empty
+  message. No caller passes a title, so the card shows the icon and the message only.
 - Settings sound levels: same two surfaces, 48 dp, replacing the forest/sage button pair.
 - Settings language group: 146 dp wide, hugging its two 72 dp options, with no empty bordered
   space beside them.
@@ -111,7 +128,10 @@ gained mocks or were updated for the new component boundary:
 `tests/tasks/parent-task-workspace.test.tsx`,
 `tests/platform/ambient-volume-controls.test.tsx` and
 `tests/platform/natural-ambient-audio.test.tsx`. The volume suite now asserts the choices the
-screen hands the shared control; the chip's role and state mapping is asserted in its own suite.
+screen hands the shared control, and the ambience source contract asserts `<SelectionChip`,
+`role="radio"` and `selected={...}` in place of the literal `accessibilityRole` and
+`accessibilityState` it checked before. Those assertions moved rather than disappeared: the
+chip's role and state mapping is asserted in `tests/presentation/selection-controls.test.tsx`.
 
 During parallel runs, `tests/demo/demo-task-handoff-route.test.tsx` failed once and passed 3/3
 in isolation and in the serial run. It belongs to the same `tests/demo/` module-reset family as

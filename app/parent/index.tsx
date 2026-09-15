@@ -492,6 +492,7 @@ export default function ParentHomeScreen() {
                   return (
                     <SelectionChip
                       direction={direction}
+                      fill
                       key={child.id}
                       label={profileName(child.id)}
                       onPress={() => chooseChild(child.id)}
