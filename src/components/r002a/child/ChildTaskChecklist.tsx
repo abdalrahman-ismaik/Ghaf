@@ -13,7 +13,7 @@ import { BotanicalPressable as Pressable } from '@/components/botanical';
 import { GhafIcon } from '@/components/access';
 import { Text } from '@/components/primitives';
 import { interactionMotion } from '@/design/motion';
-import { botanical, colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
+import { botanical, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import type { TextDirection } from '@/models/familyGrowth';
 import { useReducedMotionPreference } from '@/utils/useReducedMotionPreference';
 
@@ -141,10 +141,12 @@ function ChecklistStep({
       [0, 1],
       [botanical.colors.paper, botanical.colors.sage],
     ),
+    // The resting border matches the row's own surface instead of a transparent colour,
+    // so the fade never passes through the dark value that alpha interpolation produces.
     borderColor: interpolateColor(
       settle.get(),
       [0, 1],
-      [colors.transparent, botanical.colors.sageStrong],
+      [botanical.colors.paper, botanical.colors.sageStrong],
     ),
   }));
   // The mark stays mounted so a reopened or reordered row never replays an entrance.
