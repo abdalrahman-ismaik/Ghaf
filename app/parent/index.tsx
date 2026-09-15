@@ -5,6 +5,7 @@ import { useFocusEffect, useLocalSearchParams, useRouter, type Href } from 'expo
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { SelectionChip } from '@/components/botanical';
 import { ParentPatternSummary } from '@/components/family-growth/ParentPatternSummary';
 import { Button, Screen, Text } from '@/components/primitives';
 import { GhafIcon } from '@/components/access';
@@ -489,28 +490,15 @@ export default function ParentHomeScreen() {
                 .map((child) => {
                   const selected = child.id === activeChildId;
                   return (
-                    <Pressable
-                      accessibilityRole="radio"
-                      accessibilityState={{ checked: selected }}
-                      aria-checked={selected}
+                    <SelectionChip
+                      direction={direction}
                       key={child.id}
+                      label={profileName(child.id)}
                       onPress={() => chooseChild(child.id)}
-                      style={({ pressed }) => [
-                        styles.childFilterItem,
-                        selected ? styles.childFilterItemActive : null,
-                        pressed ? styles.pressed : null,
-                      ]}
+                      role="radio"
+                      selected={selected}
                       testID={`parent-tasks-child-${child.id}`}
-                    >
-                      <Text
-                        align="center"
-                        brand
-                        color={selected ? 'onPrimary' : 'onSurfaceVariant'}
-                        variant="label"
-                      >
-                        {profileName(child.id)}
-                      </Text>
-                    </Pressable>
+                    />
                   );
                 })}
             </View>
@@ -528,31 +516,19 @@ export default function ParentHomeScreen() {
               ).map(([key, label]) => {
                 const selected = taskFilter === key;
                 return (
-                  <Pressable
-                    accessibilityRole="tab"
-                    accessibilityState={{ selected }}
-                    aria-selected={selected}
+                  <SelectionChip
+                    direction={direction}
+                    fill
                     key={key}
+                    label={label}
                     onPress={() => {
                       dismissTaskAdded();
                       setTaskFilter(key);
                     }}
-                    style={({ pressed }) => [
-                      styles.taskTab,
-                      selected ? styles.taskTabActive : null,
-                      pressed ? styles.pressed : null,
-                    ]}
+                    role="tab"
+                    selected={selected}
                     testID={`parent-tasks-tab-${key}`}
-                  >
-                    <Text
-                      align="center"
-                      brand
-                      color={selected ? 'primary' : 'onSurfaceVariant'}
-                      variant="label"
-                    >
-                      {label}
-                    </Text>
-                  </Pressable>
+                  />
                 );
               })}
             </View>
@@ -863,41 +839,15 @@ const styles = StyleSheet.create({
     minHeight: layout.touchTarget,
     width: '100%',
     alignSelf: 'stretch',
+    alignItems: 'stretch',
     flexWrap: 'wrap',
     gap: spacing.xs,
-    borderRadius: botanical.radius.pill,
-    backgroundColor: botanical.colors.canvas,
-    padding: spacing.xxs,
   },
-  childFilterItem: {
-    minWidth: 88,
-    minHeight: layout.touchTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: botanical.radius.pill,
-    paddingHorizontal: spacing.md,
-  },
-  childFilterItemActive: {
-    backgroundColor: colors.ghafEmerald,
-  },
+  // The chips carry their own edge, so the row adds no second container or underline.
   taskTabs: {
     minHeight: layout.touchTarget,
-    borderBottomWidth: 1,
-    borderBottomColor: botanical.colors.line,
-    padding: spacing.xxs,
-  },
-  taskTab: {
-    minHeight: layout.touchTarget,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: botanical.radius.small,
-    paddingHorizontal: spacing.xxs,
-    paddingVertical: spacing.xs,
-  },
-  taskTabActive: {
-    backgroundColor: botanical.colors.sage,
-    borderRadius: botanical.radius.control,
+    alignItems: 'stretch',
+    gap: spacing.xs,
   },
   pressed: {
     opacity: opacity.pressed,

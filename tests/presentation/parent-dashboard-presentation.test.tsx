@@ -19,11 +19,15 @@ import {
 interface HostProps {
   children?: ReactNode;
   expanded?: boolean;
+  label?: string;
+  message?: string;
+  role?: 'radio' | 'tab';
+  selected?: boolean;
   header?: ReactNode;
   footer?: ReactNode;
   testID?: string;
   onPress?: () => void;
-  accessibilityState?: { selected?: boolean; checked?: boolean };
+  accessibilityState?: { selected?: boolean; checked?: boolean; disabled?: boolean };
 }
 
 const rendered = vi.hoisted(() => ({
@@ -104,8 +108,18 @@ vi.mock('@/config/r002bFeatureFlags', async (importOriginal) => {
 vi.mock('@/components/access', () => ({ GhafIcon: () => null }));
 vi.mock('@/components/botanical', () => ({
   BotanicalPressable: (props: HostProps) => host('button', props),
+  EmptyState: (props: HostProps) => host('span', { ...props, children: props.message }),
   // The measured disclosure needs mounted layout; this static render only reports the open state.
   ExpandableSection: (props: HostProps) => (props.expanded ? host('div', props) : null),
+  SelectionChip: (props: HostProps) =>
+    host('button', {
+      ...props,
+      accessibilityState:
+        props.role === 'radio'
+          ? { checked: props.selected, disabled: false }
+          : { selected: props.selected, disabled: false },
+      children: props.label,
+    }),
 }));
 vi.mock('@/components/illustrations', () => ({ LocalIllustration: () => null }));
 vi.mock('@/components/primitives', () => ({

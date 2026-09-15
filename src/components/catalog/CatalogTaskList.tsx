@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
-import { ExpandableSection } from '@/components/botanical';
+import { EmptyState, ExpandableSection } from '@/components/botanical';
 import { Button, Text } from '@/components/primitives';
 import { selectAssignedTasks } from '@/features/tasks/assignmentInstances';
 import { localize } from '@/i18n';
@@ -77,9 +77,11 @@ export function CatalogTaskList({
         {t('catalog.history')}
       </Text>
       {entries.length === 0 ? (
-        <Text brand direction={direction}>
-          {t(filter ? 'catalog.emptySection' : 'catalog.empty')}
-        </Text>
+        <EmptyState
+          direction={direction}
+          message={t(filter ? 'catalog.emptySection' : 'catalog.empty')}
+          testID="catalog-empty"
+        />
       ) : null}
       {[...entries].reverse().map((entry) => (
         <View
