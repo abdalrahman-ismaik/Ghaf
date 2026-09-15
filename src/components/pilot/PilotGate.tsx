@@ -9,12 +9,14 @@ import { colors, logicalRowDirection, spacing } from '@/design/tokens';
 import { getPilotConfig } from '@/features/pilot/config';
 import { createPilotController } from '@/features/pilot/controller';
 import { createPilotPrivateBoundary } from '@/features/pilot/privateBoundary';
-import { ParentAccountError } from '@/models/parentAccount';
+import { ParentAccountError, type ParentAccountService } from '@/models/parentAccount';
+import { CloudFamilyBoundary } from '@/components/cloudFamily/CloudFamilyBoundary';
+import { CloudAccessGate } from '@/components/cloudFamily/CloudAccessGate';
+import { createParentCloudService } from '@/features/cloudFamily/service';
 import { getParentAccountService, serviceRegistry } from '@/services';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
 
 import { PilotAccountView } from './PilotAccountView';
-import { AccountWorkspaceBoundary } from './AccountWorkspaceBoundary';
 
 function createAccountRuntime() {
   let service = null;
@@ -44,10 +46,44 @@ function createAccountRuntime() {
 
 export function PilotGate({ children }: PropsWithChildren) {
   if (!getPilotConfig().enabled) return children;
-  return <EnabledPilotGate>{children}</EnabledPilotGate>;
+  return (
+    <CloudAccessGate
+      renderParent={(onChildAccess) => (
+        <EnabledPilotGate onChildAccess={onChildAccess}>{children}</EnabledPilotGate>
+      )}
+    />
+  );
 }
 
-export function EnabledPilotGate({ children }: PropsWithChildren) {
+function ParentFamilyRuntime({
+  service,
+  userId,
+  email,
+}: {
+  service: ParentAccountService;
+  userId: string;
+  email: string;
+}) {
+  const [cloud] = useState(() => createParentCloudService(service));
+  return (
+    <CloudFamilyBoundary
+      service={cloud}
+      expected={{ role: 'parent', userId }}
+      reauthenticate={async (password) => {
+        const account = await service.signIn(email, password);
+        if (account.userId !== userId) {
+          await service.signOut();
+          throw new ParentAccountError('access_unavailable');
+        }
+      }}
+    />
+  );
+}
+
+export function EnabledPilotGate({
+  children,
+  onChildAccess,
+}: PropsWithChildren<{ onChildAccess?: () => Promise<void> }>) {
   const [{ controller, service }] = useState(createAccountRuntime);
   const state = useSyncExternalStore(
     controller.subscribe,
@@ -69,11 +105,13 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
   useEffect(() => {
     const profile = state.profile;
     if (profile && profile.userId === state.account?.userId) {
-      const preferenceKey = `${profile.userId}:${profile.revision}`;
+      const preferenceKey = `${profile.userId}:${profile.preferredLocale}`;
       if (appliedPreference.current === preferenceKey) return;
       appliedPreference.current = preferenceKey;
       const store = usePrototypeStore.getState();
       if (store.locale !== profile.preferredLocale) store.setLocale(profile.preferredLocale);
+    } else if (!state.account?.userId) {
+      appliedPreference.current = null;
     }
   }, [state.profile, state.account?.userId]);
 
@@ -117,7 +155,7 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
     if (Platform.OS !== 'android') return;
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
       const current = controller.getSnapshot();
-      if (current.phase === 'ready' && current.sampleOpen && !current.accountPanel) return false;
+      if (current.phase === 'ready' && !current.accountPanel) return false;
       if (current.accountPanel) controller.continueSample();
       else if (['register', 'verify', 'forgot', 'recovery-code'].includes(current.phase)) {
         controller.showForm('signin');
@@ -141,12 +179,24 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
 
   if (!demoMounted)
     return (
-      <PilotAccountView controller={controller} state={state}>
+      <PilotAccountView
+        controller={controller}
+        state={state}
+        onChildAccess={
+          onChildAccess
+            ? async () => {
+                await controller.signOut();
+                if (controller.getSnapshot().phase === 'signin') await onChildAccess();
+              }
+            : undefined
+        }
+      >
         {state.phase === 'ready' && state.account && service ? (
-          <AccountWorkspaceBoundary
+          <ParentFamilyRuntime
             key={state.account.userId}
             service={service}
             userId={state.account.userId}
+            email={state.account.email}
           />
         ) : null}
       </PilotAccountView>

@@ -1,6 +1,6 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -20,9 +20,15 @@ export interface PilotAccountViewProps {
   readonly controller: PilotController;
   readonly state: PilotState;
   readonly children?: ReactNode;
+  readonly onChildAccess?: () => Promise<void>;
 }
 
-export function PilotAccountView({ controller, state, children }: PilotAccountViewProps) {
+export function PilotAccountView({
+  controller,
+  state,
+  children,
+  onChildAccess,
+}: PilotAccountViewProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((current) => current.locale);
   const direction = usePrototypeStore((current) => current.direction);
@@ -58,14 +64,19 @@ export function PilotAccountView({ controller, state, children }: PilotAccountVi
       testID={`pilot-${accountPanel ? 'account' : state.phase}-screen`}
     >
       <StatusBar style="dark" animated={false} />
-      <PilotAccountBody key={bodyKey} controller={controller} state={state}>
+      <PilotAccountBody
+        key={bodyKey}
+        controller={controller}
+        state={state}
+        onChildAccess={onChildAccess}
+      >
         {children}
       </PilotAccountBody>
     </AccessScreen>
   );
 }
 
-function PilotAccountBody({ controller, state, children }: PilotAccountViewProps) {
+function PilotAccountBody({ controller, state, children, onChildAccess }: PilotAccountViewProps) {
   const { t } = useTranslation();
   const locale = usePrototypeStore((current) => current.locale);
   const direction = usePrototypeStore((current) => current.direction);
@@ -73,8 +84,20 @@ function PilotAccountBody({ controller, state, children }: PilotAccountViewProps
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [code, setCode] = useState('');
+  const [childBusy, setChildBusy] = useState(false);
+  const [readyPanel, setReadyPanel] = useState<'workspace' | 'account' | 'sample'>(
+    state.accountPanel && state.sampleOpen ? 'account' : 'workspace',
+  );
   const phase = state.phase;
   const accountPanel = state.accountPanel && state.sampleOpen;
+  useEffect(() => {
+    if (Platform.OS !== 'android' || phase !== 'ready' || readyPanel === 'workspace') return;
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      setReadyPanel('workspace');
+      return true;
+    });
+    return () => subscription.remove();
+  }, [phase, readyPanel]);
   const hasEmail = phase === 'signin' || phase === 'register' || phase === 'forgot';
   const hasPassword = phase === 'signin' || phase === 'register' || phase === 'new-password';
   const hasCode = phase === 'verify' || phase === 'recovery-code';
@@ -139,13 +162,23 @@ function PilotAccountBody({ controller, state, children }: PilotAccountViewProps
     <>
       <LanguageSwitcher compact showGuidance={false} testID="pilot-language-switcher" />
       <View style={styles.intro}>
-        <Text brand align="center" color="deepForest" variant="parentHero">
-          {t(accountPanel ? 'pilot.accountTitle' : `pilot.status.${phase}.title`)}
+        <Text
+          brand
+          align="center"
+          color="deepForest"
+          variant={phase === 'ready' ? 'screenTitle' : 'parentHero'}
+        >
+          {t(phase === 'ready' ? 'pilot.main.title' : `pilot.status.${phase}.title`)}
         </Text>
-        <Text brand align="center" color="onSurfaceVariant">
-          {t(accountPanel ? 'pilot.accountBody' : `pilot.status.${phase}.body`)}
-        </Text>
-        {(hasCode || ['pending', 'suspended', 'ready'].includes(phase)) && state.email ? (
+        {phase !== 'ready' || readyPanel !== 'workspace' ? (
+          <Text brand align="center" color="onSurfaceVariant">
+            {t(phase === 'ready' ? 'pilot.main.body' : `pilot.status.${phase}.body`)}
+          </Text>
+        ) : null}
+        {(hasCode ||
+          ['pending', 'suspended'].includes(phase) ||
+          (phase === 'ready' && readyPanel === 'account')) &&
+        state.email ? (
           <Text
             brand
             align="center"
@@ -160,16 +193,38 @@ function PilotAccountBody({ controller, state, children }: PilotAccountViewProps
       </View>
 
       {phase === 'ready' ? (
-        <Button
-          brand
-          onPress={() => void controller.signOut()}
-          variant="quiet"
-          testID="pilot-signout"
+        <View
+          accessibilityRole="tablist"
+          style={[styles.languages, { flexDirection: logicalRowDirection(direction) }]}
+          testID="pilot-main-navigation"
         >
-          {t('pilot.signOut')}
-        </Button>
+          {(['workspace', 'account', 'sample'] as const).map((panel) => (
+            <Button
+              key={panel}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: readyPanel === panel }}
+              brand
+              fullWidth={false}
+              onPress={() => setReadyPanel(panel)}
+              style={styles.mainTab}
+              testID={`pilot-main-${panel}`}
+              variant={readyPanel === panel ? 'primary' : 'secondary'}
+            >
+              {t(`cloudFamily.navigation.${panel}`)}
+            </Button>
+          ))}
+        </View>
       ) : null}
-      {phase === 'ready' ? children : null}
+      {phase === 'ready' ? (
+        <View
+          accessibilityElementsHidden={readyPanel !== 'workspace'}
+          importantForAccessibility={readyPanel === 'workspace' ? 'auto' : 'no-hide-descendants'}
+          style={readyPanel === 'workspace' ? styles.form : styles.hidden}
+          testID="pilot-main-workspace-content"
+        >
+          {children}
+        </View>
+      ) : null}
 
       {state.error ? (
         <StatusBanner
@@ -317,7 +372,7 @@ function PilotAccountBody({ controller, state, children }: PilotAccountViewProps
         </View>
       ) : null}
 
-      {phase === 'ready' ? (
+      {phase === 'ready' && readyPanel === 'account' ? (
         <View style={styles.form} testID="pilot-cloud-profile">
           <Text brand color="deepForest" variant="label">
             {t('pilot.profile.title')}
@@ -430,6 +485,22 @@ function PilotAccountBody({ controller, state, children }: PilotAccountViewProps
       <View style={styles.actions}>
         {phase === 'signin' ? (
           <>
+            {onChildAccess ? (
+              <Button
+                brand
+                variant="secondary"
+                busy={childBusy}
+                disabled={state.busy}
+                testID="pilot-child-entry"
+                onPress={() => {
+                  if (childBusy) return;
+                  setChildBusy(true);
+                  void onChildAccess().finally(() => setChildBusy(false));
+                }}
+              >
+                {t('cloudFamily.access.childEntry')}
+              </Button>
+            ) : null}
             <Button
               brand
               disabled={state.busy}
@@ -450,7 +521,7 @@ function PilotAccountBody({ controller, state, children }: PilotAccountViewProps
             </Button>
           </>
         ) : null}
-        {phase === 'ready' ? (
+        {phase === 'ready' && readyPanel === 'sample' ? (
           <>
             <View style={styles.disclosure}>
               <Text brand color="deepForest" variant="label">
@@ -523,7 +594,17 @@ function PilotAccountBody({ controller, state, children }: PilotAccountViewProps
             {t('pilot.returnToSignIn')}
           </Button>
         ) : null}
-        {canSignOut && phase !== 'ready' ? (
+        {phase === 'ready' && readyPanel !== 'workspace' ? (
+          <Button
+            brand
+            onPress={() => setReadyPanel('workspace')}
+            testID="pilot-back-to-workspace"
+            variant="secondary"
+          >
+            {t('pilot.main.backToWorkspace')}
+          </Button>
+        ) : null}
+        {canSignOut ? (
           <Button
             brand
             onPress={() => {
@@ -544,12 +625,14 @@ function PilotAccountBody({ controller, state, children }: PilotAccountViewProps
 }
 
 const styles = StyleSheet.create({
+  hidden: { display: 'none' },
   content: { flexGrow: 1, justifyContent: 'center', gap: spacing.lg, paddingVertical: spacing.md },
   intro: { gap: spacing.sm, width: '100%' },
   form: { gap: spacing.md, width: '100%' },
   latinInput: { textAlign: 'left', writingDirection: 'ltr' },
   languages: { gap: spacing.sm, flexWrap: 'wrap' },
   language: { flexGrow: 1, flexBasis: 120 },
+  mainTab: { flexGrow: 1, flexBasis: 90 },
   actions: { gap: spacing.sm, width: '100%' },
   disclosure: { gap: spacing.xs, paddingBottom: spacing.sm },
 });

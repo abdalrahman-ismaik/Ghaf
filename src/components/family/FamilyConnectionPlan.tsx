@@ -14,14 +14,25 @@ import {
 import type { LocaleCode } from '@/models/familyGrowth';
 import type {
   FamilyConnectionIdeaKind,
-  FamilyConnectionPlan as FamilyConnectionPlanModel,
+  FamilyRelationship,
   FamilyConnectionRhythm,
 } from '@/models/familyConnections';
 
 export interface FamilyConnectionPlanProps {
   readonly direction: LayoutDirection;
   readonly language: LocaleCode;
-  readonly plan: FamilyConnectionPlanModel;
+  readonly plan: FamilyConnectionPlanPresentation;
+}
+
+export interface FamilyConnectionPlanPresentation {
+  readonly guardianDisplayNames: readonly string[];
+  readonly entries: readonly {
+    readonly relativeId: string;
+    readonly displayName: string;
+    readonly relationship: FamilyRelationship;
+    readonly rhythm: FamilyConnectionRhythm;
+    readonly ideaKind: FamilyConnectionIdeaKind;
+  }[];
 }
 
 function rhythmKey(value: FamilyConnectionRhythm): string {

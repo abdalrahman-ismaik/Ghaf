@@ -95,14 +95,17 @@ export interface AccountClientPort {
       | 'get_or_create_account_profile'
       | 'save_account_profile'
       | 'get_or_create_account_workspace'
-      | 'update_account_workspace',
+      | 'update_account_workspace'
+      | 'ghaf_read'
+      | 'ghaf_command',
     parameters?:
       | {
           p_display_name: string;
           p_preferred_locale: 'ar' | 'en';
           p_expected_revision: number;
         }
-      | { p_expected_revision: number; p_command: WorkspaceCommand },
+      | { p_expected_revision: number; p_command: WorkspaceCommand }
+      | Record<string, unknown>,
   ): PromiseLike<ProviderResult<unknown>>;
 }
 
@@ -759,6 +762,15 @@ export class SupabaseParentAccountService implements ParentAccountService {
       );
       this.assertCurrent(generation);
       return workspaceFromRow(data, session.userId);
+    });
+  }
+
+  familyRequest(name: 'ghaf_read' | 'ghaf_command', parameters?: Record<string, unknown>) {
+    return this.run(async (runtime, generation) => {
+      await this.profileIdentity(runtime, generation);
+      const result = await runtime.client.rpc(name, parameters);
+      this.assertCurrent(generation);
+      return result;
     });
   }
 

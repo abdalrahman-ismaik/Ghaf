@@ -135,8 +135,11 @@ vi.mock('@/services', () => ({
     },
   },
 }));
-vi.mock('../../src/components/pilot/AccountWorkspaceBoundary', () => ({
-  AccountWorkspaceBoundary: 'AccountWorkspaceBoundary',
+vi.mock('../../src/components/cloudFamily/CloudFamilyBoundary', () => ({
+  CloudFamilyBoundary: 'CloudFamilyBoundary',
+}));
+vi.mock('../../src/components/cloudFamily/CloudAccessGate', () => ({
+  CloudAccessGate: 'CloudAccessGate',
 }));
 vi.mock('@/features/pilot/controller', () => ({
   createPilotController: (...args: unknown[]) => mock.createController(...args),
@@ -201,6 +204,7 @@ function renderView(children?: ReactNode) {
   tree = cloneElement(shell, {
     children: Children.map(shell.props.children, (child) => (child === body ? rendered : child)),
   });
+  for (const effect of mock.effects.splice(0)) effect();
 }
 
 function renderGate() {
@@ -287,6 +291,46 @@ afterEach(async () => {
 });
 
 describe('Pilot account forms', () => {
+  it('opens the saved workspace first and retains it while account and sample panels change', () => {
+    const workspace = createElement('PrivateWorkspace', { testID: 'private-workspace' });
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+    };
+    renderView(workspace);
+    expect(byId('pilot-main-workspace')?.props.accessibilityState).toEqual({ selected: true });
+    expect(byId('pilot-main-workspace-content')?.props.accessibilityElementsHidden).toBe(false);
+    expect(byId('pilot-cloud-profile')).toBeUndefined();
+    expect(byId('pilot-explore-sample')).toBeUndefined();
+    for (const panel of ['account', 'sample'] as const) {
+      press(`pilot-main-${panel}`);
+      renderView(workspace);
+      expect(byId('private-workspace')).toBe(workspace);
+      expect(byId('pilot-main-workspace-content')?.props).toMatchObject({
+        accessibilityElementsHidden: true,
+        importantForAccessibility: 'no-hide-descendants',
+        style: { display: 'none' },
+      });
+    }
+    expect(mock.controller.explore).not.toHaveBeenCalled();
+    press('pilot-back-to-workspace');
+    renderView(workspace);
+    expect(byId('private-workspace')).toBe(workspace);
+    expect(byId('pilot-main-workspace-content')?.props.accessibilityElementsHidden).toBe(false);
+  });
+
+  it('returns a secondary ready panel to the workspace on Android Back', () => {
+    mock.pilot = { ...mock.pilot, phase: 'ready' };
+    renderView();
+    press('pilot-main-account');
+    renderView();
+    expect([...mock.backListeners][0]!()).toBe(true);
+    renderView();
+    expect(byId('pilot-main-workspace')?.props.accessibilityState).toEqual({ selected: true });
+    expect(mock.backListeners.size).toBe(0);
+  });
+
   it('keeps the access shell and dark status bar stable while replacing the phase-owned body', () => {
     renderView();
     const signedOutShell = byId('pilot-signin-screen')!;
@@ -535,6 +579,9 @@ describe('Pilot account forms', () => {
       account: { userId: 'adult-id', email: 'adult@example.com' },
     };
     renderView();
+    expect(byId('pilot-explore-sample')).toBeUndefined();
+    press('pilot-main-sample');
+    renderView();
     expect(byId('pilot-explore-sample')?.props.children).toBe(pilotResources.ar.explore);
     expect(find((node) => node.props.children === pilotResources.ar.sampleLabel)).toBeDefined();
     mock.pilot = { ...mock.pilot, sampleOpen: true, accountPanel: true };
@@ -579,6 +626,8 @@ describe('cloud profile account panel', () => {
         expectedRevision: 1,
       },
     };
+    renderView();
+    press('pilot-main-account');
   });
 
   it.each(['ar', 'en'] as const)('uses existing bilingual native form controls in %s', (locale) => {
@@ -603,7 +652,7 @@ describe('cloud profile account panel', () => {
     ).toBeDefined();
     expect(
       find((node) => node.props.children === pilotResources[locale].samplePrivacy),
-    ).toBeDefined();
+    ).toBeUndefined();
   });
 
   it('edits a controller-owned draft and keeps save and explicit discard/reload separate', () => {
@@ -686,6 +735,77 @@ describe('cloud profile account panel', () => {
 });
 
 describe('Pilot navigator boundary', () => {
+  it('does not overwrite an interface choice when only the saved profile revision changes', () => {
+    const setLocale = vi.fn((locale: string) => {
+      mock.state.locale = locale;
+    });
+    mock.state.setLocale = setLocale;
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+      profile: {
+        userId: 'adult-a',
+        displayName: 'Prepared adult',
+        preferredLocale: 'ar',
+        revision: 1,
+        updatedAt: '2026-09-14T00:00:00.000Z',
+      },
+    };
+    renderGate();
+    mock.state.locale = 'en';
+    mock.pilot = {
+      ...mock.pilot,
+      profile: { ...mock.pilot.profile!, displayName: 'Updated adult', revision: 2 },
+    };
+    renderGate();
+    expect(setLocale).not.toHaveBeenCalled();
+    expect(mock.state.locale).toBe('en');
+
+    mock.pilot = { ...mock.pilot, phase: 'signin', account: null, profile: null };
+    renderGate();
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+      profile: {
+        userId: 'adult-a',
+        displayName: 'Updated adult',
+        preferredLocale: 'ar',
+        revision: 2,
+        updatedAt: '2026-09-14T00:00:00.000Z',
+      },
+    };
+    renderGate();
+    expect(setLocale).toHaveBeenCalledExactlyOnceWith('ar');
+  });
+
+  it('applies an actual saved language change for the authenticated identity', () => {
+    const setLocale = vi.fn((locale: string) => {
+      mock.state.locale = locale;
+    });
+    mock.state.setLocale = setLocale;
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+      profile: {
+        userId: 'adult-a',
+        displayName: 'Prepared adult',
+        preferredLocale: 'ar',
+        revision: 1,
+        updatedAt: '2026-09-14T00:00:00.000Z',
+      },
+    };
+    renderGate();
+    mock.pilot = {
+      ...mock.pilot,
+      profile: { ...mock.pilot.profile!, preferredLocale: 'en', revision: 2 },
+    };
+    renderGate();
+    expect(setLocale).toHaveBeenCalledExactlyOnceWith('en');
+  });
+
   it('keeps the same outer view across auth phases and retains the workspace identity boundary', () => {
     renderGate();
     const signin = find((node) => node.type === PilotAccountView)!;
@@ -699,10 +819,10 @@ describe('Pilot navigator boundary', () => {
     expect(ready.type).toBe(signin.type);
     expect(ready.key).toBe(signin.key);
     expect(ready.key).toBeNull();
-    expect(find((node) => node.type === 'AccountWorkspaceBoundary')?.key).toBe('adult-a');
+    expect(find((node) => node.props.userId === 'adult-a')?.key).toBe('adult-a');
     mock.pilot = { ...mock.pilot, phase: 'signin', account: null };
     renderGate();
-    expect(find((node) => node.type === 'AccountWorkspaceBoundary')).toBeUndefined();
+    expect(find((node) => node.props.userId === 'adult-a')).toBeUndefined();
     expect(find((node) => node.type === PilotAccountView)?.key).toBeNull();
   });
 
@@ -778,6 +898,8 @@ describe('Pilot navigator boundary', () => {
     renderGate();
     const back = [...mock.backListeners][0]!;
     expect(back()).toBe(true);
+    mock.pilot = { ...mock.pilot, phase: 'ready' };
+    expect(back()).toBe(false);
     mock.pilot = { ...mock.pilot, phase: 'ready', sampleOpen: true, accountPanel: true };
     expect(back()).toBe(true);
     expect(mock.controller.continueSample).toHaveBeenCalledOnce();
