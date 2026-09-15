@@ -28,6 +28,8 @@ vi.mock('react-native', () => ({
   View: 'View',
 }));
 vi.mock('@/components/primitives', () => ({ Button: 'Button', Text: 'Text' }));
+// The shared chip has its own suite; this one exercises the volume commands around it.
+vi.mock('@/components/botanical', () => ({ SelectionChip: 'SelectionChip' }));
 vi.mock('@/components/r003', () => ({ R003Status: 'R003Status' }));
 vi.mock('@/state/usePrototypeStore', () => ({
   usePrototypeStore: (selector: (state: unknown) => unknown) => selector(harness.state),
@@ -100,9 +102,11 @@ describe('accessible ambience volume settings', () => {
       expect(group.props.accessibilityLabel).toBe(
         resources[locale].translation.ambientVolume.title,
       );
-      const options = rendered.filter((node) => node.props.accessibilityRole === 'radio');
+      // The shared chip maps role and selected onto the radio semantics; its own suite
+      // asserts that mapping, so this one checks the choices this screen hands it.
+      const options = rendered.filter((node) => node.props.role === 'radio');
       expect(options).toHaveLength(4);
-      expect(options.map((node) => node.props.children)).toEqual(
+      expect(options.map((node) => node.props.label)).toEqual(
         ['silent', 'low', 'medium', 'high'].map(
           (key) =>
             resources[locale].translation.ambientVolume[
@@ -110,12 +114,7 @@ describe('accessible ambience volume settings', () => {
             ],
         ),
       );
-      expect(options.map((node) => node.props.accessibilityState)).toEqual([
-        { checked: false },
-        { checked: false },
-        { checked: true },
-        { checked: false },
-      ]);
+      expect(options.map((node) => node.props.selected)).toEqual([false, false, true, false]);
     },
   );
 
@@ -131,7 +130,7 @@ describe('accessible ambience volume settings', () => {
     choose('ambient-volume-0');
     expect(currentPreference()).toMatchObject({ enabled: false, volume: 0 });
     const silent = controls().find((node) => node.props.testID === 'ambient-volume-0')!;
-    expect(silent.props.accessibilityState).toEqual({ checked: true });
+    expect(silent.props.selected).toBe(true);
   });
 
   it('retains selection and exposes failure until an actual successful retry', () => {

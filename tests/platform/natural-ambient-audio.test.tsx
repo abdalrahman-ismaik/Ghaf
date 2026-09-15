@@ -399,8 +399,10 @@ describe('Feature 006 presentation source contract', () => {
     expect(component).toContain('minHeight: layout.touchTarget');
     expect(component).toContain('logicalRowDirection(direction)');
     expect(component).toContain('accessibilityRole="radiogroup"');
-    expect(component).toContain('accessibilityRole="radio"');
-    expect(component).toContain('accessibilityState={{ checked: preference.volume === volume }}');
+    // The shared selection chip owns the radio role, its checked state and its own suite.
+    expect(component).toContain('<SelectionChip');
+    expect(component).toContain('role="radio"');
+    expect(component).toContain('selected={preference.volume === volume}');
     expect(component).toContain('setAmbientSoundVolume(volume)');
     expect(component).toContain("flexWrap: 'wrap'");
     for (const screen of [parent, child]) {

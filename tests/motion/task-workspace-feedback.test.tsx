@@ -37,7 +37,41 @@ vi.mock('react-native', () => ({
 }));
 vi.mock('react-i18next', () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
 vi.mock('@/components/access', () => ({ GhafIcon: 'GhafIcon' }));
-vi.mock('@/components/botanical', () => ({ BotanicalPressable: 'BotanicalPressable' }));
+vi.mock('@/components/botanical', async () => {
+  const { createElement } = await import('react');
+  return {
+    BotanicalPressable: 'BotanicalPressable',
+    // The shared chip renders the same pressable; its own contract has a dedicated suite.
+    SelectionChip: ({
+      disabled = false,
+      label,
+      onPress,
+      role,
+      selected,
+      testID,
+    }: {
+      disabled?: boolean;
+      label: string;
+      onPress: () => void;
+      role: 'radio' | 'tab';
+      selected: boolean;
+      testID?: string;
+    }) =>
+      createElement(
+        'BotanicalPressable',
+        {
+          accessibilityLabel: label,
+          accessibilityRole: role,
+          accessibilityState:
+            role === 'radio' ? { checked: selected, disabled } : { selected, disabled },
+          onPress,
+          style: [],
+          testID,
+        },
+        label,
+      ),
+  };
+});
 vi.mock('@/components/primitives', () => ({ Button: 'Button', Text: 'Text' }));
 vi.mock('@/i18n', () => ({
   localize: (text: Record<string, string>, locale: string) => text[locale],
@@ -175,6 +209,7 @@ describe.each([
       tree = render();
       expect(find(tree, `workspace-child-${id}`).props.accessibilityState).toEqual({
         checked: true,
+        disabled: false,
       });
       press(find(tree, 'parent-tasks-create-task'));
       expect(props.onCreateTask).toHaveBeenLastCalledWith(id === 'all' ? props.activeChildId : id);

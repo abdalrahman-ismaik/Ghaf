@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { StyleSheet, Switch, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Text } from '@/components/primitives';
+import { SelectionChip } from '@/components/botanical';
+import { Text } from '@/components/primitives';
 import { R003Status } from '@/components/r003';
 import { colors, layout, logicalRowDirection, spacing } from '@/design/tokens';
 import { usePrototypeStore } from '@/state/usePrototypeStore';
@@ -68,24 +69,18 @@ export function AmbientSoundSetting() {
           style={[styles.levels, { flexDirection: logicalRowDirection(direction) }]}
         >
           {AMBIENT_AUDIO_VOLUME_LEVELS.map((volume, index) => (
-            <Button
-              aria-checked={preference.volume === volume}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: preference.volume === volume }}
-              brand
+            <SelectionChip
               direction={direction}
-              fullWidth={false}
               key={volume}
-              language={locale}
+              label={t(`ambientVolume.${volumeLabels[index]}`)}
               onPress={() => {
                 const result = setAmbientSoundVolume(volume);
                 setError(result.ok ? null : t('r003.settings.ambientAudio.saveError'));
               }}
+              role="radio"
+              selected={preference.volume === volume}
               testID={`ambient-volume-${index}`}
-              variant={preference.volume === volume ? 'primary' : 'secondary'}
-            >
-              {t(`ambientVolume.${volumeLabels[index]}`)}
-            </Button>
+            />
           ))}
         </View>
       </View>

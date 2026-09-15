@@ -97,8 +97,11 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: spacing.xs,
   },
+  // A compact switcher hugs its own options instead of stretching a bordered box
+  // across the section and leaving the rest of it empty.
   compactWrapper: {
     width: 'auto',
+    alignSelf: 'flex-start',
   },
   segment: {
     width: '100%',

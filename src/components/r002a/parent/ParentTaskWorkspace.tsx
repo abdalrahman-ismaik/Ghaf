@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { GhafIcon, type GhafIconName } from '@/components/access';
-import { BotanicalPressable as Pressable } from '@/components/botanical';
+import { BotanicalPressable as Pressable, SelectionChip } from '@/components/botanical';
 import { Button, Text } from '@/components/primitives';
 import {
   botanical,
@@ -183,23 +183,15 @@ export function ParentTaskWorkspace({
               ? t('taskWorkspace.allChildren')
               : childProfiles.find((item) => item.id === id)!.label;
           return (
-            <Pressable
-              accessibilityRole="radio"
-              accessibilityState={{ checked: selected }}
+            <SelectionChip
+              direction={direction}
               key={id}
+              label={label}
               onPress={() => selectChild(id)}
-              style={[styles.filterChip, selected ? styles.filterChipSelected : null]}
+              role="radio"
+              selected={selected}
               testID={`workspace-child-${id}`}
-            >
-              <Text
-                align="center"
-                brand
-                color={selected ? 'onPrimary' : 'onSurfaceVariant'}
-                variant="label"
-              >
-                {label}
-              </Text>
-            </Pressable>
+            />
           );
         })}
       </View>
@@ -337,16 +329,7 @@ const styles = StyleSheet.create({
     borderBottomColor: botanical.colors.line,
   },
   createCopy: { gap: spacing.xs },
-  filterRail: { gap: spacing.xs, flexWrap: 'wrap' },
-  filterChip: {
-    minHeight: layout.touchTarget,
-    justifyContent: 'center',
-    borderRadius: botanical.radius.pill,
-    borderCurve: 'continuous',
-    backgroundColor: botanical.colors.sage,
-    paddingHorizontal: spacing.md,
-  },
-  filterChipSelected: { backgroundColor: botanical.colors.forest },
+  filterRail: { alignItems: 'stretch', gap: spacing.xs, flexWrap: 'wrap' },
   section: { gap: spacing.md },
   sectionHeading: { gap: spacing.xs },
   horizontalContent: {
@@ -371,6 +354,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'transparent',
   },
+  // The card already carries an opaque paper surface and a sage icon well, so selection
+  // stays on its edge; a fill here would hide the well and change nothing else.
   selectedRailCard: {
     borderColor: botanical.colors.forest,
   },

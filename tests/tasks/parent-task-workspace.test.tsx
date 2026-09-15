@@ -35,7 +35,11 @@ vi.mock('react-native', () => ({
   useWindowDimensions: () => ({ width: 390, height: 844 }),
 }));
 vi.mock('@/components/access', () => ({ GhafIcon: () => null }));
-vi.mock('@/components/botanical', () => ({ BotanicalPressable: host }));
+vi.mock('@/components/botanical', () => ({
+  BotanicalPressable: host,
+  SelectionChip: ({ label, testID }: { label: string; testID?: string }) =>
+    createElement('div', { 'data-testid': testID }, label),
+}));
 vi.mock('@/components/primitives', () => ({ Button: host, Text: host }));
 
 const { renderToStaticMarkup } = createRequire(import.meta.url)('react-dom/server') as {
