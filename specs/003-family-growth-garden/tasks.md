@@ -1,5 +1,8 @@
 # Tasks: Family Growth Garden
 
+## Masroofi extension
+
+Track the user-authorized simulated-card slice in [Feature 017 tasks](../017-masroofi-demo/tasks.md).
 ## Android motion repair — 2026-09-14
 
 The scoped [motion tasks and acceptance](motion-interactions.md) track the

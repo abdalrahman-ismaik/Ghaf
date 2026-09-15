@@ -1,6 +1,8 @@
 import { CatalogTaskList } from '@/components/catalog/CatalogTaskList';
 import { StudyEntries } from '@/components/study/StudyEntries';
 import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
+import { MasroofiEntry } from '@/components/masroofi/MasroofiEntry';
+import { MasroofiTaskRewardNotice } from '@/components/masroofi/MasroofiTaskRewardNotice';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
@@ -582,6 +584,7 @@ export default function ChildHomeScreen() {
 
       {currentAssignmentChoice && currentTemplate && currentWorkMode && journey ? (
         <View style={styles.currentWork} testID="current-assignment">
+          <MasroofiTaskRewardNotice />
           <View
             accessible
             accessibilityLabel={`${t('childHome.currentWork')}. ${formatter.format(child.earnedSeeds)} ${t('common.seedUnit')}`}
@@ -698,6 +701,7 @@ export default function ChildHomeScreen() {
 
       <MessagingEntry role="child" />
       <StudyEntries role="child" />
+      <MasroofiEntry role="child" />
 
       {r002bGrowth.ok ? (
         <TodayImpactPathCard

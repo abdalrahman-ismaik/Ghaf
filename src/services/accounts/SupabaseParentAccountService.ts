@@ -46,13 +46,16 @@ type FamilyRpcName = (typeof allowedFamilyRpcNames)[number];
 const familyRpcNames = new Set<string>(allowedFamilyRpcNames);
 
 type SchemaRpcName<Name extends keyof Database['public']['Functions']> = Name;
-type AccountRpcName = SchemaRpcName<
-  | FamilyRpcName
-  | 'get_or_create_account_profile'
-  | 'save_account_profile'
-  | 'get_or_create_account_workspace'
-  | 'update_account_workspace'
->;
+type NormalizedFamilyRpcName = 'ghaf_read' | 'ghaf_command';
+type AccountRpcName =
+  | NormalizedFamilyRpcName
+  | SchemaRpcName<
+      | FamilyRpcName
+      | 'get_or_create_account_profile'
+      | 'save_account_profile'
+      | 'get_or_create_account_workspace'
+      | 'update_account_workspace'
+    >;
 
 type ProviderAccessRow = Pick<
   Database['public']['Tables']['pilot_access']['Row'],
@@ -918,6 +921,30 @@ export class SupabaseParentAccountService implements ParentAccountService {
     if (expectedUserId !== undefined && session.userId !== expectedUserId)
       throw new ParentAccountError('operation_cancelled');
     return { session, token: providerSession.access_token };
+  }
+
+  normalizedFamilyRequest(
+    name: NormalizedFamilyRpcName,
+    parameters: Record<string, unknown> | undefined,
+    expectedUserId: string,
+  ): Promise<ProviderResult<unknown>> {
+    return this.run(async (runtime, generation) => {
+      if (name !== 'ghaf_read' && name !== 'ghaf_command')
+        throw new ParentAccountError('access_unavailable');
+      if (!isUuid(expectedUserId)) throw new ParentAccountError('access_unavailable');
+      const { session: before, token } = await this.rpcIdentity(
+        runtime,
+        generation,
+        expectedUserId,
+        true,
+      );
+      const result = await this.pinnedRpc(runtime, name, parameters, token);
+      this.assertCurrent(generation);
+      const after = await this.profileIdentity(runtime, generation);
+      if (before.userId !== after.userId) throw new ParentAccountError('operation_cancelled');
+      // Normalized commands retain their domain error receipt; hosted family RPCs keep checked data.
+      return result;
+    });
   }
 
   familyRequest(

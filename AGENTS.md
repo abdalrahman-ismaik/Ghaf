@@ -20,6 +20,12 @@ authorship evidence remain tracked; private local notes are not a substitute for
 
 ## Current Feature
 
+The September 15 main integration preserves both family implementations. Feature020 remains the
+default (`EXPO_PUBLIC_GHAF_FAMILY_RUNTIME=hosted`); explicit `normalized` selects Feature019 after
+its own schema installation. Their models, translations, Child claims and family authorities stay
+separate. Read `specs/020-supabase-family-data/normalized-integration.md` and the main integration
+workstream before changing dispatch or applying SQL. Constitution 2.4.1 records this preservation.
+
 Feature 020 (`specs/020-supabase-family-data/`) implements the owner's explicit
 2026-09-14 account-data migration request. Supabase is now the normal account mode;
 missing provider configuration fails closed. `npm run start:demo` explicitly opens
@@ -30,6 +36,13 @@ demo history is imported. Earlier P0/018 limits below describe their historical
 scope; apply Feature 020 and Constitution 2.4.0 to real family data. Read
 `docs/backend/family-data.md` and `docs/competition-readiness/supabase-data-migration.md`
 for actual deployment, verification, compatibility and remaining limitations.
+
+Feature 019 (`specs/019-supabase-family-runtime/`) is the user's explicitly requested complete
+normalized Supabase migration, superseding Feature018's limited planning document in real mode.
+It includes actual family/task/recognition/progression/reward/study/learning/League persistence,
+revocable Child identity, preserved legacy import and full async primary application flows.
+Constitution 2.4.0 records this exception. Preserve existing data and the explicit sample; no
+fixture authority in real mode, no real banking and no claim of applied hosted SQL without proof.
 
 Feature 018 (`specs/018-persistent-adult-accounts/`) extends the adult pilot with
 owner-approved persistent adult profiles and account-owned family, task and study

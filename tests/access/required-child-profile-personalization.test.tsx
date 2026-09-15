@@ -1,7 +1,10 @@
 import { readFileSync } from 'node:fs';
+import { isValidElement, type ReactElement, type ReactNode } from 'react';
 
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import AddFirstChildScreen from '../../app/access/parent/add-first-child';
+import { ChildProfileForm } from '../../src/components/access/ChildProfileForm';
 import {
   createInitialParentOnboardingDraft,
   updateParentOnboardingDraft,
@@ -10,6 +13,140 @@ import {
 import { createPreparedProfilePersonalization } from '../../src/features/assistants/profilePersonalization';
 import { LOCAL_FAMILY_SCHEMA_VERSION } from '../../src/models/localFamily';
 import { resources } from '../../src/i18n/resources';
+import type {
+  ParentOnboardingChildDraft,
+  ParentOnboardingDraft,
+  ParentOnboardingDraftPatch,
+} from '../../src/models/parentOnboarding';
+
+const formState = vi.hoisted(() => ({
+  childIndex: '0',
+  cursor: 0,
+  slots: [] as { value: unknown }[],
+  locale: 'ar' as 'ar' | 'en',
+  draft: null as ParentOnboardingDraft | null,
+  onLimitReached: vi.fn(),
+  replace: vi.fn(),
+}));
+
+vi.mock('react', async (importOriginal) => {
+  const react = await importOriginal<typeof import('react')>();
+  return {
+    ...react,
+    useState: (initial: unknown) => {
+      const slot = (formState.slots[formState.cursor++] ??= { value: initial });
+      return [slot.value, (value: unknown) => (slot.value = value)];
+    },
+    useCallback: (callback: unknown) => callback,
+    useEffect: () => undefined,
+  };
+});
+vi.mock('react-native', () => ({
+  View: 'View',
+  Platform: {
+    OS: 'web',
+    select: (options: Record<string, unknown>) => options.web ?? options.default,
+  },
+  StyleSheet: { create: (styles: unknown) => styles },
+}));
+vi.mock('expo-router', () => ({
+  Redirect: 'Redirect',
+  useLocalSearchParams: () => ({ child: formState.childIndex }),
+  useRouter: () => ({ replace: formState.replace }),
+}));
+vi.mock('@/components/primitives', () => ({ Text: 'Text', PrimaryButton: 'PrimaryButton' }));
+vi.mock('@/components/access', () => ({
+  AccessActionRegion: 'AccessActionRegion',
+  AccessHeader: 'AccessHeader',
+  AccessScreen: 'AccessScreen',
+  ChildProfileForm: 'ChildProfileForm',
+  InfoRow: 'InfoRow',
+  StatusBanner: 'StatusBanner',
+}));
+vi.mock('@/components/access/AccessControls', () => ({
+  AccessTextField: 'AccessTextField',
+  ChoiceChip: 'ChoiceChip',
+  SegmentedControl: 'SegmentedControl',
+}));
+vi.mock('@/components/access/AIProfilePreview', () => ({ AIProfilePreview: 'AIProfilePreview' }));
+vi.mock('@/components/access/BotanicalAvatar', () => ({
+  BotanicalAvatarPicker: 'BotanicalAvatarPicker',
+}));
+vi.mock('@/state/usePrototypeStore', () => ({
+  usePrototypeStore: (selector: (state: object) => unknown) =>
+    selector({
+      locale: formState.locale,
+      direction: formState.locale === 'ar' ? 'rtl' : 'ltr',
+      parentOnboarding: { status: 'verified', draft: formState.draft },
+      localFamily: { status: 'empty' },
+      pendingFamilyCreation: null,
+      updateParentOnboardingDraft: (patch: ParentOnboardingDraftPatch) => {
+        const result = updateParentOnboardingDraft(formState.draft!, patch);
+        if (result.ok) formState.draft = result.data;
+        return result;
+      },
+    }),
+}));
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) =>
+      key
+        .split('.')
+        .reduce<unknown>(
+          (value, part) => (value as Record<string, unknown>)[part],
+          resources[formState.locale].translation,
+        ),
+  }),
+}));
+
+type FormNode = ReactElement<Record<string, unknown>>;
+function formNodes(value: ReactNode): FormNode[] {
+  if (Array.isArray(value)) return value.flatMap(formNodes);
+  if (!isValidElement<Record<string, unknown>>(value)) return [];
+  return [
+    value,
+    ...formNodes(value.props.children as ReactNode),
+    ...formNodes(value.props.footer as ReactNode),
+    ...formNodes(value.props.header as ReactNode),
+  ];
+}
+function field(tree: ReactNode, testID: string): FormNode {
+  const node = formNodes(tree).find((candidate) => candidate.props.testID === testID);
+  expect(node, testID).toBeDefined();
+  return node!;
+}
+function profileForm() {
+  return ChildProfileForm({
+    child: formState.draft!.children[Number(formState.childIndex)]!,
+    direction: formState.locale === 'ar' ? 'rtl' : 'ltr',
+    language: formState.locale,
+    disabled: false,
+    onLimitReached: formState.onLimitReached,
+    onValidateName: () => undefined,
+    onPatch: (child: Partial<ParentOnboardingChildDraft>) => {
+      formState.draft = expectOk(
+        updateParentOnboardingDraft(formState.draft!, {
+          childIndex: formState.childIndex === '1' ? 1 : 0,
+          child,
+        }),
+      );
+    },
+  });
+}
+function childScreen() {
+  formState.cursor = 0;
+  return AddFirstChildScreen();
+}
+
+beforeEach(() => {
+  formState.childIndex = '0';
+  formState.cursor = 0;
+  formState.slots = [];
+  formState.locale = 'ar';
+  formState.draft = createInitialParentOnboardingDraft();
+  formState.onLimitReached.mockClear();
+  formState.replace.mockClear();
+});
 
 function source(path: string): string {
   return readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
@@ -36,6 +173,95 @@ const personalizedInput = {
 } as const;
 
 describe('required Child profile details', () => {
+  it.each([
+    ['child-interest-custom', 'child-custom-interest'],
+    ['child-hobby-custom', 'child-custom-hobby'],
+    ['child-support-custom', 'child-custom-support'],
+    ['child-accessibility-custom', 'child-custom-accessibility'],
+  ])(
+    'explains the incomplete Other answer beside %s before Continue is available',
+    (choiceID, inputID) => {
+      expect(field(childScreen(), 'add-child-continue').props.disabled).toBe(false);
+      (field(profileForm(), choiceID).props.onPress as () => void)();
+
+      for (const value of ['', ' ', 'a']) {
+        (field(profileForm(), inputID).props.onChangeText as (next: string) => void)(value);
+        const input = field(profileForm(), inputID);
+        expect(input.props.errorText).toBe(
+          resources.ar.translation.access.setup.customAnswerRequired,
+        );
+        expect(input.props.maxLength).toBe(80);
+        expect(field(childScreen(), 'add-child-continue').props.disabled).toBe(true);
+      }
+
+      (field(profileForm(), inputID).props.onChangeText as (next: string) => void)('نباتات');
+      expect(field(profileForm(), inputID).props.errorText).toBeUndefined();
+      expect(field(childScreen(), 'add-child-continue').props.disabled).toBe(false);
+
+      (field(profileForm(), choiceID).props.onPress as () => void)();
+      expect(formNodes(profileForm()).some((node) => node.props.testID === inputID)).toBe(false);
+      expect(field(childScreen(), 'add-child-continue').props.disabled).toBe(false);
+    },
+  );
+
+  it('translates custom-answer feedback without losing typed names, selections or other answers', () => {
+    (field(profileForm(), 'child-name-input').props.onChangeText as (value: string) => void)(
+      'اسم محفوظ',
+    );
+    (field(profileForm(), 'child-hobby-custom').props.onPress as () => void)();
+    (field(profileForm(), 'child-custom-hobby').props.onChangeText as (value: string) => void)(
+      'الرسم',
+    );
+    (field(profileForm(), 'child-interest-custom').props.onPress as () => void)();
+    const draft = formState.draft;
+
+    for (const locale of ['en', 'ar'] as const) {
+      formState.locale = locale;
+      expect(field(profileForm(), 'child-custom-interest').props.errorText).toBe(
+        resources[locale].translation.access.setup.customAnswerRequired,
+      );
+      expect(field(profileForm(), 'child-name-input').props.value).toBe('اسم محفوظ');
+      expect(field(profileForm(), 'child-custom-hobby').props.value).toBe('الرسم');
+      expect(field(profileForm(), 'child-interest-custom').props.selected).toBe(true);
+      expect(formState.draft).toBe(draft);
+      expect(field(childScreen(), 'add-child-continue').props.disabled).toBe(true);
+    }
+  });
+
+  it('updates a visible name error when the interface language changes', () => {
+    (field(profileForm(), 'child-name-input').props.onChangeText as (value: string) => void)('a');
+    const screenForm = () =>
+      formNodes(childScreen()).find((node) => node.type === 'ChildProfileForm')!;
+    (screenForm().props.onValidateName as () => void)();
+    expect(screenForm().props.errorText).toBe(resources.ar.translation.access.setup.childNameError);
+
+    formState.locale = 'en';
+    expect(screenForm().props.errorText).toBe(resources.en.translation.access.setup.childNameError);
+    expect(formState.draft!.children[0]?.nickname).toBe('a');
+  });
+
+  it('resets only the access scroll position when moving between retained child drafts', () => {
+    (field(profileForm(), 'child-name-input').props.onChangeText as (value: string) => void)(
+      'First draft',
+    );
+    const first = field(childScreen(), 'add-first-child-screen');
+    expect(first.props.scrollResetKey).toBe('child-0');
+    expect(first.key).toBeNull();
+
+    formState.childIndex = '1';
+    const second = field(childScreen(), 'add-first-child-screen');
+    expect(second.props.scrollResetKey).toBe('child-1');
+    expect(second.key).toBeNull();
+    (field(profileForm(), 'child-name-input').props.onChangeText as (value: string) => void)(
+      'Second draft',
+    );
+
+    formState.childIndex = '0';
+    expect(field(childScreen(), 'add-first-child-screen').props.scrollResetKey).toBe('child-0');
+    expect(field(profileForm(), 'child-name-input').props.value).toBe('First draft');
+    expect(formState.draft!.children[1]?.nickname).toBe('Second draft');
+  });
+
   it('requires one explicit male or female value before profile completion', () => {
     const initial = createInitialParentOnboardingDraft() as unknown as {
       children: readonly { sex: string | null }[];

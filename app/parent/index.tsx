@@ -459,109 +459,105 @@ export default function ParentHomeScreen() {
             onCreateTask={openTaskBuilderFor}
             onOpenCurrent={openTaskAction}
           />
-        ) : (
-          <>
-            {!journey ? (
-              <Button
-                brand
-                direction={direction}
-                icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
-                onPress={openTaskAction}
-                size="regular"
-                testID="parent-tasks-create-task"
-              >
-                {t('r002aTasks.createTask')}
-              </Button>
-            ) : null}
+        ) : !journey ? (
+          <Button
+            brand
+            direction={direction}
+            icon={<GhafIcon color={colors.onPrimary} name="plus" size={24} />}
+            onPress={openTaskAction}
+            size="regular"
+            testID="parent-tasks-create-task"
+          >
+            {t('r002aTasks.createTask')}
+          </Button>
+        ) : null}
 
-            {adjustmentError ? (
-              <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
-                {adjustmentError}
-              </Text>
-            ) : null}
+        {adjustmentError ? (
+          <Text accessibilityLiveRegion="polite" brand color="danger" direction={direction}>
+            {adjustmentError}
+          </Text>
+        ) : null}
 
-            <View
-              accessibilityRole="radiogroup"
-              style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
-            >
-              {Object.values(children)
-                .filter((child) => localFamily.configuredChildIds.includes(child.id))
-                .map((child) => {
-                  const selected = child.id === activeChildId;
-                  return (
-                    <Pressable
-                      accessibilityRole="radio"
-                      accessibilityState={{ checked: selected }}
-                      aria-checked={selected}
-                      key={child.id}
-                      onPress={() => chooseChild(child.id)}
-                      style={({ pressed }) => [
-                        styles.childFilterItem,
-                        selected ? styles.childFilterItemActive : null,
-                        pressed ? styles.pressed : null,
-                      ]}
-                      testID={`parent-tasks-child-${child.id}`}
-                    >
-                      <Text
-                        align="center"
-                        brand
-                        color={selected ? 'onPrimary' : 'onSurfaceVariant'}
-                        variant="label"
-                      >
-                        {profileName(child.id)}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-            </View>
-
-            <View
-              accessibilityRole="tablist"
-              style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
-            >
-              {(
-                [
-                  ['assigned', t('r002aTasks.assignedTab')],
-                  ['pending', t('r002aTasks.pendingTab')],
-                  ['completed', t('r002aTasks.completedTab')],
-                ] as const
-              ).map(([key, label]) => {
-                const selected = taskFilter === key;
-                return (
-                  <Pressable
-                    accessibilityRole="tab"
-                    accessibilityState={{ selected }}
-                    aria-selected={selected}
-                    key={key}
-                    onPress={() => {
-                      dismissTaskAdded();
-                      setTaskFilter(key);
-                    }}
-                    style={({ pressed }) => [
-                      styles.taskTab,
-                      selected ? styles.taskTabActive : null,
-                      pressed ? styles.pressed : null,
-                    ]}
-                    testID={`parent-tasks-tab-${key}`}
+        <View
+          accessibilityRole="radiogroup"
+          style={[styles.childFilter, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {Object.values(children)
+            .filter((child) => localFamily.configuredChildIds.includes(child.id))
+            .map((child) => {
+              const selected = child.id === activeChildId;
+              return (
+                <Pressable
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: selected }}
+                  aria-checked={selected}
+                  key={child.id}
+                  onPress={() => chooseChild(child.id)}
+                  style={({ pressed }) => [
+                    styles.childFilterItem,
+                    selected ? styles.childFilterItemActive : null,
+                    pressed ? styles.pressed : null,
+                  ]}
+                  testID={`parent-tasks-child-${child.id}`}
+                >
+                  <Text
+                    align="center"
+                    brand
+                    color={selected ? 'onPrimary' : 'onSurfaceVariant'}
+                    variant="label"
                   >
-                    <Text
-                      align="center"
-                      brand
-                      color={selected ? 'primary' : 'onSurfaceVariant'}
-                      variant="label"
-                    >
-                      {label}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
+                    {profileName(child.id)}
+                  </Text>
+                </Pressable>
+              );
+            })}
+        </View>
 
-            <View accessibilityLiveRegion="polite">
-              <CatalogTaskList role="parent" filter={taskFilter} />
-            </View>
-          </>
-        )}
+        <View
+          accessibilityRole="tablist"
+          style={[styles.taskTabs, { flexDirection: logicalRowDirection(direction) }]}
+        >
+          {(
+            [
+              ['assigned', t('r002aTasks.assignedTab')],
+              ['pending', t('r002aTasks.pendingTab')],
+              ['completed', t('r002aTasks.completedTab')],
+            ] as const
+          ).map(([key, label]) => {
+            const selected = taskFilter === key;
+            return (
+              <Pressable
+                accessibilityRole="tab"
+                accessibilityState={{ selected }}
+                aria-selected={selected}
+                key={key}
+                onPress={() => {
+                  dismissTaskAdded();
+                  setTaskFilter(key);
+                }}
+                style={({ pressed }) => [
+                  styles.taskTab,
+                  selected ? styles.taskTabActive : null,
+                  pressed ? styles.pressed : null,
+                ]}
+                testID={`parent-tasks-tab-${key}`}
+              >
+                <Text
+                  align="center"
+                  brand
+                  color={selected ? 'primary' : 'onSurfaceVariant'}
+                  variant="label"
+                >
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        <View accessibilityLiveRegion="polite">
+          <CatalogTaskList role="parent" filter={taskFilter} />
+        </View>
       </R002aScreen>
     );
   }

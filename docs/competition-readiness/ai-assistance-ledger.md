@@ -1551,3 +1551,109 @@ failed decoding, confirmed on recheck. Receipt: output/native-integration/015/na
 A read-only helper audited existing manual playback reuse while A inspected files; no source/audio
 was changed or activated. Human listening/transcript fidelity and generation provenance are not
 verified by metadata. Integration awaits the replacement file; existing originals and5Abrand preserved.
+
+## September 13 — Masroofi competition card implementation
+
+Actual user request: “I want to have for competition, implement it as good as possible and explain
+the workflow when you finish, and for "مصروفي" card try to have a real card like design and
+influenced by the UAE traditions and UAE in general”. The preceding idea described Parent-set
+task rewards whose amounts remain hidden until earned, an ages-10+ card and Parent purchase rules.
+
+Codex root wrote the Feature 017 contract, store/recognition integration, guarded routes and
+entries, workflow tests and rehearsal documentation. A bounded AI-prototype helper wrote the
+pure service/model and unit tests; a bounded Expo UI helper wrote the native card, controls, shop
+and bilingual resources. Root integrated/fixed these contributions and ran checks and a browser
+rehearsal. The service helper separately reviewed the final UI captures without authoring the UI.
+These are generated contributions, not evidence of independent student authorship or review.
+
+The scope is explicitly simulated: original SVG card geometry, no external brand or generated
+raster, no real payment credentials, card issuance, funds, purchases or provider. The initial new
+SVG DOM warning and route-inventory regressions were corrected; historical failures and final
+evidence are recorded in the [workstream report](workstreams/masroofi-20260913.md). Physical
+Android, named Arabic/UAE review and student teach-back remain NOT RUN. The
+[workflow](../../specs/017-masroofi-demo/quickstart.md) explains the demonstration and limits.
+
+### Masroofi revision — spending categories and UAE card identity
+
+Actual user request: “add more categories, and for the car, make it's design much better, with
+UAE identity not just green one. also remove the exesive "DEMO" marks around it”. Clarification:
+“Spending categories on the card”. Codex root revised the contract, category picker/controls,
+translations, activity naming, store typing, feedback localization and evidence. The domain
+helper extended the finite service/model/tests; the UI helper replaced the artwork and scoped
+palette. Root corrected the category validation type and web direction warning. The domain helper
+reviewed final visual captures without authoring the UI. These generated changes do not establish
+student authorship or human cultural review. The [revision record](workstreams/masroofi-20260913.md)
+preserves checks and remaining native/human gates. One clear virtual-money notice remains below
+the card; no real finance claim or payment integration follows from removing repeated stamps.
+
+## September 14 — additive incoming merge with Masroofi
+
+Actual user request: “Resolve the merge conflicts by adding the masroofi one to the new incoming
+change (don't delete anything before asking)”. Codex root preserved the original conflict stages,
+combined the documentation, routes, services and resources, restored both Child entry buttons,
+and added Masroofi clearing to the incoming shared reset implementation. Root added isolated
+pilot/recovery regression coverage and ran the recorded integration checks. The existing domain
+and UI helpers reviewed the merge read-only; root owned all writes and validation.
+
+The [merge record](workstreams/masroofi-merge-20260914.md) records exact scope, dependency setup,
+checks and remaining gates. Both Feature 017 packages retain their paths and capability limits.
+This is AI-assisted integration, not evidence of independent student work, human cultural review,
+native acceptance or real financial capability. No files were deleted or changes pushed.
+
+## September 14 — account, family, task and language stability
+
+Actual user request: “I feel there's many errors overall in the app with the auth, task creation
+and compilations, etc. fix all of them and use real data from supabase instead of predefined, use
+the supabase skill for more info about supabase”. Follow-up confirms “Email and password” and
+prioritizes “familiy creation page, task creation, and langauge selectors”.
+
+Codex root used the Supabase, React Native, quality-workflow and interface skills, documented the
+additive Feature 018 scope, promoted the existing real saved workspace, corrected language
+persistence/reversion and integrated the work. Scoped helpers repaired launch configuration, cloud
+workspace forms, local child-form feedback and candidate task-history visibility; read-only helpers
+mapped provider authority and dependency/build boundaries. Root ran the serialized checks and fresh
+browser/public-provider verification recorded in the
+[stability workstream](workstreams/account-stability-20260914.md). These are AI-generated changes,
+not evidence of independent student implementation, named Arabic review or native acceptance.
+No private credentials, real Child data, new schema, real payments or data deletion are introduced.
+
+## September 14 — full normalized Supabase migration
+
+Actual user correction: “for the database, you didn't create proper database cheme in supabase to
+handle the tasks and other stuff, I want a full migration to supabase from predefined”. Codex root
+used the Supabase and React Native skills, updated Feature 019/constitution/ownership, integrated
+the real async family runtime and separate Child Auth boundary, and ran serialized verification.
+Seven scoped helpers authored core SQL/contracts, extended domains, Family/Task UI, rewards/study
+UI, growth/learning/League and preserved companion features, strict validation, and isolated
+tooling/credential tests. The helpers and root reviewed concrete cross-boundary defects without
+sharing write ownership.
+
+The work is AI-generated/AI-assisted implementation, not independent student authorship, named
+cultural review or physical-device acceptance. Exact files, failures/fixes, test results, browser
+interception limits and missing hosted-admin access are recorded in the
+[migration evidence](workstreams/supabase-family-migration-20260914.md). No live child media,
+financial provider, hosted deletion, destructive reset, commit, push or public deployment occurred.
+Prepared educational content remains labeled, and simulated Masroofi money remains simulated
+despite its new persisted ledger.
+
+## September 15 — normalized migration delivery
+
+Actual user request: “continue and push”. Codex root fetched the remote, found 49 newer commits
+including a separate Feature 020 Supabase implementation, and preserved both histories by preparing
+`feature/019-normalized-supabase-family-runtime`. Root owns the cohesive commits and ordinary push;
+no helper writes or new authored application behavior are part of this continuation. The
+[delivery record](workstreams/supabase-family-push-20260915.md) distinguishes prior local checks,
+unresolved schema reconciliation and the missing administrative connection. User-owned lockfile
+and skill changes are excluded. This delivery does not establish hosted installation, native
+acceptance or independent student authorship of the AI-assisted source.
+
+## September 15 — main-branch preservation integration
+
+Actual user request: “add them to main also”, following explicit public-push approval. Codex root
+created an isolated checkout and preserved both branch histories. Three scoped helpers audited
+then reconciled SQL verifier scope, auth/service/credential dispatch and UI/model compatibility.
+Root resolved remaining conflicts, separated translation/model namespaces, preserved reference
+and sample features, and ran serialized integration checks. The
+[main integration record](workstreams/supabase-main-integration-20260915.md) owns exact evidence.
+This AI-assisted merge is not independent student authorship, a hosted migration, live banking or
+new physical-device acceptance. Existing user-owned lockfile/skill edits stay in the original tree.

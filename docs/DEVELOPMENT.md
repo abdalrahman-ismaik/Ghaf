@@ -1,9 +1,12 @@
 # Development and testing
 
 This guide is the practical path for installing, running, resetting, and verifying the current
-Feature 020 Supabase family application and its separate Feature 003 synthetic demo.
-Run every command from the repository root. The [family-data guide](backend/family-data.md)
-owns backend deployment and service-verification instructions.
+Feature 020 Supabase family application, its explicitly selected Feature 019 normalized
+runtime and the separate Feature 003 synthetic demo. Run every command from the repository root.
+The [family-data guide](backend/family-data.md) owns the deployed default contract;
+[the normalized workflow](backend/full-family-migration.md) owns the additional schema.
+Set `EXPO_PUBLIC_GHAF_FAMILY_RUNTIME=normalized` only for an explicitly configured normalized
+build. Missing configuration or schema never selects a different runtime or sample data.
 
 ## Prerequisites
 
@@ -49,12 +52,20 @@ create a genuinely empty family or accept an authorized family invitation. Add m
 explicitly; a Child device pairs under its own restricted Supabase anonymous identity. See
 [authentication](auth.md) for session restoration, permissions and signout behavior.
 
+The deterministic sample needs no backend, camera permission, microphone permission or real Child
+data. `EXPO_PUBLIC_GHAF_SERVICE_MODE=mock` selects its local service path. Real adult accounts and
+saved family/task/study records use the separate Supabase account configuration below. Never put
+an admin/service-role key or AI provider secret in an `EXPO_PUBLIC_` variable.
+
 ## Run the app
 
 Use the web workflow for quick browser checks or the native workflow for authoritative Android
 device checks.
 
 ### Real-account browser development
+
+The account launcher selects Supabase and requires a network connection. Use `start:demo` below
+for the explicit sample.
 
 ```bash
 npm run start:pilot -- --web
@@ -80,6 +91,43 @@ copy, deterministic-flow, and screenshot review. It cannot pass native Android, 
 touch, IME, media, permission, predictive Back, or device-performance gates. This command explicitly
 selects `EXPO_PUBLIC_GHAF_AUTH_MODE=demo` and fast demo entry. It needs no backend, uses synthetic
 people/history and does not synchronize between devices. It cannot verify real-account persistence.
+
+### Real adult accounts and saved family tasks
+
+Set the public account project values in your ignored `.env` or optional `.env.pilot.local`:
+
+```dotenv
+EXPO_PUBLIC_GHAF_AUTH_MODE=supabase
+EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-public-publishable-key
+```
+
+```bash
+npm run start:pilot -- --web --localhost --port 8093
+```
+
+The account launcher always selects Supabase access. The mode-specific env file is optional;
+ordinary Expo env files and explicit shell variables also work. Shell values win over file values;
+the selected optional mode file wins over the ordinary Expo files. `start:messaging` loads only
+the messaging overlay and retains its separate project/identity configuration. Neither launcher
+clears caches automatically. On Windows, use `npm.cmd` if PowerShell blocks `npm.ps1`.
+
+Sign in with **email and password**. New accounts verify their email with the emailed code;
+forgotten passwords use a recovery code. The existing pilot approval check still applies. After
+approval, the selected runtime opens your saved family: save a family name, add a Child,
+then choose that Child when creating a task or study plan. Reload verifies server persistence.
+Parent-confirmed task recognition follows that runtime's fixed award rules. The preserved legacy
+planning workspace's completion checkbox grants no Seeds or money.
+
+Account settings and the sample family are separate navigation choices. Switching sections or
+interface language retains unsaved workspace input; logout or changing accounts clears it.
+On a concurrent edit, reload the latest saved data, review your retained draft, then save explicitly.
+Only a successful server response displays a saved notice. Sample reset never resets account data.
+
+See [Feature 020](../specs/020-supabase-family-data/spec.md) for the default family contract,
+[Feature 019](../specs/019-supabase-family-runtime/spec.md) for explicit normalized mode and
+[Feature 018](../specs/018-persistent-adult-accounts/spec.md) for the preserved planning boundary.
+The client cannot fix missing hosted migrations or grant approval to itself.
 
 ### Android Studio and a physical USB device
 
@@ -319,7 +367,7 @@ That command runs:
 2. strict TypeScript;
 3. Expo ESLint;
 4. Prettier checks for maintained source/developer docs;
-5. all deterministic Vitest suites;
+5. launcher tests and all deterministic Vitest suites;
 6. Expo dependency alignment; and
 7. a static web export to ignored `dist/`.
 

@@ -1,5 +1,14 @@
 # Ghaf Feature 003 Demo Runbook
 
+## Main integration — 2026-09-15
+
+Normal real-account builds keep Feature020's deployed family experience. Use explicit
+`EXPO_PUBLIC_GHAF_FAMILY_RUNTIME=normalized` only with a separately verified Feature019 schema;
+it has different Child invitation and family data contracts. `npm run start:demo` still opens
+the isolated synthetic journey including Masroofi. Do not change runtime to recover a failed
+request or move an existing family implicitly. The
+[integration record](workstreams/supabase-main-integration-20260915.md) owns the merged checks.
+
 ## Current requirement audit — 2026-09-14
 
 Use the [implementation ledger](feature-implementation-audit.md) for the current
@@ -16,6 +25,56 @@ all six Arabic onboarding screens and English garden/memory display. This was an
 isolated quick-demo installation, not timed human rehearsal or native/two-device proof.
 The [current editable poster](poster/README.md) explicitly identifies historical
 screenshots and capability limits.
+## Full cloud journey — Feature 019, 2026-09-14
+
+Use the [full migration operator workflow](../backend/full-family-migration.md) to install and
+verify the normalized schema before a hosted rehearsal. Email/password Parent login opens real
+Family/Tasks/Garden/Learning/Rewards/Masroofi/Study/Goals/League/Help sections. Create a Child,
+review and assign a task, lock an eligible hidden reward, issue a Child invitation, then use a
+separate Child installation to accept and submit. Parent confirmation, saved praise presentation
+and recognition create one permanent receipt and eligible progress/credit. Refresh both devices
+to verify persistence, then revoke Child access and verify denial. Do not describe the simulated
+Masroofi ledger as banking or purchases as real merchant transactions.
+
+The explicit Sample tab retains the original competition path below. Neither local SQL tests nor
+intercepted browser fixtures establish hosted, native or human acceptance. Feature 018's planning
+completion checkbox below is historical and is not the new recognition authority.
+
+## Current saved family/task workflow — 2026-09-14
+
+Use `npm run start:pilot -- --web --localhost --port 8093` with the documented public Supabase
+account configuration. Sign in with email/password; registration/recovery codes and existing
+administrator approval remain in place. The optional `.env.pilot.local` file is no longer required.
+
+1. Open **Family and tasks**, save a family name, then add a chosen member nickname.
+2. Open **Tasks**, create a task, explicitly choose its saved member and save to the account.
+3. Mark it complete, reload and verify the saved state; reopening remains available.
+4. Check **Study** similarly. Change interface language with a draft open and verify its text and
+   selected member remain. Switch to account settings and back without losing the draft.
+5. If another client changes the data, use reload to keep the draft, review the latest records and
+   explicitly save. A failed request must never display a new saved result.
+6. Enter the separate sample only through **Explore sample family** for Child, garden, League,
+   rewards and Masroofi demonstrations. Its task history now remains available with the task
+   workspace candidate enabled, including earlier assigned/pending/completed tasks.
+
+Use synthetic rehearsal records. No current cleanup is authorized: retain newly created test data.
+Cloud planning completions grant no Seeds or money. See the
+[fresh evidence and open gates](workstreams/account-stability-20260914.md), separate from older runs.
+
+## Masroofi competition extension — 2026-09-13
+
+The optional synthetic **Family → Masroofi / مصروفي** card journey is documented in the
+[Feature 017 workflow](../../specs/017-masroofi-demo/quickstart.md). Lock AED 5 against Alya's
+eligible unaccepted task, complete it with permitted help, and confirm through the existing
+praise/recognition flow. Alya's card receives one simulated credit; a practice AED 3 notebook
+purchase leaves AED 2 and a blocked online-game purchase leaves that balance unchanged.
+The Parent sets prospective limits/category/online/freeze rules across eight spending categories.
+The Child uses category choices to show a single sample product. The revised pearl/red-woven
+card carries a UAE flag and architecture motif with one virtual-money notice below it.
+No real money or card exists.
+See [evidence and limitations](workstreams/masroofi-20260913.md); physical Android/human review
+remains separately required. Existing Family Reward promises and all growth authorities remain
+unchanged, and the existing Parent reset clears the extension.
 
 ## Dedicated messaging rehearsal — 2026-09-14
 

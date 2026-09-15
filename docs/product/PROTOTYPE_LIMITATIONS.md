@@ -1,5 +1,14 @@
 # Prototype Limitations
 
+## Main integration boundary — 2026-09-15
+
+Feature020 remains the deployed default; Feature019's normalized family/Masroofi runtime is an
+explicit build choice with independent schema and acceptance. Merging source does not apply that
+schema, migrate Feature020 families or verify new physical Android behavior. Both implementations
+and their dated evidence are preserved. Follow the
+[integration record](../competition-readiness/workstreams/supabase-main-integration-20260915.md)
+for checks of the combined source; do not infer shared database authority from shared adult login.
+
 ## Feature019 audit and local completion — 2026-09-14
 
 The [requirement ledger](../competition-readiness/feature-implementation-audit.md)
@@ -23,6 +32,43 @@ still need current Android/human acceptance. Separate messaging/account evidence
 below is historical service evidence, not proof of these new flows. The original
 architecture PowerPoint/template archives and companion GIF directory were not
 located; the new poster is editable HTML with checked PNG/PDF exports.
+## Full migration — Feature 019, 2026-09-14
+
+The normalized source schema and app now cover family, task lifecycle, recognition, gardens,
+rewards/Masroofi, study/goals, learning/badges and League. These supersede the narrow planner in
+Supabase mode; the local sample remains separate. Persistent card money is still simulated.
+Prepared assistance does not become live AI, and media permissions do not enable real Child
+recording. Messaging continues to use its separate provider account and database.
+
+Local PostgreSQL and browser checks do not apply migrations or enable hosted anonymous Auth.
+This run lacks an authenticated database-admin connection, so hosted installation, real provider
+enrollment/email and multi-client readback are BLOCKED. Android/native and named human review are
+NOT RUN. Unsupported learning/activity packages remain explicitly unavailable; all 16 badge
+definitions persist without fabricated awards. History pagination and operational retention need
+later scaling work. See [the operator workflow](../backend/full-family-migration.md).
+
+## Account and form stability continuation — 2026-09-14
+
+Supabase mode now opens the saved family/task/study workspace first; the existing account RPCs and
+ownership guards remain its authority. The separate sample retains Child tasks, Seeds, growth,
+study goals and Masroofi. Cloud planning completion cannot issue rewards or authenticate a Child.
+The latest language fixes cover profile-refresh reversion and persisted native direction selection;
+JavaScript tests and web inspection do not establish native restart/keyboard/Back acceptance.
+See the [current stability evidence](../competition-readiness/workstreams/account-stability-20260914.md)
+for fresh checks. Earlier provider/native passes below are historical, not new passes for this change.
+
+## Masroofi competition simulation — Feature 017
+
+The user-authorized card experience is a synthetic educational ledger in the current app session.
+All balances, reward credits, Parent-added funds and practice purchases are simulated. No real
+card number, bank account, issuer, custody, transfer or checkout exists. Parent controls are
+demonstrated against eight local purchase fixtures, not actual merchants or individual products.
+One visible notice below the card identifies the practice mode; repeated artwork stamps and
+balance qualifiers were removed at the user's request.
+Age 9–11 profiles require Parent attestation of age 10+; this is not age verification. The normal
+prototype access guards do not become production financial security. Task progress/card history
+does not synchronize across devices or recover after restart. Existing Family Reward promise
+metadata and Seeds remain separate. Native and named-human acceptance are still required.
 
 ## Persistent account continuation — 2026-09-14
 

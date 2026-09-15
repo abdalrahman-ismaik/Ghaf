@@ -16,6 +16,8 @@ import { usePrototypeStore } from '@/state/usePrototypeStore';
 import { PilotAccountView } from './PilotAccountView';
 import { AccountWorkspaceBoundary } from './AccountWorkspaceBoundary';
 import { RealFamilySession } from './RealFamilySession';
+import { NormalizedPilotGate } from './NormalizedPilotGate';
+import { getFamilyRuntimeConfig } from '@/features/cloudFamily/config';
 
 function createAccountRuntime() {
   let service = null;
@@ -44,8 +46,21 @@ function createAccountRuntime() {
 }
 
 export function PilotGate({ children }: PropsWithChildren) {
+  const config = getFamilyRuntimeConfig();
+  if (!config.valid) return <FamilyRuntimeConfigurationError />;
   if (!getPilotConfig().enabled) return children;
+  if (config.runtime === 'normalized') return <NormalizedPilotGate>{children}</NormalizedPilotGate>;
   return <EnabledPilotGate>{children}</EnabledPilotGate>;
+}
+
+function FamilyRuntimeConfigurationError() {
+  const { t } = useTranslation();
+  return (
+    <SafeAreaView style={styles.root} testID="family-runtime-configuration-error">
+      <Text brand>{t('pilot.status.configuration.title')}</Text>
+      <Text brand>{t('pilot.status.configuration.body')}</Text>
+    </SafeAreaView>
+  );
 }
 
 export function EnabledPilotGate({ children }: PropsWithChildren) {
@@ -70,11 +85,13 @@ export function EnabledPilotGate({ children }: PropsWithChildren) {
   useEffect(() => {
     const profile = state.profile;
     if (profile && profile.userId === state.account?.userId) {
-      const preferenceKey = `${profile.userId}:${profile.revision}`;
+      const preferenceKey = `${profile.userId}:${profile.preferredLocale}`;
       if (appliedPreference.current === preferenceKey) return;
       appliedPreference.current = preferenceKey;
       const store = usePrototypeStore.getState();
       if (store.locale !== profile.preferredLocale) store.setLocale(profile.preferredLocale);
+    } else if (!state.account?.userId) {
+      appliedPreference.current = null;
     }
   }, [state.profile, state.account?.userId]);
 

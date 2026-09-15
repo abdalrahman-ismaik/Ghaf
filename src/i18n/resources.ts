@@ -9,16 +9,19 @@ import { onboardingControlResources } from './onboardingControlResources';
 import { profileRecommendationResources } from './profileRecommendationResources';
 import { ambientVolumeResources } from './ambientVolumeResources';
 import { familyConnectionEditResources } from './familyConnectionEditResources';
+import { cloudFamilyResources as normalizedCloudFamilyResources } from './cloudFamily';
 import { studyResources } from './studyResources';
 import { familyPracticeResources } from './familyPracticeResources';
 import { peerMessagingAr, peerMessagingEn } from './peerMessagingResources';
 import { phraseText } from '../features/familyMessaging/contracts';
+import { masroofiResources } from './masroofi';
 
 export const resources = {
   ar: {
     translation: {
       pilot: pilotResources.ar,
       cloudFamily: cloudFamilyResources.ar,
+      normalizedCloudFamily: normalizedCloudFamilyResources.ar,
       cloudAccess: cloudAccessResources.ar,
       cloudDocuments: cloudDocumentResources.ar,
       cloudGrowth: cloudGrowthResources.ar,
@@ -31,6 +34,7 @@ export const resources = {
       study: studyResources.ar,
       familyPractices: familyPracticeResources.ar,
       peerMessaging: peerMessagingAr,
+      masroofi: masroofiResources.ar,
       catalog: {
         previewIdeas: 'أفكار يمكنك مراجعتها مع وليّ الأمر. تحتاج إلى اعتماد خاص بك قبل البدء.',
         needsApproval: 'تحتاج إلى اعتماد وليّ الأمر',
@@ -2140,6 +2144,7 @@ export const resources = {
     translation: {
       pilot: pilotResources.en,
       cloudFamily: cloudFamilyResources.en,
+      normalizedCloudFamily: normalizedCloudFamilyResources.en,
       cloudAccess: cloudAccessResources.en,
       cloudDocuments: cloudDocumentResources.en,
       cloudGrowth: cloudGrowthResources.en,
@@ -2152,6 +2157,7 @@ export const resources = {
       study: studyResources.en,
       familyPractices: familyPracticeResources.en,
       peerMessaging: peerMessagingEn,
+      masroofi: masroofiResources.en,
       catalog: {
         previewIdeas:
           'Ideas to review with your Parent. You need your own approval before starting.',

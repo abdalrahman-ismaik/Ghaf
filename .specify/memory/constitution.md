@@ -1,8 +1,12 @@
 <!--
 Sync Impact Report
-- Version change: 2.3.0 -> 2.4.0
+- Version change: 2.4.0 -> 2.4.1
+- Reconciled the independently approved Feature019/020 histories without changing hosted
+  authority: Feature020 stays default; normalized Feature019 requires explicit build selection.
 - Approved Feature020 exception: fresh Supabase family accounts, managed Child identity,
   persistent implemented family domains, server authority and explicit demo isolation.
+- Approved Feature019 exception: complete normalized Supabase family runtime, durable domain
+  authority, preserved legacy import and explicit revocable Child enrollment.
 - Approved Feature018 exception: real adult-owned profile/family/task/study planning,
   scoped backend maintenance and internal APK delivery; synthetic progression remains separate.
 - Approved Feature017 exception: selected study, jointly agreed academic prizes and family peer text.
@@ -201,4 +205,22 @@ an updated Sync Impact Report, semantic versioning, and review by the current in
 Feature artifacts MUST be rechecked after any material amendment. Reviewers MUST reject scope or
 architecture that contradicts MVP Prototype First unless the constitution is explicitly amended.
 
-**Version**: 2.4.0 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-14
+## Feature019 full Supabase migration amendment — 2026-09-14
+
+The user's explicit full-migration correction supersedes the planning-only persistence exception.
+Real mode may persist the complete family/task/recognition/progression/reward/study/learning/League
+runtime with normalized schema, server authorization and explicit revocable Child enrollment.
+The deterministic store remains an explicit rehearsal option, never a fallback for failed real
+writes. Existing records are preserved; imports cannot invent historical approval or awards.
+Money remains simulated; paid resources, real media processing, destructive changes and public
+production release are not authorized. Feature019 owns acceptance and exact deployment evidence.
+
+## Feature019/020 preservation integration — 2026-09-15
+
+The user's explicit main-branch integration request preserves both approved implementations.
+Feature020 remains the deployed default. Feature019's normalized runtime is selected explicitly
+at build configuration and requires its own hosted installation evidence. Shared account identity
+does not establish shared family/Child/progress authority between the contracts. No automatic
+fallback, family transfer, historical award creation or source/data deletion follows from merging.
+
+**Version**: 2.4.1 | **Ratified**: 2026-08-22 | **Last Amended**: 2026-09-15

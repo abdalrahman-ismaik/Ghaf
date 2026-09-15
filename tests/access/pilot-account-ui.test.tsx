@@ -146,6 +146,9 @@ vi.mock('../../src/components/pilot/AccountWorkspaceBoundary', () => ({
 vi.mock('../../src/components/pilot/RealFamilySession', () => ({
   RealFamilySession: 'RealFamilySession',
 }));
+vi.mock('../../src/components/pilot/NormalizedPilotGate', () => ({
+  NormalizedPilotGate: 'NormalizedPilotGate',
+}));
 vi.mock('@/features/pilot/controller', () => ({
   createPilotController: (...args: unknown[]) => mock.createController(...args),
 }));
@@ -227,6 +230,7 @@ function press(testID: string) {
 }
 
 beforeEach(() => {
+  vi.stubEnv('EXPO_PUBLIC_GHAF_FAMILY_RUNTIME', undefined);
   vi.useFakeTimers();
   mock.cursor = 0;
   mock.slots = [];
@@ -295,6 +299,32 @@ afterEach(async () => {
   for (const slot of mock.slots) slot.cleanup?.();
   await Promise.resolve();
   vi.useRealTimers();
+  vi.unstubAllEnvs();
+});
+
+describe('family authority dispatch', () => {
+  it('keeps the deployed gate as the default without constructing normalized access', () => {
+    const rendered = PilotGate({ children: createElement('PrivateNavigator') }) as Node;
+    expect(rendered.type).toBe(EnabledPilotGate);
+    expect(mock.getService).not.toHaveBeenCalled();
+  });
+
+  it('selects the normalized gate only when explicitly configured', () => {
+    vi.stubEnv('EXPO_PUBLIC_GHAF_FAMILY_RUNTIME', 'normalized');
+    const rendered = PilotGate({ children: createElement('PrivateNavigator') }) as Node;
+    expect(rendered.type).toBe('NormalizedPilotGate');
+    expect(mock.getService).not.toHaveBeenCalled();
+  });
+
+  it('closes both runtime trees for an invalid setting', () => {
+    vi.stubEnv('EXPO_PUBLIC_GHAF_FAMILY_RUNTIME', 'auto');
+    const rendered = PilotGate({ children: createElement('PrivateNavigator') }) as Node;
+    expect(rendered.type).not.toBe(EnabledPilotGate);
+    expect(rendered.type).not.toBe('NormalizedPilotGate');
+    tree = (rendered.type as () => ReactNode)();
+    expect(byId('family-runtime-configuration-error')).toBeDefined();
+    expect(mock.getService).not.toHaveBeenCalled();
+  });
 });
 
 describe('Pilot account forms', () => {
@@ -724,6 +754,77 @@ describe('cloud profile account panel', () => {
 });
 
 describe('Pilot navigator boundary', () => {
+  it('does not overwrite an interface choice when only the saved profile revision changes', () => {
+    const setLocale = vi.fn((locale: string) => {
+      mock.state.locale = locale;
+    });
+    mock.state.setLocale = setLocale;
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+      profile: {
+        userId: 'adult-a',
+        displayName: 'Prepared adult',
+        preferredLocale: 'ar',
+        revision: 1,
+        updatedAt: '2026-09-14T00:00:00.000Z',
+      },
+    };
+    renderGate();
+    mock.state.locale = 'en';
+    mock.pilot = {
+      ...mock.pilot,
+      profile: { ...mock.pilot.profile!, displayName: 'Updated adult', revision: 2 },
+    };
+    renderGate();
+    expect(setLocale).not.toHaveBeenCalled();
+    expect(mock.state.locale).toBe('en');
+
+    mock.pilot = { ...mock.pilot, phase: 'signin', account: null, profile: null };
+    renderGate();
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+      profile: {
+        userId: 'adult-a',
+        displayName: 'Updated adult',
+        preferredLocale: 'ar',
+        revision: 2,
+        updatedAt: '2026-09-14T00:00:00.000Z',
+      },
+    };
+    renderGate();
+    expect(setLocale).toHaveBeenCalledExactlyOnceWith('ar');
+  });
+
+  it('applies an actual saved language change for the authenticated identity', () => {
+    const setLocale = vi.fn((locale: string) => {
+      mock.state.locale = locale;
+    });
+    mock.state.setLocale = setLocale;
+    mock.pilot = {
+      ...mock.pilot,
+      phase: 'ready',
+      account: { userId: 'adult-a', email: 'a@example.test' },
+      profile: {
+        userId: 'adult-a',
+        displayName: 'Prepared adult',
+        preferredLocale: 'ar',
+        revision: 1,
+        updatedAt: '2026-09-14T00:00:00.000Z',
+      },
+    };
+    renderGate();
+    mock.pilot = {
+      ...mock.pilot,
+      profile: { ...mock.pilot.profile!, preferredLocale: 'en', revision: 2 },
+    };
+    renderGate();
+    expect(setLocale).toHaveBeenCalledExactlyOnceWith('en');
+  });
+
   it('keeps the same outer view across auth phases and retains the workspace identity boundary', () => {
     renderGate();
     const signin = find((node) => node.type === PilotAccountView)!;

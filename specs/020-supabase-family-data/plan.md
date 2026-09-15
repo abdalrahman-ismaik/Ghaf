@@ -1,5 +1,9 @@
 # Implementation plan
 
+The September 15 main merge preserves the separate Feature019 normalized runtime under explicit
+build selection. Feature020 remains the deployed default. The
+[integration contract](normalized-integration.md) owns API/model/session preservation and checks.
+
 Root owns authentication/configuration, contract, integration, final verification
 and one serialized database/build lane. Four reused helpers audit then implement
 disjoint schema, service/domain and UI boundaries. Preserve the NAV-MOTION working

@@ -1,6 +1,7 @@
 import { CatalogChildTask } from '@/components/catalog/CatalogChildTask';
 import { CompanionPortrait } from '@/components/companion/CompanionPortrait';
 import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
+import { MasroofiTaskRewardNotice } from '@/components/masroofi/MasroofiTaskRewardNotice';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { AccessibilityInfo, StyleSheet, View } from 'react-native';
@@ -359,6 +360,7 @@ function OriginalChildTaskScreen() {
         header={header}
         testID="child-task-start-screen"
       >
+        <MasroofiTaskRewardNotice />
         <ChildTaskHero
           awardLabel={awardLabel}
           categoryLabel={categoryLabel}

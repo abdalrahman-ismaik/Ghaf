@@ -1,4 +1,5 @@
 import { MessagingEntry } from '@/components/familyMessaging/MessagingEntry';
+import { MasroofiTaskRewardNotice } from '@/components/masroofi/MasroofiTaskRewardNotice';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -78,6 +79,7 @@ export function CatalogChildTask({ journey }: { journey: TaskJourney }) {
       }
     >
       <CatalogDetails content={content} />
+      <MasroofiTaskRewardNotice />
       <Text brand direction={direction}>
         {localize(content.supervision, locale)}
       </Text>

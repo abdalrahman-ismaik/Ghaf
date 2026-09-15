@@ -131,6 +131,34 @@ beforeEach(() => {
 });
 
 describe('post-creation family directory interaction', () => {
+  it('renders account-owned UUID relatives without exposing the local editor by default', () => {
+    const relativeId = '10000000-0000-4000-8000-000000000009';
+    const tree = FamilyConnectionPlan({
+      direction: 'ltr',
+      language: 'en',
+      plan: {
+        guardianDisplayNames: ['Account guardian'],
+        entries: [
+          {
+            relativeId,
+            displayName: 'Account relative',
+            relationship: 'aunt',
+            rhythm: 'monthly',
+            ideaKind: 'visit_or_call',
+          },
+        ],
+      },
+    });
+    expect(node(tree, `family-connection-${relativeId}`)).toBeDefined();
+    expect(
+      find(
+        tree,
+        (item) => typeof item.type === 'function' && item.type.name === 'FamilyConnectionEditor',
+      ),
+    ).toBeUndefined();
+    expect(mock.state.saveFamilyConnections).not.toHaveBeenCalled();
+  });
+
   it('reaches an editable plan with no relatives and denies unauthorized direct entry', () => {
     const route = ParentFamilyConnectionsRoute();
     const component = find(route, (item) => item.type === FamilyConnectionPlan);
