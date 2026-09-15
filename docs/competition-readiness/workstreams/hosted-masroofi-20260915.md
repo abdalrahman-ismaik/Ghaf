@@ -60,11 +60,16 @@ is reused, with eight spending categories and a single practice-money notice.
 
 ## Delivery
 
-Root is committing two cohesive slices on original main: the guarded backend, then the
-bilingual pages/navigation and evidence. Public main delivery is authorized by the user's
-existing explicit push approval and subsequent request to add the work to main. No forced
-update, branch deletion, database reset or user-lockfile commit is part of this delivery.
-Exact publication and CI results will be recorded after the push.
+Root committed the guarded backend as 0b2a615 and the bilingual pages/navigation and evidence
+as 6d08d12. Both were published successfully to public abdalrahman-ismaik/Ghaf main, advancing
+11eba5e to 6d08d12 without a forced update. This publication follows the user's existing explicit
+push approval and subsequent request to add the work to main. The original checkout stays on
+main; the separate integration checkout, feature branch, retained stash and backups remain.
+User-owned package-lock.json, skills-lock.json and the Supabase skill are not in either commit.
+
+Local checks above apply to the published source. GitHub Actions must be assessed on the final
+delivery SHA; prior main CI is not evidence for this change. This documentation checkpoint
+records source publication and remaining hosted/native gaps, not a hosted deployment.
 
 ## Hosted access
 

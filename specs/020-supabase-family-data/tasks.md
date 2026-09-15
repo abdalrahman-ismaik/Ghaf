@@ -10,7 +10,7 @@
 - [x] M06 Verify permission, hidden amounts, task locking, concurrency, limits and regression UI.
 - [ ] M07 Apply additive hosted SQL and verify authenticated read/write. BLOCKED: this session
   has no accessible administrator connection; CLI login is optional if SQL Editor is used.
-- [ ] M08 Record exact evidence, public delivery and remaining native/human limitations.
+- [x] M08 Record exact evidence, public delivery and remaining native/human limitations.
 
 ## Original family migration
 
