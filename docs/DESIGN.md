@@ -312,6 +312,28 @@ mean that every surface was reanimated: existing modal sheets retain their own R
 The confirmation-owned recognition/growth reveal remains the signature event; motion never earns
 progress or delays access.
 
+### Selection controls and empty sections
+
+One filter or option row uses one treatment. `SelectionChip` is the shared surface: an
+unselected option keeps a paper fill, a 1dp line edge, and a muted label, so it still reads as a
+control rather than plain text beside a button; a selected option keeps a sage fill, a
+sage-strong edge, and a deep-forest label. Both keep the 48dp target and the pill radius.
+
+Selection stays light on light on purpose. A dark fill under a light label cannot change state
+gradually without dropping the label's contrast partway through, which is also why the Parent and
+Child bottom navigations change their selected pill instantly. Keeping filters light leaves a
+later transition available without that cost.
+
+The chip carries `radio` semantics for choosing one value in a group and `tab` semantics for
+choosing which slice of one list is shown. The rows keep their `radiogroup` and `tablist` roles:
+the two controls look related and are still announced and navigated differently. A row adds no
+second container or underline behind chips that already carry their own edge. A card-shaped
+option with its own opaque surface, such as the task category rail, keeps a border-only selected
+state instead of a fill it would hide.
+
+An empty section uses `EmptyState`: an icon well, an optional title, the message, and one
+accessible name, rather than a bare sentence where content is expected.
+
 ### Inputs
 
 Inputs retain React Native TextInput keyboard, editing, selection, and validation behavior.
